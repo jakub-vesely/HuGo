@@ -3,9 +3,9 @@ Copyright (c) 2020 jakub-vesely
 This software is published under MIT license. Full text of the licence is available on https://opensource.org/licenses/MIT
 --]]
 
-local test2 = {}
-function test2.print_lua_file()
-  print(" Lua file")
+local build_in_led = {}
+function build_in_led.change_state(on)
+    return build_in_led_change_state(on);
 end
 
-return test2
+return build_in_led

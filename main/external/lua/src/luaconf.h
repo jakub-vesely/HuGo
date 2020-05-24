@@ -201,8 +201,8 @@
 #else			/* }{ */
 
 #define LUA_ROOT	"/usr/local/"
-#define LUA_LDIR	"/scripts/"
-#define LUA_CDIR	"/scripts/"
+#define LUA_LDIR	"/lua/"
+#define LUA_CDIR	"/lua/"
 #define LUA_PATH_DEFAULT  \
 		LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \
 		LUA_CDIR"?.lua;"  LUA_CDIR"?/init.lua;" \
