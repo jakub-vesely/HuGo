@@ -21,7 +21,7 @@ void init()
     gpio_set_direction(BUILD_IN_LED_GPIO, GPIO_MODE_OUTPUT);
 }
 
-int change_state(lua_State *L)
+HUGO_RET_VAL change_state(lua_State *L)
 {
     //process input argument
     int n = lua_gettop(L);
@@ -41,7 +41,7 @@ int change_state(lua_State *L)
     return (ESP_OK == gpio_set_level(BUILD_IN_LED_GPIO, on)? HUGO_OK : HUGO_FAIL);
 }
 
-int create_build_in_led_adapter(lua_State* L)
+HUGO_RET_VAL create_build_in_led_adapter(lua_State* L)
 {
     lua_register(L, "build_in_led_change_state", change_state);
     return HUGO_OK;
