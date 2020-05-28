@@ -4,6 +4,7 @@ set(adapters modules/adapters)
 
 set(sources
     "main.c"
+    "event_loop.c"
     "${adapters}/build_in_led_adapter.c"
     "${adapters}/program_adapter.c"
     ".lua_files.c"

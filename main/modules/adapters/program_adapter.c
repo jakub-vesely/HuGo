@@ -7,6 +7,6 @@ HUGO_RET_VAL connect_to_started(lua_State* L)
 
 HUGO_RET_VAL create_program_adapter(lua_State* L)
 {
-    lua_register(L, "connect_to_started", connect_to_started);
+    lua_register(L, "connect_to_started", connect_to_started_action);
     return HUGO_OK;
 }

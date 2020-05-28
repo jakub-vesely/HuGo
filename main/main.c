@@ -22,8 +22,10 @@ This software is published under MIT license. Full text of the licence is availa
 #include ".lua_files.h"
 
 #include "modules/adapters/build_in_led_adapter.h"
+#include "event_loop.h"
 
 static const char *TAG = "HuGo";
+int deleteme = 1;
 
 /*
 taken from file_serving example
@@ -62,10 +64,29 @@ static esp_err_t init_partition(void)
     return ESP_OK;
 }
 
+/*static void test_action(){}
+
+static void test_reaction(void* handler_args, esp_event_base_t base, int32_t id, void* event_data)
+{
+    while (1)
+    {
+        printf("Event received with data %d\n", *((int*)(event_data)));
+        vTaskDelay(100);
+    }
+}
+
+
+void event_loop_test(){
+    int value = 1;
+    start_event_loop();
+    add_reaction_to_action(test_action, test_reaction);
+    perform_action(test_action, &value, sizeof(value));
+}*/
+
 void app_main()
 {
+    printf("int32:%d, void*:%d", sizeof(int32_t), sizeof(void*));
     printf("program start\n");
-
     init_partition();
     create_lua_files();
 
@@ -82,5 +103,6 @@ void app_main()
 
     lua_close(L);
 
-    printf("Program end\n");
+    event_loop_test();
+    printf("Main task end\n");
 }
