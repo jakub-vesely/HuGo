@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(lua_dir lua/src)
+set(lua_dir "${CMAKE_CURRENT_SOURCE_DIR}/lua/src")
 set(lua_source_files
     "${lua_dir}/lapi.c"      "${lua_dir}/lcorolib.c"  "${lua_dir}/ldump.c"   "${lua_dir}/llex.c"      "${lua_dir}/lopcodes.c"  "${lua_dir}/lstrlib.c"  "${lua_dir}/luac.c"
     "${lua_dir}/lauxlib.c"   "${lua_dir}/lctype.c"    "${lua_dir}/lfunc.c"   "${lua_dir}/lmathlib.c"  "${lua_dir}/loslib.c"    "${lua_dir}/ltable.c"   "${lua_dir}/lundump.c"

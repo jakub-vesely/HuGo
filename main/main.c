@@ -73,7 +73,7 @@ void app_main()
     luaL_openlibs(L);
     create_build_in_led_adapter(L);
 
-    int status = luaL_dofile(L, "/lua/build_in_led_beh.lua");
+    int status = luaL_dofile(L, "/lua/program.lua");
     if (status) {
         ESP_LOGE(TAG, "Couldn't load file: %s\n", lua_tostring(L, -1));
         return;

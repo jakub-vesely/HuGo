@@ -1,0 +1,3 @@
+[submodule "main/external/Luvent"]
+	path = main/external/Luvent
+	url = https://github.com/ejmr/Luvent.git

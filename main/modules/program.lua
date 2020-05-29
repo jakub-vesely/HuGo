@@ -12,6 +12,7 @@ local program_started = luvent.newEvent()
 local function connect()
     program_started:addAction(
         function ()
+            print("action")
             build_in_led.change_state(1)
         end
     )
