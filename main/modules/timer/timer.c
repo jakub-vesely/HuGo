@@ -91,7 +91,7 @@ static int call_after_time(lua_State *L)
     return 0;
 }
 
-void create_timer_adapter(lua_State* L)
+void init_timer_module(lua_State* L)
 {
     for (int i = 0; i < TIMER_ARRAY_SIZE; i++)
     {

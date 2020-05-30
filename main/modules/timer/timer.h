@@ -3,11 +3,11 @@
  * This software is published under MIT license. Full text of the licence is available on https://opensource.org/licenses/MIT
  */
 
-#ifndef _TIMER_ADAPTER_H
-#define _TIMER_ADAPTER_H
+#ifndef _TIMER_H
+#define _TIMER_H
 
 #include "external/lua/src/lua.h"
 
-void create_timer_adapter(lua_State* L);
+void init_timer_module(lua_State* L);
 
 #endif //_TIMER_ADAPTER_H

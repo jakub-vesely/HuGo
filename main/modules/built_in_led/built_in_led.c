@@ -45,7 +45,7 @@ static HUGO_RET_VAL change_state(lua_State *L)
     return (ESP_OK == gpio_set_level(built_in_LED_GPIO, on)? HUGO_OK : HUGO_FAIL);
 }
 
-void create_built_in_led_adapter(lua_State* L)
+void init_built_in_led_module(lua_State* L)
 {
     lua_register(L, "c_built_in_led_change_state", change_state);
 }

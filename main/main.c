@@ -79,8 +79,8 @@ void app_main()
 
     lua_State* L = (lua_State*)luaL_newstate();
     luaL_openlibs(L);
-    create_built_in_led_adapter(L);
-    create_timer_adapter(L);
+    init_built_in_led_module(L);
+    init_timer_module(L);
 
     lua_register(L, "c_task_delay", task_delay);
     int status = luaL_dofile(L, "/lua/program.lua");
