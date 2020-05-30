@@ -6,12 +6,14 @@ set(luvent "${CMAKE_CURRENT_SOURCE_DIR}/external/Luvent/")
 set(sources
     "main.c"
     "${adapters}/build_in_led_adapter.c"
+    "${adapters}/timer_adapter.c"
     ".lua_files.c"
 )
 
 set(lua_files
     "${luvent}/src/Luvent.lua"
     "${interfaces}/build_in_led_int.lua"
+    "${interfaces}/timer_int.lua"
     "${modules}/program.lua"
 )
 

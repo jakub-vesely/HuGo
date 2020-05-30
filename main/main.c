@@ -1,7 +1,7 @@
 /*
-Copyright (c) 2020 jakub-vesely
-This software is published under MIT license. Full text of the licence is available on https://opensource.org/licenses/MIT
-*/
+ * Copyright (c) 2020 jakub-vesely
+ * This software is published under MIT license. Full text of the licence is available on https://opensource.org/licenses/MIT
+ */
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -15,6 +15,7 @@ This software is published under MIT license. Full text of the licence is availa
 #include "esp_spiffs.h"
 #include "esp_err.h"
 #include "esp_log.h"
+#include "esp_sleep.h"
 
 #include "external/lua/src/lua.h"
 #include "external/lua/src/lualib.h"
@@ -22,6 +23,7 @@ This software is published under MIT license. Full text of the licence is availa
 #include ".lua_files.h"
 
 #include "modules/adapters/build_in_led_adapter.h"
+#include "modules/adapters/timer_adapter.h"
 
 static const char *TAG = "HuGo";
 
@@ -35,7 +37,7 @@ static esp_err_t init_partition(void)
     esp_vfs_spiffs_conf_t conf = {
       .base_path = "/lua",
       .partition_label = NULL,
-      .max_files = 100,   // This decides the maximum number of files that can be created on the storage
+      .max_files = 64,   // This decides the maximum number of files that can be created on the storage
       .format_if_mount_failed = true
     };
 
@@ -62,6 +64,12 @@ static esp_err_t init_partition(void)
     return ESP_OK;
 }
 
+static int task_delay(lua_State* L)
+{
+    vTaskDelay(1000);
+    return 0;
+}
+
 void app_main()
 {
     printf("program start\n");
@@ -72,15 +80,18 @@ void app_main()
     lua_State* L = (lua_State*)luaL_newstate();
     luaL_openlibs(L);
     create_build_in_led_adapter(L);
+    create_timer_adapter(L);
 
+    lua_register(L, "c_task_delay", task_delay);
     int status = luaL_dofile(L, "/lua/program.lua");
     if (status) {
-        ESP_LOGE(TAG, "Couldn't load file: %s\n", lua_tostring(L, -1));
+        ESP_LOGE(TAG, "Lua Error: %s\n", lua_tostring(L, -1));
         return;
     }
+
+    //this part shoul not be entered
     printf("%f\n", lua_tonumber(L, -1));
 
     lua_close(L);
-
     printf("Program end\n");
 }
