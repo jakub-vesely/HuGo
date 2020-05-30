@@ -22,8 +22,8 @@
 #include "external/lua/src/lauxlib.h"
 #include ".lua_files.h"
 
-#include "modules/adapters/build_in_led_adapter.h"
-#include "modules/adapters/timer_adapter.h"
+#include "modules/built_in_led/built_in_led.h"
+#include "modules/timer/timer.h"
 
 static const char *TAG = "HuGo";
 
@@ -79,7 +79,7 @@ void app_main()
 
     lua_State* L = (lua_State*)luaL_newstate();
     luaL_openlibs(L);
-    create_build_in_led_adapter(L);
+    create_built_in_led_adapter(L);
     create_timer_adapter(L);
 
     lua_register(L, "c_task_delay", task_delay);

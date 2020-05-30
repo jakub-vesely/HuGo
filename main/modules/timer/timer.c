@@ -3,7 +3,7 @@
  * This software is published under MIT license. Full text of the licence is available on https://opensource.org/licenses/MIT
  */
 
-#include "timer_adapter.h"
+#include "timer.h"
 #include "esp_log.h"
 #include "esp_timer.h"
 
@@ -12,7 +12,7 @@
 
 #define TIMER_ARRAY_SIZE 10
 
-static const char *TAG = "TimerAdapter";
+static const char *TAG = "Timer";
 static lua_State *sL = NULL;
 
 typedef struct
@@ -30,7 +30,6 @@ void store_timer_item(int32_t id, esp_timer_handle_t handle)
         {
             timer_items[i].id = id;
             timer_items[i].handle = handle;
-            printf("timer %d created\n", id);
             return;
         }
     }
@@ -45,7 +44,6 @@ void remove_timer_item(int32_t id)
         {
             ESP_ERROR_CHECK(esp_timer_delete(timer_items[i].handle));
             timer_items[i].id = 0;
-            printf("timer %d removed\n", id);
             return;
         }
     }
@@ -56,7 +54,7 @@ static void timer_callback(void* arg)
     int id = (int) arg;
     remove_timer_item(id); //it is not necessary any more can be removed to be place for another timer if is creaded in callback
 
-    if (luaL_loadfile(sL, "/lua/interfcs/timer_int.lua")) /* Load but don't run the Lua script */
+    if (luaL_loadfile(sL, "/lua/timer.lua")) /* Load but don't run the Lua script */
         ESP_LOGE(TAG, "timer_int load file failed: %s\n", lua_tostring(sL, -1));
 
     lua_getglobal(sL, "Timer_callback_collector");

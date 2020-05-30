@@ -27,7 +27,10 @@ def get_body_entry(path):
     if relative_path.startswith(luvent_prefix):
         relative_path = relative_path[len(luvent_prefix):]
     elif relative_path.startswith(modules_prefix):
-        relative_path = relative_path[len(modules_prefix):]
+        items = relative_path[len(modules_prefix):].split("/")[1:]
+        relative_path = "/".join(items)
+
+    print(("relative_path", relative_path))
 
     file_name = os.path.basename(path).replace(".", "_")
     indent = "    "

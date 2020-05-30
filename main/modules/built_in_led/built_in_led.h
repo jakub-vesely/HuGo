@@ -3,11 +3,11 @@
  * This software is published under MIT license. Full text of the licence is available on https://opensource.org/licenses/MIT
  */
 
-#ifndef _BUILD_IN_LED_ADAPTER_H
-#define _BUILD_IN_LED_ADAPTER_H
+#ifndef _BUILT_IN_LED_ADAPTER_H
+#define _BUILT_IN_LED_ADAPTER_H
 
 #include "external/lua/src/lua.h"
 
-void create_build_in_led_adapter(lua_State* L);
+void create_built_in_led_adapter(lua_State* L);
 
-#endif //_BUILD_IN_LED_ADAPTER_H
+#endif //_BUILT_IN_LED_ADAPTER_H

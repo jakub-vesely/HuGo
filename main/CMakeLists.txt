@@ -1,20 +1,18 @@
 set(modules "${CMAKE_CURRENT_SOURCE_DIR}/modules")
-set(interfaces "${modules}/interfcs")
-set(adapters "${modules}/adapters")
 set(luvent "${CMAKE_CURRENT_SOURCE_DIR}/external/Luvent/")
 
 set(sources
     "main.c"
-    "${adapters}/build_in_led_adapter.c"
-    "${adapters}/timer_adapter.c"
+    "${modules}/built_in_led/built_in_led.c"
+    "${modules}/timer/timer.c"
     ".lua_files.c"
 )
 
 set(lua_files
     "${luvent}/src/Luvent.lua"
-    "${interfaces}/build_in_led_int.lua"
-    "${interfaces}/timer_int.lua"
-    "${modules}/program.lua"
+    "${modules}/built_in_led/built_in_led.lua"
+    "${modules}/timer/timer.lua"
+    "${modules}/program/program.lua"
 )
 
 message("LUA files processing...")
@@ -35,7 +33,7 @@ endif()
 message("LUA files - done")
 
 idf_component_register(SRCS ${sources}
-                    INCLUDE_DIRS "." ${adapters}
+                    INCLUDE_DIRS "." "${modules}/built_in_led" "${modules}/timer"
                     EMBED_TXTFILES ${lua_files}
 )
 
