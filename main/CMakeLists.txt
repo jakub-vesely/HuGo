@@ -5,6 +5,7 @@ set(sources
     "main.c"
     "${modules}/built_in_led/built_in_led.c"
     "${modules}/timer/timer.c"
+    "${modules}/gpio/gpio.c"
     ".lua_files.c"
 )
 
@@ -13,6 +14,7 @@ set(lua_files
     "${modules}/built_in_led/built_in_led.lua"
     "${modules}/timer/timer.lua"
     "${modules}/program/program.lua"
+    "${modules}/gpio/gpio.lua"
 )
 
 message("LUA files processing...")
@@ -33,7 +35,7 @@ endif()
 message("LUA files - done")
 
 idf_component_register(SRCS ${sources}
-                    INCLUDE_DIRS "." "${modules}/built_in_led" "${modules}/timer"
+                    INCLUDE_DIRS "." "${modules}/built_in_led" "${modules}/timer" "${modules}/gpio"
                     EMBED_TXTFILES ${lua_files}
 )
 

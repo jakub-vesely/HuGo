@@ -24,6 +24,7 @@
 
 #include "modules/built_in_led/built_in_led.h"
 #include "modules/timer/timer.h"
+#include "modules/gpio/gpio.h"
 
 static const char *TAG = "HuGo";
 
@@ -81,6 +82,7 @@ void app_main()
     luaL_openlibs(L);
     init_built_in_led_module(L);
     init_timer_module(L);
+    init_gpio_module(L);
 
     lua_register(L, "c_task_delay", task_delay);
     int status = luaL_dofile(L, "/lua/program.lua");
