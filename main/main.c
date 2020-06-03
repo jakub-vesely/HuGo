@@ -2,29 +2,28 @@
  * Copyright (c) 2020 jakub-vesely
  * This software is published under MIT license. Full text of the licence is available on https://opensource.org/licenses/MIT
  */
-
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "esp_system.h"
-#include "esp_spi_flash.h"
-#include "esp_spiffs.h"
-#include "esp_err.h"
-#include "esp_log.h"
-#include "esp_sleep.h"
-
+#include ".lua_files.h"
 #include "external/lua/src/lua.h"
 #include "external/lua/src/lualib.h"
 #include "external/lua/src/lauxlib.h"
-#include ".lua_files.h"
-
+#include "hugo_defines.h"
 #include "modules/built_in_led/built_in_led.h"
 #include "modules/timer/timer.h"
 #include "modules/gpio/gpio.h"
+
+#include <esp_err.h>
+#include <esp_log.h>
+#include <esp_sleep.h>
+#include <esp_spi_flash.h>
+#include <esp_spiffs.h>
+#include <esp_system.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 static const char *TAG = "HuGo";
 
@@ -65,9 +64,9 @@ static esp_err_t init_partition(void)
     return ESP_OK;
 }
 
-static int task_delay(lua_State* L)
+static int cl_task_delay(lua_State* L)
 {
-    vTaskDelay(1000);
+    vTaskDelay(10);
     return 0;
 }
 
@@ -80,11 +79,12 @@ void app_main()
 
     lua_State* L = (lua_State*)luaL_newstate();
     luaL_openlibs(L);
-    init_built_in_led_module(L);
-    init_timer_module(L);
-    init_gpio_module(L);
 
-    lua_register(L, "c_task_delay", task_delay);
+    hugo_built_in_led_init_module(L);
+    hugo_timer_init_module(L);
+    hugo_gpio_init_module(L);
+
+    REGISTER_LUA_FUNCTUIN(L, cl_task_delay);
     int status = luaL_dofile(L, "/lua/program.lua");
     if (status) {
         ESP_LOGE(TAG, "Lua Error: %s\n", lua_tostring(L, -1));

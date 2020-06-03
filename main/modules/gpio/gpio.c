@@ -4,52 +4,29 @@
  */
 
 #include "esp_log.h"
-#include "driver/mcpwm.h"
+#include <driver/mcpwm.h>
+#include <hugo_defines.h>
 
-#include "external/lua/src/lualib.h"
-#include "external/lua/src/lauxlib.h"
+#include  <external/lua/src/lualib.h>
+#include <external/lua/src/lauxlib.h>
 
-int init_pin_for_out(lua_State* L)
+void hugo_gpio_set_pin_for_out(uint8_t pin)
 {
-    int n = lua_gettop(L);
-    if(n != 1)
-    {
-        lua_pushstring(L, "gpio.init_pin_for_out: unexpected number of arguments (expected 1)");
-        lua_error(L);
-    }
-    int32_t pin = lua_tointeger(L, 1);
-
+    /* Configure the IOMUX register for the pad (some pads are
+       mixed to GPIO on reset already, but some default to other
+       functions and need to be switched to GPIO.)
+    */
     gpio_pad_select_gpio(pin);
-    gpio_set_direction(pin, GPIO_MODE_OUTPUT);
-    return 0;
+    ESP_ERROR_CHECK(gpio_set_direction(pin, GPIO_MODE_OUTPUT));
 }
 
-int set_logic_value(lua_State* L)
+void hugo_gpio_set_pin_logic_value(uint8_t pin, bool value)
 {
-    int n = lua_gettop(L);
-    if(n != 2)
-    {
-        lua_pushstring(L, "gpio.set_logic_value: unexpected number of arguments (expected 2)");
-        lua_error(L);
-    }
-    int32_t pin = lua_tointeger(L, 1);
-    int32_t value = lua_tointeger(L, 2);
-    gpio_set_level(pin, value);
-    return 0;
+    ESP_ERROR_CHECK(gpio_set_level(pin, value));
 }
 
-int init_pin_for_pwm(lua_State* L)
+void hugo_gpio_set_pin_for_pwm(int pin, uint32_t frequency, float duty)
 {
-    int n = lua_gettop(L);
-    if(n != 3)
-    {
-        lua_pushstring(L, "gpio.init_pin_for_pwm: unexpected number of arguments (expected 3)");
-        lua_error(L);
-    }
-    int32_t pin = lua_tointeger(L, 1);
-    int32_t frequency = lua_tointeger(L, 2);
-    int32_t duty = lua_tointeger(L, 3);
-
     mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, pin);
 
     mcpwm_config_t pwm_config;
@@ -58,34 +35,59 @@ int init_pin_for_pwm(lua_State* L)
     pwm_config.cmpr_b = 0.0;    //duty cycle of PWMxb = 0
     pwm_config.counter_mode = MCPWM_UP_COUNTER;
     pwm_config.duty_mode = MCPWM_DUTY_MODE_0;
-    mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_config);    //Configure PWM0A & PWM0B with above settings
+    ESP_ERROR_CHECK(mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_config));    //Configure PWM0A & PWM0B with above settings
+}
+
+void hugo_gpio_set_pwm_duty(float duty)
+{
+    ESP_ERROR_CHECK(mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, duty));
+}
+
+void hugo_gpio_set_pwm_frequency(int frequency)
+{
+    ESP_ERROR_CHECK(mcpwm_set_frequency(MCPWM_UNIT_0, MCPWM_TIMER_0, frequency));
+}
+
+static int cl_gpio_set_pin_for_out(lua_State* L)
+{
+    LUA_PARAM_NR_CHECK(1);
+    hugo_gpio_set_pin_for_out(lua_tointeger(L, 1));
     return 0;
 }
 
-int set_pwm_frequency(lua_State* L)
+static int cl_gpio_set_pin_logic_value(lua_State* L)
 {
+    LUA_PARAM_NR_CHECK(2);
+    hugo_gpio_set_pin_logic_value(lua_tointeger(L, 1), lua_tointeger(L, 2));
     return 0;
 }
 
-int set_pwm_duty(lua_State* L)
+static int cl_gpio_set_pin_for_pwm(lua_State* L)
 {
-    int n = lua_gettop(L);
-    if(n != 1)
-    {
-        lua_pushstring(L, "gpio.set_pwm_duty: unexpected number of arguments (expected 1)");
-        lua_error(L);
-    }
-    int32_t duty = lua_tointeger(L, 1);
-    mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, duty);
+    LUA_PARAM_NR_CHECK(3);
+    hugo_gpio_set_pin_for_pwm(lua_tointeger(L, 1), lua_tointeger(L, 2), lua_tonumber(L, 3));
     return 0;
 }
 
-void init_gpio_module(lua_State* L)
+static int cl_gpio_set_pwm_frequency(lua_State* L)
 {
-    lua_register(L, "c_init_pin_for_out", init_pin_for_out);
-    lua_register(L, "c_set_logic_value", set_logic_value);
+    LUA_PARAM_NR_CHECK(1);
+    hugo_gpio_set_pwm_frequency(lua_tointeger(L, 1));
+    return 0;
+}
 
-    lua_register(L, "c_init_pin_for_pwm", init_pin_for_pwm);
-    lua_register(L, "c_set_pwm_frequency", set_pwm_frequency);
-    lua_register(L, "c_set_pwm_duty", set_pwm_duty);
+static int cl_gpio_set_pwm_duty(lua_State* L)
+{
+    LUA_PARAM_NR_CHECK(1);
+    hugo_gpio_set_pwm_duty(lua_tonumber(L, 1));
+    return 0;
+}
+
+void hugo_gpio_init_module(lua_State* L)
+{
+    REGISTER_LUA_FUNCTUIN(L, cl_gpio_set_pin_for_out);
+    REGISTER_LUA_FUNCTUIN(L, cl_gpio_set_pin_logic_value);
+    REGISTER_LUA_FUNCTUIN(L, cl_gpio_set_pin_for_pwm);
+    REGISTER_LUA_FUNCTUIN(L, cl_gpio_set_pwm_frequency);
+    REGISTER_LUA_FUNCTUIN(L, cl_gpio_set_pwm_duty);
 }

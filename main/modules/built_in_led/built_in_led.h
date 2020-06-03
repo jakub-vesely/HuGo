@@ -3,11 +3,11 @@
  * This software is published under MIT license. Full text of the licence is available on https://opensource.org/licenses/MIT
  */
 
-#ifndef _BUILT_IN_LED_H
-#define _BUILT_IN_LED_H
+#ifndef _HUGO_BUILT_IN_LED_H_
+#define _HUGO_BUILT_IN_LED_H_
 
-#include "external/lua/src/lua.h"
+#include <external/lua/src/lua.h>
 
-void init_built_in_led_module(lua_State* L);
+void hugo_built_in_led_init_module(lua_State* L);
 
-#endif //_BUILT_IN_LED_H
+#endif //_HUGO_BUILT_IN_LED_H_

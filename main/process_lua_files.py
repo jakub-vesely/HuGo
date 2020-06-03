@@ -13,7 +13,7 @@ def build_header_file():
 #ifndef _LUA_FILES_H_
 #define _LUA_FILES_H_
 
-#include "hugo_error.h"
+#include "hugo_defines.h"
 HUGO_RET_VAL create_lua_files();
 
 #endif //_LUA_FILES_H_

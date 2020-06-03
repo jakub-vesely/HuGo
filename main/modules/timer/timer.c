@@ -4,11 +4,11 @@
  */
 
 #include "timer.h"
-#include "esp_log.h"
-#include "esp_timer.h"
 
-#include "external/lua/src/lualib.h"
-#include "external/lua/src/lauxlib.h"
+#include <esp_log.h>
+#include <esp_timer.h>
+#include <external/lua/src/lualib.h>
+#include <external/lua/src/lauxlib.h>
 
 #define TIMER_ARRAY_SIZE 10
 
@@ -63,7 +63,7 @@ static void timer_callback(void* arg)
         ESP_LOGE(TAG, "timer_callback pcall failed: %s\n", lua_tostring(sL, -1));
 }
 
-static int call_after_time(lua_State *L)
+static int cl_call_after_time(lua_State *L)
 {
     //process input argument
     int n = lua_gettop(L);
@@ -91,7 +91,7 @@ static int call_after_time(lua_State *L)
     return 0;
 }
 
-void init_timer_module(lua_State* L)
+void hugo_timer_init_module(lua_State* L)
 {
     for (int i = 0; i < TIMER_ARRAY_SIZE; i++)
     {
@@ -99,5 +99,5 @@ void init_timer_module(lua_State* L)
     }
 
     sL = L;
-    lua_register(L, "c_timer_call_after", call_after_time);
+    lua_register(L, "cl_timer_call_after", cl_call_after_time);
 }
