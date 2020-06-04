@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2020 jakub-vesely
- * This software is published under MIT license. Full text of the licence is available on https://opensource.org/licenses/MIT
+ * This software is published under MIT license. Full text of the licence is available at https://opensource.org/licenses/MIT
  */
 
 #include "timer.h"

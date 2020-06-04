@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2020 jakub-vesely
- * This software is published under MIT license. Full text of the licence is available on https://opensource.org/licenses/MIT
+ * This software is published under MIT license. Full text of the licence is available at https://opensource.org/licenses/MIT
  */
 #include ".lua_files.h"
 #include "external/lua/src/lua.h"
@@ -8,8 +8,9 @@
 #include "external/lua/src/lauxlib.h"
 #include "hugo_defines.h"
 #include "modules/built_in_led/built_in_led.h"
-#include "modules/timer/timer.h"
+#include "modules/chassis/chassis.h"
 #include "modules/gpio/gpio.h"
+#include "modules/timer/timer.h"
 
 #include <esp_err.h>
 #include <esp_log.h>
@@ -83,6 +84,7 @@ void app_main()
     hugo_built_in_led_init_module(L);
     hugo_timer_init_module(L);
     hugo_gpio_init_module(L);
+    hugo_chassis_init_module(L);
 
     REGISTER_LUA_FUNCTUIN(L, cl_task_delay);
     int status = luaL_dofile(L, "/lua/program.lua");
