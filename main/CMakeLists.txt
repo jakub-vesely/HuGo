@@ -7,6 +7,7 @@ set(sources
     "${modules}/timer/timer.c"
     "${modules}/gpio/gpio.c"
     "${modules}/chassis/chassis.c"
+    "${modules}/ir_remote/ir_remote.c"
     ".lua_files.c"
 )
 
@@ -17,6 +18,7 @@ set(lua_files
     "${modules}/program/program.lua"
     "${modules}/gpio/gpio.lua"
     "${modules}/chassis/chassis.lua"
+    "${modules}/ir_remote/ir_remote.lua"
 )
 
 message("LUA files processing...")

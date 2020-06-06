@@ -5,7 +5,7 @@
 #include <hugo_defines.h>
 #include <modules/gpio/gpio.h>
 #include <stdbool.h>
-
+#include <stdio.h>
 /* HuGo has 4 driven wheels (two motors are placed on each side)
  * rotation direction is managed separately on each side but both motor on each side are managed together.
  * Motors are powered over H-Bridge with 2 input lines (here are named A and B)
@@ -37,6 +37,7 @@ static void set_combination(bool left_a, bool left_b, bool right_a, bool right_b
 }
 static int cl_chassis_stop(lua_State* L)
 {
+    printf("stop");
     LUA_PARAM_NR_CHECK(0);
     set_combination(false, false, false, false);
     return 0;
@@ -44,27 +45,31 @@ static int cl_chassis_stop(lua_State* L)
 
 static int cl_chassis_go_forward(lua_State* L)
 {
-    LUA_PARAM_NR_CHECK(0);
-    set_combination(false, true, false, true);
-    return 0;
-}
-
-static int cl_chassis_go_backward(lua_State* L)
-{
-    LUA_PARAM_NR_CHECK(0);
-    set_combination(false, true, true, false);
-    return 0;
-}
-
-static int cl_chassis_rotate_clockwise(lua_State* L)
-{
+    printf("forward");
     LUA_PARAM_NR_CHECK(0);
     set_combination(true, false, true, false);
     return 0;
 }
 
+static int cl_chassis_go_backward(lua_State* L)
+{
+    printf("backkward");
+    LUA_PARAM_NR_CHECK(0);
+    set_combination(false, true, false, true);
+    return 0;
+}
+
+static int cl_chassis_rotate_clockwise(lua_State* L)
+{
+    printf("clockwise");
+    LUA_PARAM_NR_CHECK(0);
+    set_combination(false, true, true, false);
+    return 0;
+}
+
 static int cl_chassis_rotate_counterclockwise(lua_State* L)
 {
+    printf("counterclockwise");
     LUA_PARAM_NR_CHECK(0);
     set_combination(true, false, false, true);
     return 0;

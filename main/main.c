@@ -10,6 +10,7 @@
 #include "modules/built_in_led/built_in_led.h"
 #include "modules/chassis/chassis.h"
 #include "modules/gpio/gpio.h"
+#include "modules/ir_remote/ir_remote.h"
 #include "modules/timer/timer.h"
 
 #include <esp_err.h>
@@ -85,6 +86,7 @@ void app_main()
     hugo_timer_init_module(L);
     hugo_gpio_init_module(L);
     hugo_chassis_init_module(L);
+    hugo_ir_remote_init_module(L);
 
     REGISTER_LUA_FUNCTUIN(L, cl_task_delay);
     int status = luaL_dofile(L, "/lua/program.lua");

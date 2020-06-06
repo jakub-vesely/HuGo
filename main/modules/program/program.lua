@@ -4,7 +4,7 @@
 --]]
 
 --local gpio = require "gpio"
--- local luvent = require "Luvent"
+local luvent = require "Luvent"
 -- local built_in_led = require("built_in_led")
 local timer = require("timer")
 local chassis = require("chassis")
@@ -62,32 +62,31 @@ local chassis = require("chassis")
 --     timer.call_after_time(ChangeDirection, 1)
 -- end
 
-function Right()
-    chassis.rotate_counterclockwise()
-    timer.call_after_time(Stop, 1)
-end
+-- function Right()
+--     chassis.rotate_counterclockwise()
+--     timer.call_after_time(Stop, 1)
+-- end
 
+-- function Backward()
+--     chassis.go_backward()
+--     timer.call_after_time(Right, 1)
+-- end
 
-function Backward()
-    chassis.go_backward()
-    timer.call_after_time(Right, 1)
-end
+-- function Left()
+--     chassis.rotate_clockwise()
+--     timer.call_after_time(Backward, 1)
+-- end
 
-function Left()
-    chassis.rotate_clockwise()
-    timer.call_after_time(Backward, 1)
-end
+-- function Forward()
+--     chassis.go_forward()
+--     timer.call_after_time(Left, 1)
+-- end
 
-function Forward()
-    chassis.go_forward()
-    timer.call_after_time(Left, 1)
-end
-
-function Stop()
-    chassis.stop()
-    timer.call_after_time(Forward, 1)
-end
-timer.call_after_time(Stop, 1)
+-- function Stop()
+--     chassis.stop()
+--     timer.call_after_time(Forward, 1)
+-- end
+-- timer.call_after_time(Stop, 1)
 
 -- gpio.init_pin_for_out(25)
 -- gpio.init_pin_for_out(26)
@@ -100,8 +99,35 @@ timer.call_after_time(Stop, 1)
 -- gpio.set_logic_value(33, 0)
 -- timer.call_after_time(ChangeDirection, 1)
 
+
+ir_remote = require "ir_remote"
+ir_remote.set_event(luvent)
+ir_remote.data_received:addAction(
+    function (code, repeated)
+        if repeated == 1 then
+            return
+        end
+        print("action", code)
+        if code == 59160 or code == 60690 then
+            print("forward")
+            chassis.go_forward()
+        elseif code == 44370 or code == 60435 then
+            print("back")
+            chassis.go_backward()
+        elseif code == 42330 or code == 61200 then
+            chassis.rotate_clockwise()
+        elseif code == 63240 or code == 60945 then
+            chassis.rotate_counterclockwise()
+        elseif code == 58140 or code == 46920 then
+            chassis.stop()
+        else
+            print("unknown command")
+        end
+    end
+ )
+
 --main loop
 while true do
-    c_task_delay() -- must be in main loop to be called watchdog
+    cl_task_delay() -- must be in main loop to be called watchdog
 end
 return 1
