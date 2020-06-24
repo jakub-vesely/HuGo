@@ -1,3 +1,3 @@
-[submodule "main/external/Luvent"]
-	path = main/external/Luvent
-	url = https://github.com/ejmr/Luvent.git
+[submodule "components/fff/fff"]
+	path = components/fff/fff
+	url = https://github.com/meekrosoft/fff.git
