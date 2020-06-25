@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 
 # Include the components directory of the main application:
 #
-set(EXTRA_COMPONENT_DIRS "../components")
+set(EXTRA_COMPONENT_DIRS "../components" "../externals")
 
 # Set the components to include the tests for.
 # This can be overriden from CMake cache:
@@ -11,7 +11,7 @@ set(EXTRA_COMPONENT_DIRS "../components")
 # - when using idf.py: idf.py -T xxxxx build
 #
 set(
-    TEST_COMPONENTS event_loop lua timer gpio
+    TEST_COMPONENTS event_loop timer gpio
     CACHE STRING "List of components to test"
 )
 add_compile_options(-DUNIT_TEST)
