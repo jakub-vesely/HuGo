@@ -4,7 +4,7 @@
  */
 
 #include "gpio.h"
-#include "gpio_abstraction.h"
+#include "driver_gpio_abstraction.h"
 #include <esp_log.h>
 #include <esp_err.h>
 #include <hugo_defines.h>

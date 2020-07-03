@@ -27,9 +27,10 @@ typedef struct
     action_func_t action;
 } event_action_t;
 
-int get_new_event_id();
-bool add_event_action(int32_t event_id, action_func_t action);
-bool remove_event_action(int32_t event_id, action_func_t action);
-bool raise_event(uint32_t event_id, void* data, int data_size);
-bool process_events();
+void hugo_event_loop_init();
+int hugo_get_new_event_id();
+bool hugo_add_event_action(int32_t event_id, action_func_t action);
+bool hugo_remove_event_action(int32_t event_id, action_func_t action);
+bool hugo_raise_event(uint32_t event_id, void* data, int data_size);
+void hugo_process_events(bool exit_if_empty);
 #endif //HUGO_EVENT_LOOP_H_

@@ -1,28 +1,19 @@
 #ifdef UNIT_TEST
-#   include "test/gpio_mocks.h"
+#   include "gpio_mocks.h"
 
-#   define GPIO_PAD_SELECT_GPIO(gpio_num) fff_gpio_pad_select_gpio(gpio_num)
-#   define GPIO_SET_DIRECTION(gpio_num, mode) fff_gpio_set_direction(gpio_num, mode)
-#   define GPIO_SET_LEVEL(gpio_num, level) fff_gpio_set_level(gpio_num, level)
-
-#   define MCPWM_GPIO_INIT(mcpwm_num, io_signal, gpio_num) fff_mcpwm_gpio_init(mcpwm_num, io_signal, gpio_num)
-#   define MCPWM_INIT(mcpwm_num, timer_num, mcpwm_conf) fff_mcpwm_init(mcpwm_num, timer_num, mcpwm_conf)
-#   define MCPWM_SET_DUTY(mcpwm_num, timer_num, gen, duty) fff_mcpwm_set_duty(mcpwm_num, timer_num, gen, duty)
-#   define MCPWM_SET_FREQUENCY(mcpwm_num, timer_num, frequency) fff_mcpwm_set_frequency(mcpwm_num, timer_num, frequency)
-
+#   define HUGO_GPIO_SET_PIN_FOR_OUT(pin) fff_gpio_set_pin_for_out(pin)
+#   define HUGO_GPIO_SET_PIN_LOGIC_VALUE(pin, value) fff_gpio_set_pin_logic_value(pin, value)
+#   define HUGO_GPIO_SET_PIN_FOR_PWM(pin, frequency, duty) fff_gpio_set_pin_for_pwm(pin, frequency, duty)
+#   define HUGO_GPIO_SET_PWM_FREQUENCY(frequency) fff_gpio_set_pwm_frequency(frequency)
+#   define HUGO_GPIO_SET_PWM_DUTY(duty) fff_gpio_set_pwm_duty(duty)
 
 #else
-#   include <driver/gpio.h>
-#   include <driver/mcpwm.h>
+#   include "gpio.h"
 
-#   define GPIO_PAD_SELECT_GPIO(gpio_num) gpio_pad_select_gpio(gpio_num)
-#   define GPIO_SET_DIRECTION(gpio_num, mode) gpio_set_direction(gpio_num, mode)
-#   define GPIO_SET_LEVEL(gpio_num, level) gpio_set_level(gpio_num, level)
-
-#   define MCPWM_GPIO_INIT(mcpwm_num, io_signal, gpio_num) mcpwm_gpio_init(mcpwm_num, io_signal, gpio_num)
-#   define MCPWM_INIT(mcpwm_num, timer_num, mcpwm_conf) mcpwm_init(mcpwm_num, timer_num, mcpwm_conf)
-#   define MCPWM_SET_DUTY(mcpwm_num, timer_num, gen, duty) mcpwm_set_duty(mcpwm_num, timer_num, gen, duty)
-#   define MCPWM_SET_FREQUENCY(mcpwm_num, timer_num, frequency) mcpwm_set_frequency(mcpwm_num, timer_num, frequency)
-
+#   define HUGO_GPIO_SET_PIN_FOR_OUT(pin) hugo_gpio_set_pin_for_out(pin)
+#   define HUGO_GPIO_SET_PIN_LOGIC_VALUE(pin, value) hugo_gpio_set_pin_logic_value(pin, value)
+#   define HUGO_GPIO_SET_PIN_FOR_PWM(pin, frequency, duty) hugo_gpio_set_pin_for_pwm(pin, frequency, duty)
+#   define HUGO_GPIO_SET_PWM_FREQUENCY(frequency) hugo_gpio_set_pwm_frequency(frequency)
+#   define HUGO_GPIO_SET_PWM_DUTY(duty) hugo_gpio_set_pwm_duty(duty)
 
 #endif

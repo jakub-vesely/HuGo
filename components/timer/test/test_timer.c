@@ -9,9 +9,9 @@
 
 TEST_CASE("timer_main_test", TEST_TAG)
 {
-    lua_State* L = (lua_State*)luaL_newstate();
-    luaL_openlibs(L);
 
+    lua_State* L = NULL;
+    LUA_REOPEN(L);
     hugo_timer_init_module(L);
 
     //start timer from Lua
@@ -31,5 +31,5 @@ TEST_CASE("timer_main_test", TEST_TAG)
     CHECK_LUA_GET_GLOBAL(L, "was_called", 0, 1, 0);
     TEST_ASSERT_EQUAL(lua_toboolean(L, -1), true);
 
-    lua_close(L);
+    LUA_CLOSE(L);
 }

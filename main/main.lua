@@ -114,11 +114,10 @@ print("behavior definition started")
 -- end
 
 -- timer.call_after_time(After_time, 3)
-
-ir_remote = require "ir_remote"
-ir_remote.set_event(luvent)
-ir_remote.data_received:addAction(
-    function (code, repeated)
+local chassis = require("chassis")
+local ir_remote = require "ir_remote"
+ir_remote.add_data_recoveved_action(
+    function (addr, code, repeated)
         if repeated == 1 then
             return
         end

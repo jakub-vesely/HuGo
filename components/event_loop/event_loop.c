@@ -16,7 +16,7 @@ static event_action_t s_event_action_array[EVENT_ACTION_ARRAY_SIZE];
 static _lock_t s_lock;
 static uint32_t s_event_id_counter = 0; // if event loop will be used for timer and timer will be initialized every 100 ms it will take 13 years to reach max uint
 
-void init()
+void hugo_event_loop_init()
 {
     for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i)
     {
@@ -24,7 +24,7 @@ void init()
     }
 }
 
-int get_new_event_id()
+int hugo_get_new_event_id()
 {
     _lock_acquire(&s_lock);
     int id = -1;
@@ -42,7 +42,7 @@ int get_new_event_id()
     return id;
 }
 
-bool add_event_action(int event_id, action_func_t action)
+bool hugo_add_event_action(int event_id, action_func_t action)
 {
     _lock_acquire(&s_lock);
     for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i)
@@ -72,7 +72,7 @@ bool add_event_action(int event_id, action_func_t action)
     return false;
 }
 
-bool remove_event_action(int event_id, action_func_t action)
+bool hugo_remove_event_action(int event_id, action_func_t action)
 {
     for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i)
     {
@@ -129,7 +129,7 @@ static bool _ring_buffer_pop(uint32_t *event_id, void* data, uint8_t *data_size)
     return true;
 }
 
-bool raise_event(uint32_t event_id, void* data, int data_size)
+bool hugo_raise_event(uint32_t event_id, void* data, int data_size)
 {
     _lock_acquire(&s_lock);
     bool ret_val = _ring_buffer_push(event_id, data, data_size);
@@ -155,11 +155,16 @@ static void _process_buffer()
     }
 }
 
-bool process_events()
+void hugo_process_events(bool exit_if_empty)
 {
     while(true)
     {
         _process_buffer();
+        if (exit_if_empty)
+        {
+            return;
+        }
+
         //FIXME: will be better vTaskSuspend istead?
         vTaskDelay(10); //tell to watchdog that the thread is still alive
     }

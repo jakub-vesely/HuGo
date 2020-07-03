@@ -6,6 +6,8 @@
 #include <gpio.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <gpio_abstraction.h>
+
 /* HuGo has 4 driven wheels (two motors are placed on each side)
  * rotation direction is managed separately on each side but both motor on each side are managed together.
  * Motors are powered over H-Bridge with 2 input lines (here are named A and B)
@@ -21,71 +23,74 @@
  * when direction of rotation are the same on both sides chassis move forward/backward. When they are different it rotates left/right
  */
 
-#define PIN_LEFT_A 25
-#define PIN_LEFT_B 26
+static int _left_front_pin  = 0;
+static int _left_back_pin = 0;
+static int _right_front_pin = 0;
+static int _right_back_pin = 0;
 
-#define PIN_RIGHT_A 32
-#define PIN_RIGHT_B 33
-
-static void set_combination(bool left_a, bool left_b, bool right_a, bool right_b)
+static void _set_combination(bool left_front_level, bool left_back_level, bool right_front_level, bool right_back_level)
 {
-    hugo_gpio_set_pin_logic_value(PIN_LEFT_A, left_a);
-    hugo_gpio_set_pin_logic_value(PIN_LEFT_B, left_b);
-    hugo_gpio_set_pin_logic_value(PIN_RIGHT_A, right_a);
-    hugo_gpio_set_pin_logic_value(PIN_RIGHT_B, right_b);
-
+    HUGO_GPIO_SET_PIN_LOGIC_VALUE(_left_front_pin, left_front_level);
+    HUGO_GPIO_SET_PIN_LOGIC_VALUE(_left_back_pin, left_back_level);
+    HUGO_GPIO_SET_PIN_LOGIC_VALUE(_right_front_pin, right_front_level);
+    HUGO_GPIO_SET_PIN_LOGIC_VALUE(_right_back_pin, right_back_level);
 }
+
 static int cl_chassis_stop(lua_State* L)
 {
-    printf("stop");
+    printf("stop\n");
     LUA_PARAM_NR_CHECK(0);
-    set_combination(false, false, false, false);
+    _set_combination(false, false, false, false);
     return 0;
 }
 
 static int cl_chassis_go_forward(lua_State* L)
 {
-    printf("forward");
+    printf("forward\n");
     LUA_PARAM_NR_CHECK(0);
-    set_combination(true, false, true, false);
+    _set_combination(true, false, true, false);
     return 0;
 }
 
 static int cl_chassis_go_backward(lua_State* L)
 {
-    printf("backkward");
+    printf("backkward\n");
     LUA_PARAM_NR_CHECK(0);
-    set_combination(false, true, false, true);
+    _set_combination(false, true, false, true);
     return 0;
 }
 
 static int cl_chassis_rotate_clockwise(lua_State* L)
 {
-    printf("clockwise");
+    printf("clockwise\n");
     LUA_PARAM_NR_CHECK(0);
-    set_combination(false, true, true, false);
+    _set_combination(false, true, true, false);
     return 0;
 }
 
 static int cl_chassis_rotate_counterclockwise(lua_State* L)
 {
-    printf("counterclockwise");
+    printf("counterclockwise\n");
     LUA_PARAM_NR_CHECK(0);
-    set_combination(true, false, false, true);
+    _set_combination(true, false, false, true);
     return 0;
 }
 
-void hugo_chassis_init_module(lua_State* L)
+void hugo_chassis_init_module(lua_State* L, int left_front_pin, int left_back_pin, int right_front_pin, int right_back_pin)
 {
-    hugo_gpio_set_pin_for_out(PIN_LEFT_A);
-    hugo_gpio_set_pin_for_out(PIN_LEFT_B);
-    hugo_gpio_set_pin_for_out(PIN_RIGHT_A);
-    hugo_gpio_set_pin_for_out(PIN_RIGHT_B);
+    _left_front_pin = left_front_pin;
+    _left_back_pin = left_back_pin;
+    _right_front_pin = right_front_pin;
+    _right_back_pin = right_back_pin;
+
+    hugo_gpio_set_pin_for_out(left_front_pin);
+    hugo_gpio_set_pin_for_out(left_back_pin);
+    hugo_gpio_set_pin_for_out(right_front_pin);
+    hugo_gpio_set_pin_for_out(right_back_pin);
 
     REGISTER_LUA_FUNCTUIN(L, cl_chassis_stop);
     REGISTER_LUA_FUNCTUIN(L, cl_chassis_go_forward);
     REGISTER_LUA_FUNCTUIN(L, cl_chassis_go_backward);
     REGISTER_LUA_FUNCTUIN(L, cl_chassis_rotate_clockwise);
     REGISTER_LUA_FUNCTUIN(L, cl_chassis_rotate_counterclockwise);
-
 }

@@ -1,4 +1,4 @@
-#include "gpio_mocks.h"
+#include "driver_gpio_mocks.h"
 
 DEFINE_FAKE_VOID_FUNC(fff_gpio_pad_select_gpio, uint8_t);
 DEFINE_FAKE_VALUE_FUNC(esp_err_t, fff_gpio_set_direction, gpio_num_t, gpio_mode_t);

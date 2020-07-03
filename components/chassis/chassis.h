@@ -8,6 +8,6 @@
 
 #include <lua.h>
 
-void hugo_chassis_init_module(lua_State* L);
+void hugo_chassis_init_module(lua_State* L, int left_front_pin, int left_back_pin, int right_front_pin, int right_back_pin);
 
 #endif //_HUGO_CHASSIS_H_

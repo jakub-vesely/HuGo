@@ -5,16 +5,18 @@ This software is published under MIT license. Full text of the licence is availa
 
 
 local ir_remote =  {
-    data_received = nil
+    actions = {}
 }
 
-function ir_remote.set_event(luvent)
-    ir_remote.data_received = luvent.newEvent()
+function Ir_remote_callback(addr, code, repeated)
+    print("Ir_remote_callback", addr, code, repeated)
+    for index, action in pairs(ir_remote.actions) do
+        action(addr, code, repeated)
+    end
 end
 
-function Ir_remote_callback(code, repeated)
-    print("LUA", code, repeated)
-    ir_remote.data_received:trigger(code, repeated)
+function ir_remote.add_data_recoveved_action(action_function)
+    table.insert(ir_remote.actions, action_function)
 end
 
 return ir_remote

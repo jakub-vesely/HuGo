@@ -6,7 +6,7 @@
 #include "built_in_led.h"
 
 #include <hugo_defines.h>
-#include <gpio.h>
+#include <gpio_abstraction.h>
 #include <stdbool.h>
 
 #define built_in_LED_GPIO 2
@@ -15,7 +15,7 @@ static bool initialized = false;
 
 static void init()
 {
-    hugo_gpio_set_pin_for_out(built_in_LED_GPIO);
+    HUGO_GPIO_SET_PIN_FOR_OUT(built_in_LED_GPIO);
 }
 
 static int cl_built_in_led_change_state(lua_State *L)
@@ -27,7 +27,7 @@ static int cl_built_in_led_change_state(lua_State *L)
         init();
         initialized = true;
     }
-    hugo_gpio_set_pin_logic_value(built_in_LED_GPIO, lua_tointeger(L, 1));
+    HUGO_GPIO_SET_PIN_LOGIC_VALUE(built_in_LED_GPIO, lua_toboolean(L, 1));
     return 0;
 }
 

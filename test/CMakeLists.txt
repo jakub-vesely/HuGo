@@ -11,7 +11,7 @@ set(EXTRA_COMPONENT_DIRS "../components" "../externals")
 # - when using idf.py: idf.py -T xxxxx build
 #
 set(
-    TEST_COMPONENTS event_loop timer gpio
+    TEST_COMPONENTS built_in_led chassis event_loop gpio ir_remote timer
     CACHE STRING "List of components to test"
 )
 add_compile_options(-DUNIT_TEST)
