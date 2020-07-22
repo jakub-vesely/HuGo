@@ -114,6 +114,16 @@ print("behavior definition started")
 -- end
 
 -- timer.call_after_time(After_time, 3)
+
+local display = require("display")
+display.print_text_8x8(0, 0, 128, 64, "Hallo", true)
+display.print_text_8x16(0, 32, 128, 32, "Hallo", true)
+display.draw_elipse(80, 32, 30, 20, true)
+display.draw_elipse(80, 32, 29, 19, true)
+display.draw_elipse(80, 32, 28, 18, true)
+display.draw_elipse(80, 32, 27, 17, true)
+display.showtime()
+
 local chassis = require("chassis")
 local ir_remote = require "ir_remote"
 ir_remote.add_data_recoveved_action(

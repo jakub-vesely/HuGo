@@ -11,6 +11,8 @@
 #include <chassis.h>
 #include <gpio.h>
 #include <ir_remote.h>
+#include <i2c_wrapper.h>
+#include <display.h>
 
 #include <esp_err.h>
 #include <esp_log.h>
@@ -29,12 +31,15 @@
 
 static const char *TAG = "HuGo";
 
-#define IR_REMOTE_PIN 19
+#define IR_REMOTE_PIN GPIO_NUM_19
 
-#define LEFT_FRONT_PIN 25
-#define LEFT_BACK_PIN 26
-#define RIGHT_FRONT_PIN 32
-#define RIGHT_BACK_PIN 33
+#define LEFT_FRONT_PIN GPIO_NUM_25
+#define LEFT_BACK_PIN GPIO_NUM_26
+#define RIGHT_FRONT_PIN GPIO_NUM_32
+#define RIGHT_BACK_PIN GPIO_NUM_33
+
+#define SDA_PIN GPIO_NUM_22
+#define SCL_PIN GPIO_NUM_23
 
 void app_main()
 {
@@ -46,11 +51,14 @@ void app_main()
     LUA_REOPEN(L);
 
     hugo_event_loop_init();
+    if (!hugo_i2c_init(SDA_PIN, SCL_PIN))
+        ESP_LOGW(TAG, "I2C init failed");
     hugo_built_in_led_init_module(L);
     hugo_timer_init_module(L);
     hugo_gpio_init_module(L);
     hugo_chassis_init_module(L, LEFT_FRONT_PIN, LEFT_BACK_PIN, RIGHT_FRONT_PIN, RIGHT_BACK_PIN);
     hugo_ir_remote_init_module(L, IR_REMOTE_PIN);
+    hugo_display_init(L, true);
 
     //REGISTER_LUA_FUNCTUIN(L, cl_task_delay);
     int status = luaL_dofile(L, "/lua/main.lua");
