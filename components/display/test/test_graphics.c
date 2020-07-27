@@ -80,10 +80,10 @@ TEST_CASE("hugo_graphics_get_point", TAG)
     TEST_ASSERT_EQUAL(true, ret_val);
 }
 
-TEST_CASE("hugo_graphics_print_text8x8", TAG)
+TEST_CASE("hugo_graphics_print_text_8x8", TAG)
 {
     before_each();
     fff_set_point_fake.return_val = false;
-    hugo_graphics_print_text8x8(0, 0, WIDTH, HEIGHT, "a", 1);
+    hugo_graphics_print_text_8x8(0, 0, WIDTH, HEIGHT, "a", 1);
     TEST_ASSERT_EQUAL(64, fff_set_point_fake.call_count);
 }

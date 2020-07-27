@@ -6,11 +6,11 @@ void app_main(void)
 {
     hugo_lua_partition_init();
 
-    UNITY_BEGIN();
-    unity_run_tests_by_tag("[graphics]", false);
-    UNITY_END();
-
     // UNITY_BEGIN();
-    // unity_run_all_tests();
+    // unity_run_tests_by_tag("[graphics]", false);
     // UNITY_END();
+
+    UNITY_BEGIN();
+    unity_run_all_tests();
+    UNITY_END();
 }

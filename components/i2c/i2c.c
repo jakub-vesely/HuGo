@@ -9,7 +9,7 @@
 #include <esp_err.h>
 
 #define  I2C_NUM I2C_NUM_0
-#define TAG "i2c_wrapper"
+#define TAG "i2c"
 
 static bool _i2c_master_init(int sda_pin, int scl_pin)
 {

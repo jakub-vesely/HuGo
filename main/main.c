@@ -11,7 +11,7 @@
 #include <chassis.h>
 #include <gpio.h>
 #include <ir_remote.h>
-#include <i2c_wrapper.h>
+#include <i2c.h>
 #include <display.h>
 
 #include <esp_err.h>

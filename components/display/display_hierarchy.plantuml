@@ -4,6 +4,6 @@
 (display.c) --> (graphics.c)
 (display.c) <|-- (ssd1306.c)
 (graphics.c) --> (ssd1306.c)
-(ssd1306.c) --> (i2c_wrapper.c)
+(ssd1306.c) --> (i2c.c)
 
 @enduml
