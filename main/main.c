@@ -29,6 +29,11 @@
 #include <unistd.h>
 #include <event_loop.h>
 
+#include <Arduino.h>
+#include <esp32-hal-gpio.h>
+#include <mpu9250_lua_interface.h>
+
+
 static const char *TAG = "HuGo";
 
 #define IR_REMOTE_PIN GPIO_NUM_19
@@ -50,15 +55,21 @@ void app_main()
     lua_State* L = NULL;
     LUA_REOPEN(L);
 
+    //Initialize arduino library to be possible to use it in the other libs
+    initArduino();
+
     hugo_event_loop_init();
-    if (!hugo_i2c_init(SDA_PIN, SCL_PIN))
+    /*if (!hugo_i2c_init(SDA_PIN, SCL_PIN)) {
         ESP_LOGW(TAG, "I2C init failed");
+    }*/
     hugo_built_in_led_init_module(L);
     hugo_timer_init_module(L);
     hugo_gpio_init_module(L);
     hugo_chassis_init_module(L, LEFT_FRONT_PIN, LEFT_BACK_PIN, RIGHT_FRONT_PIN, RIGHT_BACK_PIN);
     hugo_ir_remote_init_module(L, IR_REMOTE_PIN);
-    hugo_display_init(L, true);
+    //hugo_display_init(L, true);
+
+    hugo_mpu9250_init(L);
 
     //REGISTER_LUA_FUNCTUIN(L, cl_task_delay);
     int status = luaL_dofile(L, "/lua/main.lua");

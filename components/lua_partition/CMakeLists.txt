@@ -8,6 +8,7 @@ set(lua_files
     ${component_dir}/gpio/gpio.lua
     ${component_dir}/ir_remote/ir_remote.lua
     ${component_dir}/timer/timer.lua
+    ${component_dir}/mpu9250/mpu9250.lua
 )
 
 message("LUA files processing...")
