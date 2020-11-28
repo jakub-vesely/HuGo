@@ -86,7 +86,7 @@ static void ir_rx_task(void *arg)
             if (_fill_ir_data(rb, ir_parser, &ir_data))
             {
                 ESP_LOGD(TAG, "Scan Code %s --- addr: 0x%04x cmd: 0x%04x", ir_data.repeat ? "(repeat)" : "", ir_data.addr, ir_data.cmd);
-                hugo_raise_event(s_event_id, &ir_data, sizeof(ir_data_t));
+                hugo_raise_event(EVENT_LOOP_TYPE_PRIMARY, s_event_id, &ir_data, sizeof(ir_data_t));
             }
         }
     }
@@ -118,8 +118,8 @@ void hugo_ir_remote_init_module(lua_State* L, int ir_remote_pin)
 {
     sL = L;
     s_ir_remote_pin = ir_remote_pin;
-    s_event_id = hugo_get_new_event_id();
-    hugo_add_event_action(s_event_id, _data_received);
+    s_event_id = hugo_get_new_event_id(EVENT_LOOP_TYPE_PRIMARY);
+    hugo_add_event_action(EVENT_LOOP_TYPE_PRIMARY, s_event_id, _data_received);
 }
 
 void hugo_ir_remote_start_listening()

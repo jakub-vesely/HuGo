@@ -3,11 +3,13 @@
  * This software is published under MIT license. Full text of the licence is available at https://opensource.org/licenses/MIT
  */
 
-#ifndef _HUGO_TIMER_H_
-#define _HUGO_TIMER_H_
+#pragma once
 
 #include <lua.h>
+#include <stdbool.h>
+#include <esp_timer.h>
 
+int hugo_create_new_timer(esp_timer_cb_t callback_function);
+bool hugo_start_timer(int timer_id, int time_us);
 void hugo_timer_init_module(lua_State* L);
 
-#endif //_HUGO_TIMER_H_

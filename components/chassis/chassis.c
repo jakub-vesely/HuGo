@@ -88,9 +88,9 @@ void hugo_chassis_init_module(lua_State* L, int left_front_pin, int left_back_pi
     hugo_gpio_set_pin_for_out(right_front_pin);
     hugo_gpio_set_pin_for_out(right_back_pin);
 
-    REGISTER_LUA_FUNCTUIN(L, cl_chassis_stop);
-    REGISTER_LUA_FUNCTUIN(L, cl_chassis_go_forward);
-    REGISTER_LUA_FUNCTUIN(L, cl_chassis_go_backward);
-    REGISTER_LUA_FUNCTUIN(L, cl_chassis_rotate_clockwise);
-    REGISTER_LUA_FUNCTUIN(L, cl_chassis_rotate_counterclockwise);
+    REGISTER_LUA_FUNCTION(L, cl_chassis_stop);
+    REGISTER_LUA_FUNCTION(L, cl_chassis_go_forward);
+    REGISTER_LUA_FUNCTION(L, cl_chassis_go_backward);
+    REGISTER_LUA_FUNCTION(L, cl_chassis_rotate_clockwise);
+    REGISTER_LUA_FUNCTION(L, cl_chassis_rotate_counterclockwise);
 }

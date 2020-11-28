@@ -18,7 +18,7 @@ typedef int HUGO_RET_VAL;
     } \
 } while(0)
 
-#define REGISTER_LUA_FUNCTUIN(L, name) lua_register(L, #name, name)
+#define REGISTER_LUA_FUNCTION(L, name) lua_register(L, #name, name)
 
 #define CHECK_LUA_DOSTRING(L, string) do { \
     if (luaL_dostring(L, string)) { \

@@ -89,9 +89,9 @@ static int cl_gpio_set_pwm_duty(lua_State* L)
 
 void hugo_gpio_init_module(lua_State* L)
 {
-    REGISTER_LUA_FUNCTUIN(L, cl_gpio_set_pin_for_out);
-    REGISTER_LUA_FUNCTUIN(L, cl_gpio_set_pin_logic_value);
-    REGISTER_LUA_FUNCTUIN(L, cl_gpio_set_pin_for_pwm);
-    REGISTER_LUA_FUNCTUIN(L, cl_gpio_set_pwm_frequency);
-    REGISTER_LUA_FUNCTUIN(L, cl_gpio_set_pwm_duty);
+    REGISTER_LUA_FUNCTION(L, cl_gpio_set_pin_for_out);
+    REGISTER_LUA_FUNCTION(L, cl_gpio_set_pin_logic_value);
+    REGISTER_LUA_FUNCTION(L, cl_gpio_set_pin_for_pwm);
+    REGISTER_LUA_FUNCTION(L, cl_gpio_set_pwm_frequency);
+    REGISTER_LUA_FUNCTION(L, cl_gpio_set_pwm_duty);
 }

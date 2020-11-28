@@ -4,12 +4,17 @@ This software is published under MIT license. Full text of the licence is availa
 --]]
 
 local display = {}
-function display.draw_point(x, y, color)
-    return cl_display_draw_point(x, y, color);
-end
 
 function display.showtime()
     return cl_display_showtime();
+end
+
+function display.clean()
+    return cl_display_clean();
+end
+
+function display.draw_point(x, y, color)
+    return cl_display_draw_point(x, y, color);
 end
 
 function display.draw_elipse(x, y, r1, r2, color)

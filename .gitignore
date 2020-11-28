@@ -4,3 +4,4 @@ sdkconfig
 sdkconfig.old
 .vscode
 .lua_files.*
+*.skb

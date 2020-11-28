@@ -5,81 +5,93 @@
 #include <string.h>
 #include <sys/lock.h>
 
-#define EVENT_LOOP_RING_BUFFER_SIZE 32
-#define EVENT_ACTION_ARRAY_SIZE 32
 #define TAG "EvnetLoop"
 
-static event_prams_t s_event_ring_buffer[EVENT_LOOP_RING_BUFFER_SIZE];
-static int s_ring_buffer_begin = 0; // fist item pos
-static int s_ring_buffer_end = 0; // behind last item
-static event_action_t s_event_action_array[EVENT_ACTION_ARRAY_SIZE];
-static _lock_t s_lock;
-static uint32_t s_event_id_counter = 0; // if event loop will be used for timer and timer will be initialized every 100 ms it will take 13 years to reach max uint
+#define EVENT_LOOP_RING_BUFFER_SIZE 16
+#define EVENT_ACTION_ARRAY_SIZE 32
 
-void hugo_event_loop_init()
-{
-    for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i)
-    {
-        s_event_action_array[i].used = false;
+typedef struct {
+    event_prams_t event_ring_buffer[EVENT_LOOP_RING_BUFFER_SIZE];
+    int ring_buffer_begin; // fist item pos
+    int ring_buffer_end; // behind last item
+    event_action_t event_action_array[EVENT_ACTION_ARRAY_SIZE];
+    _lock_t lock;
+    uint32_t event_id_counter; // if event loop will be used for timer and timer will be initialized every 100 ms it will take 13 years to reach max uint32
+} loop_properties;
+
+static loop_properties s_primary_loop_properties;
+
+static loop_properties s_peripheral_loop_properties;
+
+static loop_properties* _get_properties(int loop_type){
+    return loop_type == EVENT_LOOP_TYPE_PRIMARY ? &s_primary_loop_properties : &s_peripheral_loop_properties;
+}
+
+
+void hugo_event_loop_init(int loop_type) {
+    loop_properties *properties = _get_properties(loop_type);
+
+    properties->ring_buffer_begin = 0;
+    properties->ring_buffer_end = 0;
+    properties->event_id_counter = 0;
+
+    for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i) {
+        properties->event_action_array[i].used = false;
     }
 }
 
-int hugo_get_new_event_id()
-{
-    _lock_acquire(&s_lock);
+int hugo_get_new_event_id(int loop_type) {
+    loop_properties *properties = _get_properties(loop_type);
+
+    _lock_acquire(&properties->lock);
     int id = -1;
-    if (s_event_id_counter == INT32_MAX)
-    {
-        ESP_LOGE(TAG, "Max evnet ID reached");
+    if (properties->event_id_counter == INT32_MAX) {
+        ESP_LOGE(TAG, "Max event ID reached");
     }
-    else
-    {
-        id = s_event_id_counter;
-        s_event_id_counter++;
+    else {
+        id = properties->event_id_counter;
+        properties->event_id_counter++;
     }
 
-    _lock_release(&s_lock);
+    _lock_release(&properties->lock);
     return id;
 }
 
-bool hugo_add_event_action(int event_id, action_func_t action)
-{
-    _lock_acquire(&s_lock);
-    for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i)
-    {
-        event_action_t item = s_event_action_array[i];
-        if (!item.used && item.event_id == event_id && item.action == action)
-        {
+bool hugo_add_event_action(int loop_type, int event_id, action_func_t action) {
+    loop_properties *properties = _get_properties(loop_type);
+
+    _lock_acquire(&properties->lock);
+    for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i) {
+        event_action_t item = properties->event_action_array[i];
+        if (!item.used && item.event_id == event_id && item.action == action) {
             ESP_LOGD(TAG, "Action for the event is already present");
-            _lock_release(&s_lock);
+            _lock_release(&properties->lock);
             return true;
         }
     }
 
-    for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i)
-    {
-        if (!s_event_action_array[i].used)
-        {
-            s_event_action_array[i].used = true;
-            s_event_action_array[i].event_id = event_id;
-            s_event_action_array[i].action = action;
-            _lock_release(&s_lock);
+    for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i) {
+        if (!properties->event_action_array[i].used) {
+            properties->event_action_array[i].used = true;
+            properties->event_action_array[i].event_id = event_id;
+            properties->event_action_array[i].action = action;
+            _lock_release(&properties->lock);
             return true;
         }
     }
     ESP_LOGE(TAG, "Event action array is full");
-    _lock_release(&s_lock);
+    _lock_release(&properties->lock);
     return false;
 }
 
-bool hugo_remove_event_action(int event_id, action_func_t action)
-{
-    for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i)
-    {
-        event_action_t item = s_event_action_array[i];
-        if (item.used && item.event_id == event_id && item.action == action)
-        {
-            s_event_action_array[i].used = false;
+
+bool hugo_remove_event_action(int loop_type, int event_id, action_func_t action) {
+    loop_properties *properties = _get_properties(loop_type);
+
+    for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i) {
+        event_action_t item = properties->event_action_array[i];
+        if (item.used && item.event_id == event_id && item.action == action) {
+            properties->event_action_array[i].used = false;
             return true;
         }
     }
@@ -87,81 +99,80 @@ bool hugo_remove_event_action(int event_id, action_func_t action)
     return false;
 }
 
-static bool _ring_buffer_push(uint8_t event_id, void* data, int data_size)
-{
-    int new_end = (s_ring_buffer_end + 1) % EVENT_LOOP_RING_BUFFER_SIZE;
-    if (new_end == s_ring_buffer_begin)
-    {
-        ESP_LOGE(TAG, "Evnet loop's ring buffer is full");
-        return false;
+static bool _ring_buffer_push(loop_properties *properties, uint8_t event_id, void* data, int data_size) {
+    _lock_acquire(&properties->lock);
+    int result = false;
+    int index = properties->ring_buffer_end;
+    int new_end = (properties->ring_buffer_end + 1) % EVENT_LOOP_RING_BUFFER_SIZE;
+    if (new_end == properties->ring_buffer_begin) {
+        ESP_LOGE(TAG, "Event loop's ring buffer is full");
     }
-    if (data_size > EVENT_DATA_SIZE)
-    {
-        ESP_LOGE(TAG, "Ask to store too large event data");
-        return false;
+    else{
+        if (data_size > EVENT_DATA_SIZE) {
+            ESP_LOGE(TAG, "Ask to store too large event data");
+        }
+        else{
+            properties->event_ring_buffer[index].event_id = event_id;
+            properties->event_ring_buffer[index].data_size = data_size;
+            memcpy(properties->event_ring_buffer[index].data, data, data_size);
+            properties->ring_buffer_end = new_end;
+            result = true;
+        }
     }
-
-    int index = new_end - 1;
-    s_event_ring_buffer[index].event_id = event_id;
-    s_event_ring_buffer[index].data_size = data_size;
-    memcpy(s_event_ring_buffer[index].data, data, data_size);
-    s_ring_buffer_end = new_end;
-    return true;
+    _lock_release(&properties->lock);
+    return result;
 }
 
-static bool _ring_buffer_pop(uint32_t *event_id, void* data, uint8_t *data_size)
-{
-    _lock_acquire(&s_lock);
+static bool _ring_buffer_pop(loop_properties *properties, uint32_t *event_id, void* data, uint8_t *data_size) {
+    _lock_acquire(&properties->lock);
 
-    if (s_ring_buffer_begin == s_ring_buffer_end)
-    {
-        ESP_LOGD(TAG, "Evnet loop's ring buffer is empty");
-
-        _lock_release(&s_lock);
-        return false;
+    bool result = false;
+    if (properties->ring_buffer_begin == properties->ring_buffer_end) {
+        ESP_LOGD(TAG, "Event loop's ring buffer is empty");
     }
-    *event_id = s_event_ring_buffer[s_ring_buffer_begin].event_id;
-    *data_size = s_event_ring_buffer[s_ring_buffer_begin].data_size;
-    memcpy((uint8_t*)data, (uint8_t*)(s_event_ring_buffer[s_ring_buffer_begin].data), *data_size);
-    s_ring_buffer_begin++;
+    else{
+        *event_id = properties->event_ring_buffer[properties->ring_buffer_begin].event_id;
+        *data_size = properties->event_ring_buffer[properties->ring_buffer_begin].data_size;
+        memcpy((uint8_t*)data, (uint8_t*)(properties->event_ring_buffer[properties->ring_buffer_begin].data), *data_size);
+        properties->ring_buffer_begin = (properties->ring_buffer_begin + 1) % EVENT_LOOP_RING_BUFFER_SIZE;
 
-    _lock_release(&s_lock);
-    return true;
+        result = true;
+    }
+
+    _lock_release(&properties->lock);
+    return result;
 }
 
-bool hugo_raise_event(uint32_t event_id, void* data, int data_size)
+bool hugo_raise_event(int loop_type, uint32_t event_id, void* data, int data_size)
 {
-    _lock_acquire(&s_lock);
-    bool ret_val = _ring_buffer_push(event_id, data, data_size);
-    _lock_release(&s_lock);
+    loop_properties *properties = _get_properties(loop_type);
+    bool ret_val = _ring_buffer_push(properties, event_id, data, data_size);
     return ret_val;
 }
-static void _process_buffer()
+
+static void _process_buffer(int loop_type)
 {
+    loop_properties *properties = _get_properties(loop_type);
+
     uint32_t event_id = 0;
     event_data_t data;
     uint8_t data_size = 0;
 
-    while (_ring_buffer_pop(&event_id, data, &data_size))
-    {
-        for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i)
-        {
-            event_action_t item = s_event_action_array[i];
-            if (item.used && item.event_id == event_id)
-            {
+    while (_ring_buffer_pop(properties, &event_id, data, &data_size)) {
+        for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i) {
+            event_action_t item = properties->event_action_array[i];
+            if (item.used && item.event_id == event_id) {
                 item.action(data, data_size);
             }
         }
     }
 }
 
-void hugo_process_events(bool exit_if_empty)
+void hugo_process_events(int loop_type, bool exit_if_empty)
 {
-    while(true)
-    {
-        _process_buffer();
-        if (exit_if_empty)
-        {
+    while(true) {
+        _process_buffer(loop_type);
+        if (exit_if_empty) {
             return;
         }
 

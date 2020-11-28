@@ -33,5 +33,5 @@ static int cl_built_in_led_change_state(lua_State *L)
 
 void hugo_built_in_led_init_module(lua_State* L)
 {
-    REGISTER_LUA_FUNCTUIN(L, cl_built_in_led_change_state);
+    REGISTER_LUA_FUNCTION(L, cl_built_in_led_change_state);
 }

@@ -115,28 +115,26 @@ print("behavior definition started")
 
 -- timer.call_after_time(After_time, 3)
 
--- local display = require("display")
--- display.print_text_8x8(0, 0, 128, 64, "Hallo", true)
--- display.print_text_8x16(0, 32, 128, 32, "Hallo", true)
--- display.draw_elipse(80, 32, 30, 20, true)
--- display.draw_elipse(80, 32, 29, 19, true)
--- display.draw_elipse(80, 32, 28, 18, true)
--- display.draw_elipse(80, 32, 27, 17, true)
--- display.showtime()
-
+local display = require("display")
 local mpu = require("mpu9250")
-
--- mpu.read_sensor()
--- print("temperature:", mpu.get_temperature())
--- print("accel_x:", mpu.get_accel_x(), "accel_y:", mpu.get_accel_y(), "accel_z:", mpu.get_accel_z())
--- print("gyro_x:", mpu.get_gyro_x(), "gyro_y:", mpu.get_gyro_y(), "gyro_z:", mpu.get_gyro_z())
--- print("mag_x:", mpu.get_mag_x(), "mag_y:", mpu.get_mag_y(), "mag_z:", mpu.get_mag_z())
-for i=1,10000 do
-    mpu.read_sensor()
-    print("accel_y:", mpu.get_accel_y())
-end
-
 local chassis = require("chassis")
+
+mpu.add_measured_action(
+    function()
+        local value_accel_y = string.format("accelY: %4.2f", mpu.get_accel_y())
+        local value_gyro_z = string.format("gyroZ: %4.2f", mpu.get_gyro_z())
+        display.clean()
+        display.print_text_8x16(0, 0, 128, 32, value_accel_y, true)
+        display.print_text_8x16(0, 16, 128, 32, value_gyro_z, true)
+        display.showtime()
+        -- print("value_accel_y %s", value_accel_y)
+        if mpu.get_accel_y()< -1 then
+            chassis.stop()
+        end
+    end
+)
+
+
 local ir_remote = require "ir_remote"
 ir_remote.add_data_recoveved_action(
     function (addr, code, repeated)

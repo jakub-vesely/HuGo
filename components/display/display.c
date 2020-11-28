@@ -14,6 +14,13 @@ static int cl_display_showtime(lua_State *L)
     return 0;
 }
 
+static int cl_display_clean(lua_State *L)
+{
+    LUA_PARAM_NR_CHECK(0);
+    _adapter->clean();
+    return 0;
+}
+
 static int cl_display_draw_point(lua_State *L)
 {
     LUA_PARAM_NR_CHECK(3);
@@ -67,11 +74,13 @@ void hugo_display_init(lua_State* L, bool invert)
     _adapter = hugo_ssd1306_init(invert);
     hugo_graphics_init(_adapter);
 
-    REGISTER_LUA_FUNCTUIN(L, cl_display_draw_point);
-    REGISTER_LUA_FUNCTUIN(L, cl_display_showtime);
-    REGISTER_LUA_FUNCTUIN(L, cl_display_draw_elipse);
-    REGISTER_LUA_FUNCTUIN(L, cl_display_print_text_8x8);
-    REGISTER_LUA_FUNCTUIN(L, cl_display_print_text_8x16);
+    REGISTER_LUA_FUNCTION(L, cl_display_showtime);
+    REGISTER_LUA_FUNCTION(L, cl_display_clean);
+    REGISTER_LUA_FUNCTION(L, cl_display_draw_point);
+
+    REGISTER_LUA_FUNCTION(L, cl_display_draw_elipse);
+    REGISTER_LUA_FUNCTION(L, cl_display_print_text_8x8);
+    REGISTER_LUA_FUNCTION(L, cl_display_print_text_8x16);
 
     /*hugo_graphics_print_text8x16(
         0, 0, 128, 64,

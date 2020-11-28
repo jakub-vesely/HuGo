@@ -28,7 +28,7 @@ static void before_each(void)
 {
     //GPIO_RESET_FAKES();
     LUA_REOPEN(L);
-    hugo_event_loop_init();
+    hugo_event_loop_init(EVENT_LOOP_TYPE_PRIMARY);
 }
 
 static void after_each(void)
@@ -210,7 +210,7 @@ TEST_CASE("Ir_remote_callback", TAG)
     }
 */
     vTaskDelay(10);
-    hugo_process_events(true);
+    hugo_process_events(EVENT_LOOP_TYPE_PRIMARY, true);
     hugo_ir_remote_stop_listening();
 
     CHECK_LUA_GET_GLOBAL(L, "was_called", 0, 1, 0);
