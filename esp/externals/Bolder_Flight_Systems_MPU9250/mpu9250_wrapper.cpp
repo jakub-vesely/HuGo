@@ -1,4 +1,3 @@
-g
 #include <MPU9250_fork/src/MPU9250.h>
 #include <Wire.h>
 

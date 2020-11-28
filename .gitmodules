@@ -1,9 +1,12 @@
 [submodule "components/fff/fff"]
-	path = externals/fff/fff
+	path = esp/externals/fff/fff
 	url = https://github.com/meekrosoft/fff.git
 [submodule "externals/arduino-esp32"]
-	path = externals/arduino-esp32
+	path = esp/externals/arduino-esp32
 	url = git@github.com:jakub-vesely/arduino-esp32.git
 [submodule "externals/Bolder_Flight_Systems_MPU9250/MPU9250_fork"]
-	path = externals/Bolder_Flight_Systems_MPU9250/MPU9250_fork
+	path = esp/externals/Bolder_Flight_Systems_MPU9250/MPU9250_fork
 	url = git@github.com:jakub-vesely/MPU9250.git
+[submodule "tiny_blocks/external/tiny-mega-i2c"]
+	path = tiny_blocks/external/tiny-mega-i2c
+	url = git@github.com:jakub-vesely/tiny-mega-i2c.git
