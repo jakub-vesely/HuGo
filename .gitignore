@@ -5,3 +5,8 @@ sdkconfig.old
 .vscode
 .lua_files.*
 *.skb
+*.b#*
+*.l#*
+*.s#*
+*.job
+*.pro
