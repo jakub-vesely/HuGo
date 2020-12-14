@@ -10,7 +10,7 @@ local timer =  {
 function timer.call_after_time(callback_function, time_in_sec)
     local timer_id = cl_create_new_timer()
     timer.callbacks[timer_id] = callback_function
-    return cl_start_timer(timer_id, time_in_sec * 1000000);
+    return cl_start_timer_once(timer_id, time_in_sec * 1000000);
 end
 
 function Timer_callback_collector(id)

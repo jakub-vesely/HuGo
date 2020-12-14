@@ -115,48 +115,80 @@ print("behavior definition started")
 
 -- timer.call_after_time(After_time, 3)
 
-local display = require("display")
-local mpu = require("mpu9250")
-local chassis = require("chassis")
+-- local display = require("display")
+-- local mpu = require("mpu9250")
+-- local chassis = require("chassis")
 
-mpu.add_measured_action(
-    function()
-        local value_accel_y = string.format("accelY: %4.2f", mpu.get_accel_y())
-        local value_gyro_z = string.format("gyroZ: %4.2f", mpu.get_gyro_z())
-        display.clean()
-        display.print_text_8x16(0, 0, 128, 32, value_accel_y, true)
-        display.print_text_8x16(0, 16, 128, 32, value_gyro_z, true)
-        display.showtime()
-        -- print("value_accel_y %s", value_accel_y)
-        if mpu.get_accel_y()< -1 then
-            chassis.stop()
-        end
-    end
-)
+-- mpu.add_measured_action(
+--     function()
+--         local value_accel_y = string.format("accelY: %4.2f", mpu.get_accel_y())
+--         local value_gyro_z = string.format("gyroZ: %4.2f", mpu.get_gyro_z())
+--         display.clean()
+--         display.print_text_8x16(0, 0, 128, 32, value_accel_y, true)
+--         display.print_text_8x16(0, 16, 128, 32, value_gyro_z, true)
+--         display.showtime()
+--         -- print("value_accel_y %s", value_accel_y)
+--         if mpu.get_accel_y()< -1 then
+--             chassis.stop()
+--         end
+--     end
+-- )
+
+local block_factory = require "block_factory"
 
 
-local ir_remote = require "ir_remote"
-ir_remote.add_data_recoveved_action(
-    function (addr, code, repeated)
-        if repeated == 1 then
-            return
-        end
-        print("action", code)
-        if code == 59160 or code == 60690 then
-            print("forward")
-            chassis.go_forward()
-        elseif code == 44370 or code == 60435 then
-            print("back")
-            chassis.go_backward()
-        elseif code == 42330 or code == 61200 then
-            chassis.rotate_clockwise()
-        elseif code == 63240 or code == 60945 then
-            chassis.rotate_counterclockwise()
-        elseif code == 58140 or code == 46920 then
-            chassis.stop()
+local rgb = block_factory.rgb_led(0x02)
+
+local counter = 0;
+local reverse = false;
+local timer = require("timer")
+
+function led_change()
+    rgb:set_values(255 - counter, counter, 0)
+
+    if reverse then
+        if counter == 0 then
+            reverse = false
+            counter = 1
         else
-            print("unknown command")
+            counter = counter - 1
+        end
+    else
+        if counter == 255 then
+            reverse = true
+            counter = 255
+        else
+            counter = counter + 1
         end
     end
-)
+
+    timer.call_after_time(led_change, 0.01)
+end
+
+timer.call_after_time(led_change, 0.01)
+
+-- local ir_remote = require "ir_remote"
+-- ir_remote.add_data_recoveved_action(
+--     function (addr, code, repeated)
+--         if repeated == 1 then
+--             return
+--         end
+--         print("action", code)
+--         if code == 59160 or code == 60690 then
+--             print("forward")
+--             chassis.go_forward()
+--         elseif code == 44370 or code == 60435 then
+--             print("back")
+--             chassis.go_backward()
+--         elseif code == 42330 or code == 61200 then
+--             chassis.rotate_clockwise()
+--         elseif code == 63240 or code == 60945 then
+--             chassis.rotate_counterclockwise()
+--         elseif code == 58140 or code == 46920 then
+--             chassis.stop()
+--         else
+--             print("unknown command")
+--         end
+--     end
+-- )
 print("behavior definition finished")

@@ -10,3 +10,6 @@
 [submodule "tiny_blocks/external/tiny-mega-i2c"]
 	path = tiny_blocks/external/tiny-mega-i2c
 	url = git@github.com:jakub-vesely/tiny-mega-i2c.git
+[submodule "tiny_blocks/external/TinyWireS"]
+	path = tiny_blocks/external/TinyWireS
+	url = git@github.com:jakub-vesely/TinyWireS.git

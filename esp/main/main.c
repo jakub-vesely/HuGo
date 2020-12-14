@@ -32,7 +32,7 @@
 #include <Arduino.h>
 #include <esp32-hal-gpio.h>
 #include <mpu9250_lua_interface.h>
-
+#include <rgb_led.h>
 
 static const char *TAG = "HuGo";
 
@@ -74,10 +74,11 @@ void app_main()
     hugo_built_in_led_init_module(L);
     hugo_timer_init_module(L);
     hugo_gpio_init_module(L);
-    hugo_chassis_init_module(L, LEFT_FRONT_PIN, LEFT_BACK_PIN, RIGHT_FRONT_PIN, RIGHT_BACK_PIN);
-    hugo_ir_remote_init_module(L, IR_REMOTE_PIN);
-    hugo_mpu9250_init(L, MPU9250_FILL_ACCEL_Y | MPU9250_FILL_GYRO_Z);
-    hugo_display_init(L, true);
+    //hugo_chassis_init_module(L, LEFT_FRONT_PIN, LEFT_BACK_PIN, RIGHT_FRONT_PIN, RIGHT_BACK_PIN);
+    //hugo_ir_remote_init_module(L, IR_REMOTE_PIN);
+    //hugo_mpu9250_init(L, MPU9250_FILL_ACCEL_Y | MPU9250_FILL_GYRO_Z);
+    //hugo_display_init(L, true);
+    hugo_rgb_led_init(L);
 
     //REGISTER_LUA_FUNCTION(L, cl_task_delay);
     int status = luaL_dofile(L, "/lua/main.lua");
@@ -86,7 +87,7 @@ void app_main()
         return;
     }
 
-    hugo_ir_remote_start_listening();
+    //hugo_ir_remote_start_listening();
     hugo_process_events(EVENT_LOOP_TYPE_PRIMARY, false);
 
     //this part should never been reached

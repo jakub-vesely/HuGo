@@ -10,6 +10,6 @@
 #include <esp_timer.h>
 
 int hugo_create_new_timer(esp_timer_cb_t callback_function);
-bool hugo_start_timer(int timer_id, int time_us);
+bool hugo_start_timer_once(int timer_id, int time_us);
 void hugo_timer_init_module(lua_State* L);
 

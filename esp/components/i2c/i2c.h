@@ -8,4 +8,4 @@
 
 bool hugo_i2c_init(int sda_pin, int scl_pin);
 bool hugo_i2c_write_command_with_data(int address, uint8_t command, uint8_t *data, size_t data_size);
-bool hugo_i2c_write_bytes(int address, uint8_t * data, size_t size);
+bool hugo_i2c_write_data(int address, uint8_t * data, size_t size);

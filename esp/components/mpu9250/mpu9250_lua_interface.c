@@ -35,7 +35,7 @@ static int s_timer = -1;
 
 static void _fill_timer_callback(void* arg){
     hugo_raise_event(EVENT_LOOP_TYPE_PERIPHERAL, s_fill_data_event_id, NULL, 0);
-    hugo_start_timer(s_timer, FILL_TIMEOUT);
+    hugo_start_timer_once(s_timer, FILL_TIMEOUT);
 }
 
 static void _mpu9250_begin_event_action(event_data_t _data, int _data_size){
@@ -48,7 +48,7 @@ static void _mpu9250_begin_event_action(event_data_t _data, int _data_size){
 
     ESP_LOGI(TAG, "mpu9250_begin OK");
     s_timer = hugo_create_new_timer(_fill_timer_callback);
-    hugo_start_timer(s_timer, FILL_TIMEOUT);
+    hugo_start_timer_once(s_timer, FILL_TIMEOUT);
 }
 
 static void _fill_data_event_action(event_data_t _data, int _data_size){

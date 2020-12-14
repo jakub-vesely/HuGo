@@ -6,7 +6,7 @@
 
 #ifdef ARDUINO_I2c
 #   include <Arduino.h>
-#   include "Wire.h"
+#   include <Wire.h>
 #else
 #   include <driver/i2c.h>
 #endif
