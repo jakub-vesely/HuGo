@@ -1,4 +1,5 @@
-# HuGo
+![alt text](https://github.com/jakub-vesely/HuGo/blob/master/misc/hugo-logo-b.png "logo")
+
 Main goal of this project is to build a robotic car for my children.
 
 It is based on ESP32, esp-idf and LUA
