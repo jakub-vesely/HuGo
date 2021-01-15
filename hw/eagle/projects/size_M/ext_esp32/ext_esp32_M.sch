@@ -11159,7 +11159,7 @@ BF959 corrected 2008.03.06&lt;br&gt;</description>
 <wire x1="76.2" y1="165.1" x2="20.32" y2="165.1" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$6" class="0">
+<net name="RX" class="0">
 <segment>
 <wire x1="127" y1="106.68" x2="127" y2="152.4" width="0.1524" layer="91"/>
 <pinref part="IC1" gate="G$1" pin="RXD"/>
@@ -11283,7 +11283,7 @@ BF959 corrected 2008.03.06&lt;br&gt;</description>
 <junction x="71.12" y="139.7"/>
 </segment>
 </net>
-<net name="N$3" class="0">
+<net name="TX" class="0">
 <segment>
 <pinref part="U$1" gate="G$1" pin="TXD0"/>
 <wire x1="119.38" y1="109.22" x2="129.54" y2="109.22" width="0.1524" layer="91"/>

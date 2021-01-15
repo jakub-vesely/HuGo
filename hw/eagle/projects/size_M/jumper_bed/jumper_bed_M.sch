@@ -682,6 +682,7 @@
 <part name="JP14" library="pinhead2" deviceset="PINHD-1X2" device="/90" package3d_urn="urn:adsk.eagle:package:22437/2"/>
 <part name="JP15" library="pinhead2" deviceset="PINHD-1X4" device="" package3d_urn="urn:adsk.eagle:package:22407/2"/>
 <part name="JP16" library="pinhead2" deviceset="PINHD-1X4" device="" package3d_urn="urn:adsk.eagle:package:22407/2"/>
+<part name="JP17" library="pinhead2" deviceset="PINHD-2X4" device="/90" package3d_urn="urn:adsk.eagle:package:22465/2"/>
 </parts>
 <sheets>
 <sheet>
@@ -752,6 +753,10 @@
 <attribute name="NAME" x="115.57" y="-14.605" size="1.778" layer="95"/>
 <attribute name="VALUE" x="115.57" y="-30.48" size="1.778" layer="96"/>
 </instance>
+<instance part="JP17" gate="A" x="33.02" y="35.56" smashed="yes" rot="R90">
+<attribute name="NAME" x="24.765" y="29.21" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="40.64" y="29.21" size="1.778" layer="96" rot="R90"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -815,6 +820,17 @@
 <wire x1="-25.4" y1="-25.4" x2="-50.8" y2="-25.4" width="0.1524" layer="91"/>
 <pinref part="JP16" gate="A" pin="4"/>
 <wire x1="119.38" y1="-25.4" x2="93.98" y2="-25.4" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="15.24" x2="30.48" y2="20.32" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="20.32" x2="27.94" y2="20.32" width="0.1524" layer="91"/>
+<junction x="30.48" y="15.24"/>
+<pinref part="JP17" gate="A" pin="8"/>
+<wire x1="35.56" y1="40.64" x2="35.56" y2="48.26" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="48.26" x2="22.86" y2="48.26" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="48.26" x2="22.86" y2="33.02" width="0.1524" layer="91"/>
+<pinref part="JP17" gate="A" pin="1"/>
+<wire x1="22.86" y1="33.02" x2="27.94" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="20.32" x2="27.94" y2="33.02" width="0.1524" layer="91"/>
+<junction x="27.94" y="33.02"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -913,6 +929,16 @@
 <wire x1="101.6" y1="-43.18" x2="101.6" y2="-22.86" width="0.1524" layer="91"/>
 <pinref part="JP16" gate="A" pin="3"/>
 <wire x1="101.6" y1="-22.86" x2="119.38" y2="-22.86" width="0.1524" layer="91"/>
+<pinref part="JP17" gate="A" pin="7"/>
+<wire x1="35.56" y1="33.02" x2="40.64" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="40.64" y1="33.02" x2="40.64" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="40.64" y1="45.72" x2="27.94" y2="45.72" width="0.1524" layer="91"/>
+<pinref part="JP17" gate="A" pin="2"/>
+<wire x1="27.94" y1="45.72" x2="27.94" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="33.02" x2="35.56" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="15.24" x2="33.02" y2="15.24" width="0.1524" layer="91"/>
+<junction x="35.56" y="33.02"/>
+<junction x="33.02" y="15.24"/>
 </segment>
 </net>
 <net name="SCL" class="0">
@@ -1010,6 +1036,15 @@
 <pinref part="JP16" gate="A" pin="1"/>
 <wire x1="104.14" y1="-17.78" x2="119.38" y2="-17.78" width="0.1524" layer="91"/>
 <junction x="104.14" y="-17.78"/>
+<wire x1="-2.54" y1="15.24" x2="-2.54" y2="25.4" width="0.1524" layer="91"/>
+<junction x="-2.54" y="15.24"/>
+<wire x1="-2.54" y1="25.4" x2="33.02" y2="25.4" width="0.1524" layer="91"/>
+<pinref part="JP17" gate="A" pin="5"/>
+<pinref part="JP17" gate="A" pin="4"/>
+<wire x1="33.02" y1="33.02" x2="33.02" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="38.1" x2="30.48" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="25.4" x2="33.02" y2="33.02" width="0.1524" layer="91"/>
+<junction x="33.02" y="33.02"/>
 </segment>
 </net>
 <net name="SDA" class="0">
@@ -1105,6 +1140,15 @@
 <pinref part="JP16" gate="A" pin="2"/>
 <wire x1="119.38" y1="-20.32" x2="106.68" y2="-20.32" width="0.1524" layer="91"/>
 <junction x="106.68" y="-20.32"/>
+<pinref part="JP17" gate="A" pin="3"/>
+<pinref part="JP17" gate="A" pin="6"/>
+<wire x1="30.48" y1="33.02" x2="30.48" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="38.1" x2="33.02" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="33.02" x2="30.48" y2="27.94" width="0.1524" layer="91"/>
+<junction x="30.48" y="33.02"/>
+<wire x1="30.48" y1="27.94" x2="-5.08" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="-5.08" y1="27.94" x2="-5.08" y2="15.24" width="0.1524" layer="91"/>
+<junction x="-5.08" y="15.24"/>
 </segment>
 </net>
 </nets>
