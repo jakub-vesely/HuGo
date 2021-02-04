@@ -11319,7 +11319,7 @@ BF959 corrected 2008.03.06&lt;br&gt;</description>
 <wire x1="160.02" y1="172.72" x2="152.4" y2="172.72" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$8" class="0">
+<net name="RTS" class="0">
 <segment>
 <pinref part="T1" gate="G$1" pin="E"/>
 <wire x1="165.1" y1="157.48" x2="157.48" y2="165.1" width="0.1524" layer="91"/>
@@ -11327,13 +11327,15 @@ BF959 corrected 2008.03.06&lt;br&gt;</description>
 <wire x1="139.7" y1="165.1" x2="139.7" y2="172.72" width="0.1524" layer="91"/>
 <pinref part="R3" gate="G$1" pin="1"/>
 <wire x1="139.7" y1="172.72" x2="142.24" y2="172.72" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="G$1" pin="!RST"/>
-<wire x1="114.3" y1="177.8" x2="139.7" y2="177.8" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="177.8" x2="139.7" y2="177.8" width="0.1524" layer="91"/>
 <wire x1="139.7" y1="177.8" x2="139.7" y2="172.72" width="0.1524" layer="91"/>
 <junction x="139.7" y="172.72"/>
+<pinref part="IC1" gate="G$1" pin="RTS"/>
+<wire x1="114.3" y1="149.86" x2="121.92" y2="149.86" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="149.86" x2="121.92" y2="177.8" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$9" class="0">
+<net name="DTR" class="0">
 <segment>
 <pinref part="T2" gate="G$1" pin="E"/>
 <wire x1="165.1" y1="167.64" x2="157.48" y2="160.02" width="0.1524" layer="91"/>
