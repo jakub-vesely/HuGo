@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.5" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
+<grid distance="10" unitdist="mil" unit="mil" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -427,8 +427,8 @@
 <smd name="P$26" x="16.25" y="-0.4" dx="2.2" dy="0.35" layer="16" rot="R90"/>
 <smd name="P$27" x="16.9" y="-0.4" dx="2.2" dy="0.35" layer="16" rot="R90"/>
 <smd name="P$28" x="17.55" y="-0.4" dx="2.2" dy="0.35" layer="16" rot="R90"/>
-<text x="0" y="1.75" size="1.016" layer="22" rot="R90" align="center">1</text>
-<text x="17.55" y="1.75" size="1.016" layer="22" rot="R90" align="center">28</text>
+<text x="-1.016" y="-0.79" size="1.016" layer="22" rot="R90" align="center">1</text>
+<text x="18.566" y="-0.79" size="1.016" layer="22" rot="R90" align="center">28</text>
 <hole x="0.5" y="-4.1" drill="0.8"/>
 <hole x="17.25" y="-4.1" drill="0.8"/>
 <wire x1="-1" y1="-7" x2="2.4" y2="-7" width="0.127" layer="51" style="longdash"/>
