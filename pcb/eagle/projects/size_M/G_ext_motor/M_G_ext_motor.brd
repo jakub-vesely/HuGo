@@ -2168,7 +2168,7 @@ design rules under a new name.</description>
 <wire x1="17.3228" y1="8.111" x2="17.2904" y2="8.1434" width="0.3556" layer="1"/>
 <wire x1="17.3158" y1="7.864" x2="17.3228" y2="8.111" width="0" layer="19" extent="1-1"/>
 </signal>
-<signal name="M1">
+<signal name="MB1">
 <contactref element="G.U2" pad="13"/>
 <contactref element="G.C3" pad="2"/>
 <via x="5.7658" y="15.4206" extent="1-16" drill="0.35"/>
@@ -2186,7 +2186,7 @@ design rules under a new name.</description>
 <wire x1="5.7658" y1="15.4206" x2="5.7884" y2="15.4432" width="0.508" layer="16"/>
 <wire x1="8.036071875" y1="15.94264375" x2="8.04" y2="16.0782" width="0.508" layer="16"/>
 </signal>
-<signal name="M2">
+<signal name="MA1">
 <contactref element="G.U2" pad="16"/>
 <contactref element="G.C3" pad="1"/>
 <wire x1="9.1894" y1="13.2186" x2="9.0034" y2="13.3858" width="0.508" layer="16"/>
@@ -2207,7 +2207,7 @@ design rules under a new name.</description>
 <wire x1="9.2548" y1="17.1358" x2="9.29" y2="16.0782" width="0.508" layer="16"/>
 <wire x1="8.9152" y1="17.4754" x2="9.2548" y2="17.1358" width="0.508" layer="16"/>
 </signal>
-<signal name="M3">
+<signal name="MB2">
 <contactref element="G.U2" pad="9"/>
 <contactref element="G.C1" pad="2"/>
 <via x="15.6495" y="15.2685" extent="1-16" drill="0.35"/>
@@ -2226,7 +2226,7 @@ design rules under a new name.</description>
 <wire x1="12.9888" y1="6.6778" x2="13.677" y2="7.366" width="0.508" layer="16"/>
 <wire x1="12.9888" y1="4.954440625" x2="12.9888" y2="6.6778" width="0.508" layer="16"/>
 </signal>
-<signal name="M4">
+<signal name="MA2">
 <contactref element="G.U2" pad="12"/>
 <contactref element="G.C1" pad="1"/>
 <wire x1="11.977" y1="8.128" x2="11.827734375" y2="8.128" width="0.508" layer="16"/>
@@ -2246,7 +2246,7 @@ design rules under a new name.</description>
 <wire x1="11.827734375" y1="8.128" x2="11.827734375" y2="5.045334375" width="0.508" layer="16"/>
 <wire x1="11.71" y1="4.9276" x2="11.827734375" y2="5.045334375" width="0.508" layer="16"/>
 </signal>
-<signal name="FOTO1">
+<signal name="LED1">
 <contactref element="G.U1" pad="5"/>
 <wire x1="9.6774" y1="9.2548" x2="9.652" y2="9.2802" width="0.3556" layer="1"/>
 <wire x1="9.652" y1="9.2802" x2="9.652" y2="11.2014" width="0.3556" layer="1"/>
@@ -2289,7 +2289,7 @@ design rules under a new name.</description>
 <wire x1="6.97351875" y1="10.4168" x2="4.7018" y2="12.68851875" width="0.3556" layer="16"/>
 <wire x1="4.7018" y1="12.72726875" x2="4.7018" y2="12.68851875" width="0.3556" layer="16"/>
 </signal>
-<signal name="N$19">
+<signal name="SCL">
 <contactref element="G.U1" pad="9"/>
 <wire x1="8.4026" y1="2.79518125" x2="8.05421875" y2="2.4468" width="0.3556" layer="1"/>
 <wire x1="8.4074" y1="4.0548" x2="8.4026" y2="4.05" width="0.3556" layer="1"/>
@@ -2299,14 +2299,14 @@ design rules under a new name.</description>
 <wire x1="6.38773125" y1="2.4468" x2="2.18453125" y2="6.65" width="0.3556" layer="1"/>
 <wire x1="8.05421875" y1="2.4468" x2="6.38773125" y2="2.4468" width="0.3556" layer="1"/>
 </signal>
-<signal name="N$20">
+<signal name="SDA">
 <contactref element="G.U1" pad="8"/>
 <wire x1="7.1374" y1="4.0548" x2="6.2443" y2="4.0548" width="0.3556" layer="1"/>
 <wire x1="6.2443" y1="4.0548" x2="1.4" y2="8.8991" width="0.3556" layer="1"/>
 <contactref element="G.J1" pad="2"/>
 <wire x1="1.4" y1="8.8991" x2="1.4" y2="9.23" width="0.3556" layer="1"/>
 </signal>
-<signal name="M_SRC">
+<signal name="M_V">
 <contactref element="G.U2" pad="4"/>
 <contactref element="G.U2" pad="8"/>
 <wire x1="15.0114" y1="12.9258" x2="15.005" y2="12.9322" width="0.8128" layer="1"/>
@@ -2339,7 +2339,7 @@ design rules under a new name.</description>
 <wire x1="9.3008" y1="2.3578" x2="9.3008" y2="4.9266" width="0.3556" layer="16"/>
 <wire x1="9.3008" y1="4.9266" x2="9.21" y2="4.9276" width="0.3556" layer="16"/>
 </signal>
-<signal name="N$7">
+<signal name="UPDI">
 <contactref element="G.U1" pad="10"/>
 <wire x1="9.6774" y1="4.0548" x2="9.6012" y2="3.9786" width="0.3556" layer="1"/>
 <wire x1="10.73271875" y1="0.968" x2="17.859" y2="0.968" width="0.3556" layer="1"/>
@@ -2379,7 +2379,7 @@ design rules under a new name.</description>
 <wire x1="10.46" y1="4.9276" x2="10.5518" y2="2.4804" width="0.3556" layer="16"/>
 <wire x1="10.5518" y1="2.4804" x2="10.5508" y2="2.4794" width="0.3556" layer="16"/>
 </signal>
-<signal name="LED1">
+<signal name="FOTO1">
 <contactref element="G.U1" pad="4"/>
 <wire x1="10.922" y1="11.049" x2="10.922" y2="9.2802" width="0.3556" layer="1"/>
 <wire x1="10.9474" y1="9.2548" x2="10.922" y2="9.2802" width="0.3556" layer="1"/>
