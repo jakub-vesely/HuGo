@@ -43,7 +43,7 @@ static const char *TAG = "HuGo";
 #define RIGHT_FRONT_PIN GPIO_NUM_32
 #define RIGHT_BACK_PIN GPIO_NUM_33
 
-#define SDA_PIN GPIO_NUM_23
+#define SDA_PIN GPIO_NUM_21
 #define SCL_PIN GPIO_NUM_22
 
 static void _peripheral_event_loop_task(void *data) {
