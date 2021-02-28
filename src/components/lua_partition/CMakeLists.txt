@@ -9,7 +9,7 @@ set(lua_files
     ${component_dir}/ir_remote/ir_remote.lua
     ${component_dir}/timer/timer.lua
     ${component_dir}/mpu9250/mpu9250.lua
-    ${component_dir}/rgb_led/rgb_led.lua
+    ${component_dir}/rgb_led_block/rgb_led.lua
     ${component_dir}/block_factory/block_factory.lua
 )
 
