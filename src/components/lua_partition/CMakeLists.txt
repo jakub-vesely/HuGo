@@ -10,6 +10,7 @@ set(lua_files
     ${component_dir}/timer/timer.lua
     ${component_dir}/mpu9250/mpu9250.lua
     ${component_dir}/rgb_led_block/rgb_led.lua
+    ${component_dir}/motor_block/motor_block.lua
     ${component_dir}/block_factory/block_factory.lua
 )
 

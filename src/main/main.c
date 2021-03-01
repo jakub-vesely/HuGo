@@ -33,6 +33,7 @@
 #include <esp32-hal-gpio.h>
 #include <mpu9250_lua_interface.h>
 #include <rgb_led.h>
+#include <motor_block.h>
 
 static const char *TAG = "HuGo";
 
@@ -79,6 +80,7 @@ void app_main()
     //hugo_mpu9250_init(L, MPU9250_FILL_ACCEL_Y | MPU9250_FILL_GYRO_Z);
     //hugo_display_init(L, true);
     hugo_rgb_led_init(L);
+    hugo_motor_block_init(L);
 
     //REGISTER_LUA_FUNCTION(L, cl_task_delay);
     int status = luaL_dofile(L, "/lua/main.lua");

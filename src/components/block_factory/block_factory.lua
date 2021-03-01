@@ -24,4 +24,11 @@ function bf.rgb_led(address)
     return nil
 end
 
+function bf.motor_block(address)
+    if check_address(address) then
+        return (require "motor_block"):new(address)
+    end
+    return nil
+end
+
 return bf

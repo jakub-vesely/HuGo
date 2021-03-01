@@ -134,39 +134,6 @@ print("behavior definition started")
 --     end
 -- )
 
-local block_factory = require "block_factory"
-
-
-local rgb = block_factory.rgb_led(0x02)
-
-local counter = 0;
-local reverse = false;
-local timer = require("timer")
-
-function led_change()
-    rgb:set_values(255 - counter, counter, 0)
-
-    if reverse then
-        if counter == 0 then
-            reverse = false
-            counter = 1
-        else
-            counter = counter - 1
-        end
-    else
-        if counter == 255 then
-            reverse = true
-            counter = 255
-        else
-            counter = counter + 1
-        end
-    end
-
-    timer.call_after_time(led_change, 0.01)
-end
-
-timer.call_after_time(led_change, 0.01)
-
 -- local ir_remote = require "ir_remote"
 -- ir_remote.add_data_recoveved_action(
 --     function (addr, code, repeated)
@@ -191,4 +158,63 @@ timer.call_after_time(led_change, 0.01)
 --         end
 --     end
 -- )
+
+
+-- local block_factory = require "block_factory"
+
+
+-- local rgb = block_factory.rgb_led(0x02)
+
+-- local counter = 0;
+-- local reverse = false;
+-- local timer = require("timer")
+
+-- function led_change()
+--     rgb:set_values(255 - counter, counter, 0)
+
+--     if reverse then
+--         if counter == 0 then
+--             reverse = false
+--             counter = 1
+--         else
+--             counter = counter - 1
+--         end
+--     else
+--         if counter == 255 then
+--             reverse = true
+--             counter = 255
+--         else
+--             counter = counter + 1
+--         end
+--     end
+
+--     timer.call_after_time(led_change, 0.01)
+-- end
+
+-- timer.call_after_time(led_change, 0.01)
+
+local block_factory = require "block_factory"
+local motor_block = block_factory.motor_block(0x03)
+local timer = require("timer")
+
+function start_motor()
+    count = motor_block:get_counter(1)
+    print(count)
+    if count < 10000 then
+        motor_block:speed_100(1)
+        timer.call_after_time(stop_motor, 1)
+    end
+
+end
+
+function stop_motor()
+    motor_block:speed_0(1)
+    timer.call_after_time(start_motor, 1)
+end
+
+timer.call_after_time(start_motor, 1)
+motor_block:power_on(1)
+-- motor_block:turn_clockwise(1)
+start_motor()
+
 print("behavior definition finished")

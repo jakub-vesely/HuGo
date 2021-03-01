@@ -9,7 +9,8 @@ Programmer: jtag2updi (megaTinyCore)
 
 #include <Wire.h>
 #include <avr/sleep.h>
-#include "motor_driver.h"
+#include "motor_commands.h"
+#include "motor.h"
 
 #define INA1 PIN_PA5
 #define INB1 PIN_PB2
@@ -21,8 +22,8 @@ Programmer: jtag2updi (megaTinyCore)
 #define LED2 PIN_PA1
 #define FOTO2 PIN_PA2
 
-MotorDriver motor1(INA1, INB1, FOTO1, LED1);
-MotorDriver motor2(INA2, INB2, FOTO2, LED2);
+Motor motor1(INA1, INB1, FOTO1, LED1);
+Motor motor2(INA2, INB2, FOTO2, LED2);
 
 uint8_t counter = 0;
 bool rotated = false;
@@ -35,7 +36,7 @@ void sensor2Interrupt(){
 }
 
 void i2c_receive_data(int count) {
-  if (count > 2){
+  if (count == 2){
     uint8_t command = Wire.read();
     uint8_t motor = Wire.read();
     if (motor == 1){
@@ -48,17 +49,19 @@ void i2c_receive_data(int count) {
 }
 
 void i2c_request_event(){
-  Wire.write(motor1.isDataReady() ? motor1.getCounter() : motor2.getCounter());
+  int32_t counter = motor1.isDataReady() ? motor1.getCounter() : motor2.getCounter();
+  //to do not be endian dependent
+  uint8_t data[4];
+  for (uint8_t index = 0; index < 4; ++index){
+    data[index] = (counter >> (index * 8)) & 0xff;
+  }
+
+  Wire.write(data, 4);
 }
-  
+
 void setup(){
   attachInterrupt(digitalPinToInterrupt(FOTO1), sensor1Interrupt, CHANGE); //must be static fuction (can't be part of the motor class)
   attachInterrupt(digitalPinToInterrupt(FOTO2), sensor2Interrupt, CHANGE);
-  
-  //FIXME temporary
-  motor2.processCommand(I2C_MOTOR_POWER_ON);
-  motor2.processCommand(I2C_MOTOR_TURN_CLOCKWISE);
-  motor2.processCommand(I2C_MOTOR_SET_SPEED_20);
 
   Wire.begin(0x03);
   Wire.onReceive(i2c_receive_data);
@@ -66,7 +69,7 @@ void setup(){
 }
 
 void loop(){
-  
+
   motor1.processLoopIteration(counter);
   motor2.processLoopIteration(counter);
 
@@ -74,6 +77,6 @@ void loop(){
   if (counter > 9){
     counter = 0;
   }
-  
+
   delayMicroseconds(500);
 }

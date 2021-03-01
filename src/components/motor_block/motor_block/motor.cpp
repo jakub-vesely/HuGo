@@ -1,7 +1,8 @@
-#include "motor_driver.h"
+#include "motor.h"
+#include "motor_commands.h"
 #include <arduino.h>
 
-MotorDriver::MotorDriver(uint8_t pinMA, uint8_t pinMB, uint8_t pinSensor, uint8_t pinPower):
+Motor::Motor(uint8_t pinMA, uint8_t pinMB, uint8_t pinSensor, uint8_t pinPower):
   m_counter(0),
   m_clockwise(true),
   m_speed(0),
@@ -22,8 +23,7 @@ MotorDriver::MotorDriver(uint8_t pinMA, uint8_t pinMB, uint8_t pinSensor, uint8_
     pinMode(pinSensor, INPUT);
 }
 
-void MotorDriver::processCommand(uint8_t command){
-  m_dataReady = false;
+void Motor::processCommand(uint8_t command){
   switch (command) {
     case I2C_MOTOR_TURN_CLOCKWISE:
       m_clockwise = true;
@@ -70,15 +70,15 @@ void MotorDriver::processCommand(uint8_t command){
   }
 }
 
-uint32_t MotorDriver::getCounter(){
+uint32_t Motor::getCounter(){
   noInterrupts();
   uint32_t counter = m_counter;
   interrupts();
-
-  return m_counter;
+  m_dataReady = false;
+  return counter;
 }
 
-void MotorDriver::processLoopIteration(uint8_t loopCounter){
+void Motor::processLoopIteration(uint8_t loopCounter){
   if (loopCounter == 0 && m_speed != 0) {
     if (m_clockwise){
       digitalWrite(m_pinMA, HIGH);

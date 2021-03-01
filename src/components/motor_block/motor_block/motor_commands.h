@@ -1,0 +1,13 @@
+#define I2C_MOTOR_TURN_CLOCKWISE     1
+#define I2C_MOTOR_TURN_ANTICLOCKWISE 2
+#define I2C_MOTOR_STOP               3
+#define I2C_MOTOR_POWER_OFF          4
+#define I2C_MOTOR_POWER_ON           5
+#define I2C_MOTOR_RESET_COUNTER      6
+#define I2C_MOTOR_GET_COUNTER        7
+#define I2C_MOTOR_SET_SPEED_100      8
+#define I2C_MOTOR_SET_SPEED_80       9
+#define I2C_MOTOR_SET_SPEED_60       10
+#define I2C_MOTOR_SET_SPEED_40       11
+#define I2C_MOTOR_SET_SPEED_20       12
+#define I2C_MOTOR_SET_SPEED_0        13

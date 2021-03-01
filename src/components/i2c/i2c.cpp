@@ -79,6 +79,20 @@ static bool _write_command_with_data(int address, int command, uint8_t *data, un
 #endif
 }
 
+bool hugo_i2c_read_data(int address, uint8_t * data, size_t size){
+    _lock_acquire(&s_lock);
+
+    Wire.requestFrom(address, size);
+    for (int index = 0; index < size; ++index){
+        if (!Wire.available()){
+            ESP_LOGE(TAG, "I2C data no longer available");
+            return false;
+        }
+        data[index] = Wire.read();
+    }
+    _lock_release(&s_lock);
+    return true;
+}
 
 bool hugo_i2c_write_command_with_data(int address, uint8_t command, uint8_t *data, unsigned data_size)
 {
