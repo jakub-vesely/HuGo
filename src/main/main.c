@@ -32,8 +32,8 @@
 #include <Arduino.h>
 #include <esp32-hal-gpio.h>
 #include <mpu9250_lua_interface.h>
-#include <rgb_led.h>
-#include <motor_block.h>
+#include <tiny_block_rgb_led.h>
+#include <tiny_block_motor_driver.h>
 
 static const char *TAG = "HuGo";
 

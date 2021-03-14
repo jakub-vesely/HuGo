@@ -1,5 +1,5 @@
 idf_component_register(
-    SRCS  ./rgb_led.c
+    SRCS  ./tiny_block_rgb_led.c
     INCLUDE_DIRS .
     REQUIRES  hugo_defines lua i2c
 )

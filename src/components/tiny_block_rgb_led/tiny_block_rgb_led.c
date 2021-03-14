@@ -1,5 +1,5 @@
 
-#include "rgb_led.h"
+#include "tiny_block_rgb_led.h"
 
 #include <lua.h>
 #include <lualib.h>

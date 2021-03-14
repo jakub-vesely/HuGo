@@ -17,16 +17,16 @@ local function check_address(address)
     return true
 end
 
-function bf.rgb_led(address)
+function bf.rgb_led_block(address)
     if check_address(address) then
-        return (require "rgb_led"):new(address)
+        return (require "tiny_block_rgb_led"):new(address)
     end
     return nil
 end
 
-function bf.motor_block(address)
+function bf.motor_driver_block(address)
     if check_address(address) then
-        return (require "motor_block"):new(address)
+        return (require "tiny_block_motor_driver"):new(address)
     end
     return nil
 end

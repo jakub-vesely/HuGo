@@ -163,7 +163,7 @@ print("behavior definition started")
 -- local block_factory = require "block_factory"
 
 
--- local rgb = block_factory.rgb_led(0x02)
+-- local rgb = block_factory.rgb_led_block(0x02)
 
 -- local counter = 0;
 -- local reverse = false;
@@ -194,27 +194,27 @@ print("behavior definition started")
 -- timer.call_after_time(led_change, 0.01)
 
 local block_factory = require "block_factory"
-local motor_block = block_factory.motor_block(0x03)
+local motor_driver_block = block_factory.motor_driver_block(0x03)
 local timer = require("timer")
 
 function start_motor()
-    count = motor_block:get_counter(1)
+    count = motor_driver_block:get_counter(1)
     print(count)
     if count < 10000 then
-        motor_block:speed_100(1)
+        motor_driver_block:speed_100(1)
         timer.call_after_time(stop_motor, 1)
     end
 
 end
 
 function stop_motor()
-    motor_block:speed_0(1)
+    motor_driver_block:speed_0(1)
     timer.call_after_time(start_motor, 1)
 end
 
 timer.call_after_time(start_motor, 1)
-motor_block:power_on(1)
--- motor_block:turn_clockwise(1)
+motor_driver_block:power_on(1)
+-- motor_driver_block:turn_clockwise(1)
 start_motor()
 
 print("behavior definition finished")
