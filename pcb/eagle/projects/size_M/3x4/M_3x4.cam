@@ -1,7 +1,7 @@
 {
     "author": {
-        "email": "support.eagle@autodesk.com",
-        "name": "Autodesk EAGLE"
+        "email": "jakub.vesely@post.cz",
+        "name": "Jakub Vesely"
     },
     "description": {
         "EN": "EAGLE default 2 layer CAM job."
@@ -192,8 +192,8 @@
                     "filename_format": "%PREFIX/silkscreen_top.gbr",
                     "layers": [
                         21,
-                        48,
-                        27
+                        25,
+                        48
                     ],
                     "milling": false,
                     "name": "Silkscreen Top",
@@ -217,8 +217,8 @@
                     "filename_format": "%PREFIX/silkscreen_bottom.gbr",
                     "layers": [
                         22,
-                        48,
-                        28
+                        26,
+                        48
                     ],
                     "milling": false,
                     "name": "Silkscreen Bottom",
@@ -277,7 +277,7 @@
             ]
         }
     ],
-    "timestamp": "2019-07-17T17:48:33",
+    "timestamp": "2021-03-12T15:10:06",
     "type": "EAGLE CAM job",
     "units": "metric",
     "version": "9.2.0"

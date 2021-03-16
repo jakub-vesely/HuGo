@@ -3,8 +3,8 @@
  * This software is published under MIT license. Full text of the licence is available at https://opensource.org/licenses/MIT
  */
 
-#include "motor_block/motor_commands.h"
-#include "motor_block.h"
+#include "tiny_block_motor_driver/motor_commands.h"
+#include "tiny_block_motor_driver.h"
 #include <lua.h>
 #include <lualib.h>
 #include <hugo_defines.h>

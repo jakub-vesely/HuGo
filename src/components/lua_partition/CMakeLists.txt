@@ -9,8 +9,8 @@ set(lua_files
     ${component_dir}/ir_remote/ir_remote.lua
     ${component_dir}/timer/timer.lua
     ${component_dir}/mpu9250/mpu9250.lua
-    ${component_dir}/rgb_led_block/rgb_led.lua
-    ${component_dir}/motor_block/motor_block.lua
+    ${component_dir}/tiny_block_rgb_led/tiny_block_rgb_led.lua
+    ${component_dir}/tiny_block_motor_driver/tiny_block_motor_driver.lua
     ${component_dir}/block_factory/block_factory.lua
 )
 

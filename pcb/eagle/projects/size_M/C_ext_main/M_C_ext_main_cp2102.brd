@@ -140,7 +140,7 @@
 <circle x="1.9828" y="2.005" radius="1.9" width="0.1" layer="52"/>
 <hole x="19" y="19" drill="2.1"/>
 <circle x="19" y="19" radius="1.9" width="0.1" layer="52"/>
-<text x="12.534" y="0.6138" size="1.4224" layer="22" rot="MR0">ESP M.1</text>
+<text x="12.9658" y="0.6265" size="1.4224" layer="22" rot="MR0">main M.1</text>
 <rectangle x1="13.5663" y1="0.1053" x2="16.1825" y2="0.1307" layer="22" rot="R180"/>
 <rectangle x1="13.5155" y1="0.1307" x2="16.2333" y2="0.1561" layer="22" rot="R180"/>
 <rectangle x1="13.4901" y1="0.1561" x2="16.2587" y2="0.1815" layer="22" rot="R180"/>
