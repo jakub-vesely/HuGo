@@ -693,7 +693,6 @@
 <part name="A.J13" library="pinhead2" deviceset="PINHD-1X2" device="1X02/90F"/>
 <part name="A.J14" library="pinhead2" deviceset="PINHD-1X2" device="/90" package3d_urn="urn:adsk.eagle:package:22437/2"/>
 <part name="A.J15" library="pinhead2" deviceset="PINHD-1X4" device="" package3d_urn="urn:adsk.eagle:package:22407/2"/>
-<part name="A.J16" library="pinhead2" deviceset="PINHD-1X4" device="" package3d_urn="urn:adsk.eagle:package:22407/2"/>
 <part name="JP1" library="pinhead2" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
 <part name="JP2" library="pinhead2" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
 <part name="JP3" library="pinhead2" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
@@ -763,10 +762,6 @@
 <instance part="A.J15" gate="A" x="-53.34" y="-20.32" smashed="yes" rot="R180">
 <attribute name="NAME" x="-46.99" y="-28.575" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="-46.99" y="-12.7" size="1.778" layer="96" rot="R180"/>
-</instance>
-<instance part="A.J16" gate="A" x="121.92" y="-22.86" smashed="yes">
-<attribute name="NAME" x="115.57" y="-14.605" size="1.778" layer="95"/>
-<attribute name="VALUE" x="115.57" y="-30.48" size="1.778" layer="96"/>
 </instance>
 <instance part="JP1" gate="G$1" x="-25.4" y="10.16" smashed="yes" rot="R90">
 <attribute name="NAME" x="-31.115" y="3.81" size="1.778" layer="95" rot="R90"/>
@@ -845,8 +840,6 @@
 <wire x1="30.48" y1="-25.4" x2="30.48" y2="15.24" width="0.1524" layer="91"/>
 <pinref part="A.J15" gate="A" pin="1"/>
 <wire x1="-25.4" y1="-25.4" x2="-50.8" y2="-25.4" width="0.1524" layer="91"/>
-<pinref part="A.J16" gate="A" pin="4"/>
-<wire x1="119.38" y1="-25.4" x2="93.98" y2="-25.4" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -940,11 +933,6 @@
 <pinref part="A.J15" gate="A" pin="2"/>
 <wire x1="-33.02" y1="-22.86" x2="-50.8" y2="-22.86" width="0.1524" layer="91"/>
 <junction x="-33.02" y="-22.86"/>
-<wire x1="96.52" y1="-43.18" x2="101.6" y2="-43.18" width="0.1524" layer="91"/>
-<junction x="96.52" y="-43.18"/>
-<wire x1="101.6" y1="-43.18" x2="101.6" y2="-22.86" width="0.1524" layer="91"/>
-<pinref part="A.J16" gate="A" pin="3"/>
-<wire x1="101.6" y1="-22.86" x2="119.38" y2="-22.86" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="SCL" class="0">
@@ -958,8 +946,7 @@
 <wire x1="91.44" y1="-5.08" x2="104.14" y2="-5.08" width="0.1524" layer="91"/>
 <junction x="91.44" y="-5.08"/>
 <pinref part="A.J12" gate="A" pin="7"/>
-<wire x1="104.14" y1="-5.08" x2="104.14" y2="-17.78" width="0.1524" layer="91"/>
-<wire x1="104.14" y1="-17.78" x2="104.14" y2="-20.32" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="-5.08" x2="104.14" y2="-20.32" width="0.1524" layer="91"/>
 <wire x1="104.14" y1="-20.32" x2="96.52" y2="-20.32" width="0.1524" layer="91"/>
 <wire x1="104.14" y1="-20.32" x2="104.14" y2="-45.72" width="0.1524" layer="91"/>
 <wire x1="104.14" y1="-45.72" x2="93.98" y2="-45.72" width="0.1524" layer="91"/>
@@ -1039,9 +1026,6 @@
 <pinref part="A.J15" gate="A" pin="4"/>
 <wire x1="-35.56" y1="-17.78" x2="-50.8" y2="-17.78" width="0.1524" layer="91"/>
 <junction x="-35.56" y="-17.78"/>
-<pinref part="A.J16" gate="A" pin="1"/>
-<wire x1="104.14" y1="-17.78" x2="119.38" y2="-17.78" width="0.1524" layer="91"/>
-<junction x="104.14" y="-17.78"/>
 </segment>
 </net>
 <net name="SDA" class="0">
@@ -1060,8 +1044,7 @@
 <wire x1="93.98" y1="-2.54" x2="106.68" y2="-2.54" width="0.1524" layer="91"/>
 <junction x="93.98" y="-2.54"/>
 <pinref part="A.J11" gate="A" pin="8"/>
-<wire x1="106.68" y1="-2.54" x2="106.68" y2="-20.32" width="0.1524" layer="91"/>
-<wire x1="106.68" y1="-20.32" x2="106.68" y2="-30.48" width="0.1524" layer="91"/>
+<wire x1="106.68" y1="-2.54" x2="106.68" y2="-30.48" width="0.1524" layer="91"/>
 <wire x1="106.68" y1="-30.48" x2="96.52" y2="-30.48" width="0.1524" layer="91"/>
 <junction x="78.74" y="-2.54"/>
 <wire x1="68.58" y1="-2.54" x2="73.66" y2="-2.54" width="0.1524" layer="91"/>
@@ -1134,9 +1117,6 @@
 <pinref part="A.J14" gate="G$1" pin="2"/>
 <pinref part="A.J15" gate="A" pin="3"/>
 <wire x1="-38.1" y1="-20.32" x2="-50.8" y2="-20.32" width="0.1524" layer="91"/>
-<pinref part="A.J16" gate="A" pin="2"/>
-<wire x1="119.38" y1="-20.32" x2="106.68" y2="-20.32" width="0.1524" layer="91"/>
-<junction x="106.68" y="-20.32"/>
 </segment>
 </net>
 <net name="VBAT" class="0">
