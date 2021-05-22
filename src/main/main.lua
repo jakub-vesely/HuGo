@@ -193,28 +193,57 @@ print("behavior definition started")
 
 -- timer.call_after_time(led_change, 0.01)
 
+-- local block_factory = require "block_factory"
+-- local motor_driver_block = block_factory.motor_driver_block(0x03)
+-- local timer = require("timer")
+
+-- function start_motor()
+--     count = motor_driver_block:get_counter(1)
+--     print(count)
+--     if count < 1000 then
+--         motor_driver_block:speed_100(1)
+--         timer.call_after_time(stop_motor, 1)
+--     end
+
+-- end
+
+-- function stop_motor()
+--     motor_driver_block:speed_0(1)
+--     timer.call_after_time(start_motor, 1)
+-- end
+
+-- timer.call_after_time(start_motor, 1)
+-- motor_driver_block:power_on(1)
+-- -- motor_driver_block:turn_clockwise(1)
+-- start_motor()
+
 local block_factory = require "block_factory"
-local motor_driver_block = block_factory.motor_driver_block(0x03)
+local power_block = block_factory.power_block(0x04)
 local timer = require("timer")
 
-function start_motor()
-    count = motor_driver_block:get_counter(1)
-    print(count)
-    if count < 10000 then
-        motor_driver_block:speed_100(1)
-        timer.call_after_time(stop_motor, 1)
-    end
-
+local function charging()
+    print("charging", power_block:is_charging())
+    print("voltage", power_block:get_voltage())
+    print("current", power_block:get_current_ma())
+    timer.call_after_time(charging, 1)
 end
 
-function stop_motor()
-    motor_driver_block:speed_0(1)
-    timer.call_after_time(start_motor, 1)
-end
+charging()
 
-timer.call_after_time(start_motor, 1)
-motor_driver_block:power_on(1)
--- motor_driver_block:turn_clockwise(1)
-start_motor()
+-- print("i2c_address", power_block:get_i2c_address())
+-- print("power address", power_block:get_ina_i2c_address())
+
+
+-- power_block:set_ina_i2c_address(power_block.InaAddresses.INA_I2C_0x40)
+
+--power_block:set_new_i2c_address(0x04)
+--print("power address0", power_block:get_ina_i2c_address())
+-- power_block:set_ina_a0a1(1)
+-- print("power address1", power_block:get_ina_i2c_address())
+-- power_block:set_ina_a0a1(2)
+-- print("power address2", power_block:get_ina_i2c_address())
+-- power_block:set_ina_a0a1(3)
+-- print("power address3", power_block:get_ina_i2c_address())
+
 
 print("behavior definition finished")

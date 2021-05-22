@@ -32,8 +32,10 @@
 #include <Arduino.h>
 #include <esp32-hal-gpio.h>
 #include <mpu9250_lua_interface.h>
+#include <tiny_block_base.h>
 #include <tiny_block_rgb_led.h>
 #include <tiny_block_motor_driver.h>
+#include <tiny_block_power.h>
 
 static const char *TAG = "HuGo";
 
@@ -79,8 +81,11 @@ void app_main()
     //hugo_ir_remote_init_module(L, IR_REMOTE_PIN);
     //hugo_mpu9250_init(L, MPU9250_FILL_ACCEL_Y | MPU9250_FILL_GYRO_Z);
     //hugo_display_init(L, true);
-    hugo_rgb_led_init(L);
-    hugo_motor_block_init(L);
+
+    tiny_block_base_init(L);
+    tiny_rgb_led_init(L);
+    tiny_motor_block_init(L);
+    tiny_power_init(L);
 
     //REGISTER_LUA_FUNCTION(L, cl_task_delay);
     int status = luaL_dofile(L, "/lua/main.lua");

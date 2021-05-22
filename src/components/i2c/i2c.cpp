@@ -19,7 +19,7 @@
 #define TAG "i2c"
 
 #define I2C_RATE 100000
-static uint8_t buffer[129];
+//static uint8_t buffer[129];
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,8 +37,9 @@ static bool _write_command_with_data(int address, int command, uint8_t *data, un
     {
         Wire.write(command); // write the register address
     }
-    Wire.write(data, data_size); // write the data
-
+    if (data_size > 0){
+        Wire.write(data, data_size); // write the data
+    }
     Wire.endTransmission(true);
 
     // int index = 0;
@@ -65,8 +66,9 @@ static bool _write_command_with_data(int address, int command, uint8_t *data, un
         i2c_master_write_byte(cmd, command, true);
     }
 
-    i2c_master_write(cmd, data, data_size, true);
-
+    if (data_size > 0){
+        i2c_master_write(cmd, data, data_size, true);
+    }
     i2c_master_stop(cmd);
     esp_err_t espRc = i2c_master_cmd_begin(I2C_NUM, cmd, 10/portTICK_PERIOD_MS);
     if (espRc != ESP_OK)
@@ -83,20 +85,26 @@ bool hugo_i2c_read_data(int address, uint8_t * data, size_t size){
     _lock_acquire(&s_lock);
 
     Wire.requestFrom(address, size);
+    bool result = true;
     for (int index = 0; index < size; ++index){
         if (!Wire.available()){
             ESP_LOGE(TAG, "I2C data no longer available");
-            return false;
+            result = false;
+            break;
         }
         data[index] = Wire.read();
     }
     _lock_release(&s_lock);
-    return true;
+    return result;
 }
 
 bool hugo_i2c_write_command_with_data(int address, uint8_t command, uint8_t *data, unsigned data_size)
 {
     return _write_command_with_data(address, command, data, data_size);
+}
+
+bool hugo_i2c_write_command(int address, uint8_t command){
+    return _write_command_with_data(address, command, NULL, 0);
 }
 
 bool hugo_i2c_write_data(int address, uint8_t * data, unsigned size)

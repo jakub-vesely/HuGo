@@ -3,7 +3,7 @@
  * This software is published under MIT license. Full text of the licence is available at https://opensource.org/licenses/MIT
  */
 
-#include "tiny_block_motor_driver/motor_commands.h"
+#include "tiny_block_motor_driver_arduino/motor_commands.h"
 #include "tiny_block_motor_driver.h"
 #include <lua.h>
 #include <lualib.h>
@@ -114,7 +114,7 @@ static int cl_motor_speed_0(lua_State* L){
     return 0;
 }
 
-bool hugo_motor_block_init(lua_State* L){
+bool tiny_motor_block_init(lua_State* L){
     REGISTER_LUA_FUNCTION(L, cl_motor_turn_clockwise);
     REGISTER_LUA_FUNCTION(L, cl_motor_turn_anticlockwise);
     REGISTER_LUA_FUNCTION(L, cl_motor_stop);

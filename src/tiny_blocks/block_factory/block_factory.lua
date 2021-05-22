@@ -31,4 +31,11 @@ function bf.motor_driver_block(address)
     return nil
 end
 
+function bf.power_block(address)
+    if check_address(address) then
+        return (require "tiny_block_power"):new(address)
+    end
+    return nil
+end
+
 return bf

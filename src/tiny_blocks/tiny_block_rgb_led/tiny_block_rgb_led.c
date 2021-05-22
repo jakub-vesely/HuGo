@@ -22,7 +22,7 @@ static int cl_rgb_set_values(lua_State* L) {
     return 0;
 }
 
-bool hugo_rgb_led_init(lua_State* L) {
+bool tiny_rgb_led_init(lua_State* L) {
     REGISTER_LUA_FUNCTION(L, cl_rgb_set_values);
     return true;
 }

@@ -3,4 +3,4 @@
 #include <lua.h>
 #include <stdbool.h>
 
-bool hugo_motor_block_init(lua_State* L);
+bool tiny_rgb_led_init(lua_State* L);
