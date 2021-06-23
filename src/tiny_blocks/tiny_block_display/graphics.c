@@ -5,25 +5,19 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <stdbool.h>
 
-display_adapter_t *_display;
-
-void hugo_graphics_init(display_adapter_t *display_adapter)
+bool hugo_graphics_set_point(display_adapter_t *display, int x0, int y0, bool color)
 {
-    _display = display_adapter;
+    return display->set_point(display, x0, y0, color);
 }
 
-bool hugo_graphics_set_point(int x0, int y0, bool color)
+bool hugo_graphics_get_point(display_adapter_t *display, int x0, int y0)
 {
-    return _display->set_point(x0, y0, color);
+    return display->get_point(display, x0, y0);
 }
 
-bool hugo_graphics_get_point(int x0, int y0)
-{
-    return _display->get_point(x0, y0);
-}
-
-void _print_text(int x0, int y0, int width, int height, char *text, bool color, uint8_t* font, int char_width, int char_height, bool h_space)
+void _print_text(display_adapter_t *display, int x0, int y0, int width, int height, char *text, bool color, uint8_t* font, int char_width, int char_height, bool h_space)
 {
     int index = 0;
     int column = 0;
@@ -50,7 +44,7 @@ void _print_text(int x0, int y0, int width, int height, char *text, bool color, 
                     for (int char_row = 0; char_row < 8; ++char_row)
                     {
                         bool point_color = ((col_value >> char_row) & 1) ? color : !color;
-                        _display->set_point(x0 + column + char_col, y0 + row + char_row + char_byte * 8, point_color);
+                        display->set_point(display, x0 + column + char_col, y0 + row + char_row + char_byte * 8, point_color);
                     }
                 }
             }
@@ -60,38 +54,36 @@ void _print_text(int x0, int y0, int width, int height, char *text, bool color, 
     }
 }
 
-void hugo_graphics_print_text_8x8(int x0, int y0, int width, int height, char *text, bool color)
+void hugo_graphics_print_text_8x8(display_adapter_t *display, int x0, int y0, int width, int height, char *text, bool color)
 {
-    _print_text(x0, y0, width, height, text, color, (uint8_t*)font8x8, 8, 8, false);
+    _print_text(display, x0, y0, width, height, text, color, (uint8_t*)font8x8, 8, 8, false);
 }
 
-void hugo_graphics_print_text_8x16(int x0, int y0, int width, int height, char *text, bool color)
+void hugo_graphics_print_text_8x16(display_adapter_t *display,int x0, int y0, int width, int height, char *text, bool color)
 {
-    _print_text(x0, y0, width, height, text, color, (uint8_t*)font8x16, 8, 16, true);
+    _print_text(display, x0, y0, width, height, text, color, (uint8_t*)font8x16, 8, 16, true);
 }
 
-void hugo_graphics_draw_elipse(int x, int y, int r1, int r2, bool color)
+void hugo_graphics_draw_elipse(display_adapter_t *display, int x, int y, int r1, int r2, bool color)
 {
     for (int pos = 0; pos < r1; ++pos)
     {
         double normalized = (double)pos / (double)r1;
         int val = (int)(sqrt(1.0 - normalized * normalized) * (double)r2);
-        _display->set_point(x + pos, y - val, color);
-        _display->set_point(x - pos, y - val, color);
-        _display->set_point(x + pos, y + val, color);
-        _display->set_point(x - pos, y + val, color);
+        display->set_point(display, x + pos, y - val, color);
+        display->set_point(display, x - pos, y - val, color);
+        display->set_point(display, x + pos, y + val, color);
+        display->set_point(display, x - pos, y + val, color);
     }
 
     for (int pos = 0; pos < r2; ++pos)
     {
         double normalized = (double)pos / (double)r2;
         int val = (int)(sqrt(1.0 - normalized * normalized) * (double)r1);
-        _display->set_point(x + val, y - pos, color);
-        _display->set_point(x - val, y - pos, color);
-        _display->set_point(x + val, y + pos, color);
-        _display->set_point(x - val, y + pos, color);
-
-        //__draw_point(pos + x - r, y + val, false);
+        display->set_point(display, x + val, y - pos, color);
+        display->set_point(display, x - val, y - pos, color);
+        display->set_point(display, x + val, y + pos, color);
+        display->set_point(display, x - val, y + pos, color);
     }
 }
 

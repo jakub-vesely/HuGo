@@ -97,25 +97,33 @@
 -- timer.call_after_time(ChangeDirection, 1)
 
 print("behavior definition started")
+local block_factory = require "block_factory"
+local timer = require("timer")
 
--- local timer = require("timer")
+local display = block_factory.display_block(0x02)
+display:print_text_8x8(0, 0, 64, 48, "A1A2A3a4\nB1B2B3b\nC1C2C3c\nD1D2D3d\nE1E2E3e\nF1F2F3f4", true)
+display:showtime()
+local counter = 0;
 
--- local led_state = 1
+function display_counter()
+    display:clean()
+    local text = tostring(counter)
+    print(text)
+    display:print_text_8x8(0, 0, 64, 48, text, true)
+    display:showtime()
+    counter = counter + 1
+    timer.call_after_time(display_counter, 1)
+end
+display_counter()
 
--- function After_time()
---     if led_state == 0 then
---         led_state = 1
---     else
---         led_state = 0
---     end
---     print("led_state:", led_state)
---     --built_in_led.change_state(led_state)
---     timer.call_after_time(After_time, 0.5)
--- end
+--display:set_new_i2c_address(0x06)
 
--- timer.call_after_time(After_time, 3)
-
--- local display = require("display")
+-- display.clean()
+-- print("disp cleaned")
+-- display.print_text_8x16(0, 0, 64, 32, "hallo", true)
+-- print("disp text")
+-- display.showtime()
+-- print("disp shown")
 -- local mpu = require("mpu9250")
 -- local chassis = require("chassis")
 
@@ -124,6 +132,7 @@ print("behavior definition started")
 --         local value_accel_y = string.format("accelY: %4.2f", mpu.get_accel_y())
 --         local value_gyro_z = string.format("gyroZ: %4.2f", mpu.get_gyro_z())
 --         display.clean()
+--         display.print_text_8x16(0, 0, 64, 32, value_accel_x, true)
 --         display.print_text_8x16(0, 0, 128, 32, value_accel_y, true)
 --         display.print_text_8x16(0, 16, 128, 32, value_gyro_z, true)
 --         display.showtime()
@@ -160,16 +169,40 @@ print("behavior definition started")
 -- )
 
 
--- local block_factory = require "block_factory"
+-- local rgb = block_factory.rgb_led_block(0x04)
+-- rgb:set_new_i2c_address(0x04)
+-- --local counter = 0;
+-- --local reverse = false;
 
+-- function set_on()
+--     rgb:set_on()
+--     timer.call_after_time(set_off, 1)
+-- end
 
--- local rgb = block_factory.rgb_led_block(0x02)
+-- function set_off()
+--     rgb:set_off()
+--     timer.call_after_time(set_red, 1)
+-- end
 
--- local counter = 0;
--- local reverse = false;
--- local timer = require("timer")
+-- set_on()
 
--- function led_change()
+-- function set_red()
+--      rgb:set_color(rgb.color.red)
+--      timer.call_after_time(set_green, 1)
+-- end
+-- function set_green()
+--     rgb:set_color(rgb.color.green)
+--     timer.call_after_time(set_red, 1)
+-- end
+-- set_red()
+
+-- function set_blue()
+--     rgb:set_color(rgb.color.blue)
+--     timer.call_after_time(set_on, 1)
+-- end
+-- set_red()
+
+    -- function led_change()
 --     rgb:set_values(255 - counter, counter, 0)
 
 --     if reverse then
@@ -188,21 +221,29 @@ print("behavior definition started")
 --         end
 --     end
 
---     timer.call_after_time(led_change, 0.01)
+--     timer.call_after_time(led_change, 0.1)
 -- end
 
--- timer.call_after_time(led_change, 0.01)
 
--- local block_factory = require "block_factory"
--- local motor_driver_block = block_factory.motor_driver_block(0x03)
--- local timer = require("timer")
+-- timer.call_after_time(led_change, 1)
+
+
+
+--
+-- local motor_driver_block = block_factory.motor_driver_block(0x02)
+-- --motor_driver_block:set_new_i2c_address(0x05)
 
 -- function start_motor()
---     count = motor_driver_block:get_counter(1)
---     print(count)
---     if count < 1000 then
+--     local count1 = motor_driver_block:get_counter(1)
+--     local count2 = motor_driver_block:get_counter(2)
+--     print("count1", count1, "count2", count2)
+
+--     print(count1)
+--     if count1 < 1000 then
 --         motor_driver_block:speed_100(1)
+--         motor_driver_block:speed_100(2)
 --         timer.call_after_time(stop_motor, 1)
+--         timer.call_after_time(stop_motor, 2)
 --     end
 
 -- end
@@ -212,29 +253,45 @@ print("behavior definition started")
 --     timer.call_after_time(start_motor, 1)
 -- end
 
--- timer.call_after_time(start_motor, 1)
+-- --timer.call_after_time(start_motor, 1)
 -- motor_driver_block:power_on(1)
--- -- motor_driver_block:turn_clockwise(1)
+-- motor_driver_block:power_on(2)
+-- motor_driver_block:turn_clockwise(1)
+-- motor_driver_block:turn_anticlockwise(2)
+-- -- motor_driver_block:speed_100(1)
+-- -- motor_driver_block:speed_100(2)
 -- start_motor()
 
-local block_factory = require "block_factory"
-local power_block = block_factory.power_block(0x04)
-local timer = require("timer")
 
-local function charging()
-    print("charging", power_block:is_charging())
-    print("voltage", power_block:get_voltage())
-    print("current", power_block:get_current_ma())
-    timer.call_after_time(charging, 1)
-end
+-- local power_block = block_factory.power_block(0x03)
+-- --power_block:set_new_i2c_address(0x03)
+-- local function charging()
+--     if (power_block:is_charging()) then
+--         rgb:set_color(rgb.color.red)
+--     else
+--         rgb:set_color(rgb.color.green)
+--     end
+--     timer.call_after_time(charging, 0.5)
+-- end
+-- charging()
 
-charging()
+--
 
--- print("i2c_address", power_block:get_i2c_address())
--- print("power address", power_block:get_ina_i2c_address())
+-- local function charging()
+--     print("charging", power_block:is_charging())
+--     print("voltage", power_block:get_voltage())
+--     print("current", power_block:get_current_ma())
+--     timer.call_after_time(charging, 1)
+-- end
 
+--charging()
 
--- power_block:set_ina_i2c_address(power_block.InaAddresses.INA_I2C_0x40)
+--print("i2c_address", power_block:get_i2c_address())
+--print("power ina address", power_block:get_ina_i2c_address())
+
+--power_block:set_ina_i2c_address(power_block.InaAddresses.INA_I2C_0x45)
+
+--print("power ina address", power_block:get_ina_i2c_address())
 
 --power_block:set_new_i2c_address(0x04)
 --print("power address0", power_block:get_ina_i2c_address())
@@ -246,4 +303,15 @@ charging()
 -- print("power address3", power_block:get_ina_i2c_address())
 
 
+-- local ir = block_factory.ir_receiver_block(0x02)
+-- -- ir:set_new_i2c_address(0x06)
+
+-- function get_ir()
+--     local ir_data = ir:get_ir_data();
+--     if (ir_data ~= 0) then
+--         print("ir_data", ir_data)
+--     end
+--     timer.call_after_time(get_ir, 1)
+-- end
+-- get_ir()
 print("behavior definition finished")

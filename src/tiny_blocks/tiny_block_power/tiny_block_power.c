@@ -6,6 +6,7 @@
 #include <hugo_defines.h>
 #include <i2c.h>
 #include <string.h>
+#include <hugo_tiny_block_defines.h>
 #include "tiny_block_power_arduino/tiny_block_power_arduino.h"
 
 #include <freertos/FreeRTOS.h>
@@ -16,18 +17,11 @@ static const char *TAG = "power";
 
 #define SHUNT_R 0.1
 
-static bool _get_value(uint8_t address, uint8_t command, uint8_t* out_data, uint8_t out_data_size){
-
-    hugo_i2c_write_command(address, command);
-    //vTaskDelay(100); //tell to watchdog that the thread is still alive
-    return hugo_i2c_read_data(address, out_data, out_data_size);
-}
-
 static int cl_power_is_charging(lua_State* L) {
     LUA_PARAM_NR_CHECK(1);
 
     uint8_t address = lua_tointeger(L, 1);
-    if (!_get_value(address, I2C_COMMAND_GET_CHARGING_STATE,  s_data, 1)){
+    if (!hugo_i2c_tiny(address, I2C_BLOCK_TYPE_ID_POWER, I2C_COMMAND_POWER_GET_CHARGING_STATE, NULL, 0, s_data, 1)){
         ESP_LOGE(TAG, "charging state was not provided - for %d", address);
         s_data[0] = 0; //data are invalid it is better to return a particular value than a random one
     }
@@ -40,12 +34,12 @@ static int cl_power_get_ina_i2c_address(lua_State* L) {
     LUA_PARAM_NR_CHECK(1);
 
     uint8_t address = lua_tointeger(L, 1);
-    if (!_get_value(address, I2C_COMMAND_GET_INA_I2C_ADDRESS,  s_data, 1)){
+    if (!hugo_i2c_tiny(address, I2C_BLOCK_TYPE_ID_POWER, I2C_COMMAND_POWER_GET_INA_I2C_ADDRESS, NULL, 0, s_data, 1)){
         ESP_LOGE(TAG, "INA I2C address was not provided- for %d", address);
         s_data[0] = 0; //data are invalid it is better to return a particular value than a random one
     }
     lua_pushinteger(L, s_data[0]);
-
+    ESP_LOGI(TAG, "INA address:%d", s_data[0]);
     return 1;
 }
 
@@ -54,7 +48,7 @@ static int cl_power_set_ina_a0a1(lua_State* L) {
 
     uint8_t address = lua_tointeger(L, 1);
     uint8_t a0a1 = lua_tointeger(L, 2);
-    if (!hugo_i2c_write_command_with_data(address, I2C_COMMAND_SET_INA_A0A1,  &a0a1, 1)){
+    if (!hugo_i2c_tiny(address, I2C_BLOCK_TYPE_ID_POWER, I2C_COMMAND_POWER_SET_INA_A0A1, &a0a1, 1, NULL, 0)){
         ESP_LOGE(TAG, "INA a0a1 was not written - for %d", address);
     }
 
@@ -65,9 +59,7 @@ static int cl_power_get_voltage(lua_State* L) {
     LUA_PARAM_NR_CHECK(1);
 
     uint8_t ina_address = lua_tointeger(L, 1);
-    hugo_i2c_write_command(ina_address, I2C_COMMAND_INA219_BUSVOLTAG);
-
-    if (!hugo_i2c_read_data(ina_address, s_data, 2)){
+    if (!hugo_i2c(ina_address, I2C_COMMAND_INA219_BUSVOLTAG, NULL, 0, s_data, 2)){
         memset(s_data, 0, 2);
         ESP_LOGE(TAG, "no voltage provided - for %d", ina_address);
     }
@@ -83,9 +75,7 @@ static int cl_power_get_current_ma(lua_State* L) {
     LUA_PARAM_NR_CHECK(1);
 
     uint8_t ina_address = lua_tointeger(L, 1);
-    hugo_i2c_write_command(ina_address, I2C_COMMAND_INA219_SHUNT_VOLTAGE);
-
-    if (!hugo_i2c_read_data(ina_address, s_data, 2)){
+    if (!hugo_i2c(ina_address, I2C_COMMAND_INA219_SHUNT_VOLTAGE, NULL, 0, s_data, 2)){
         memset(s_data, 0, 2);
         ESP_LOGE(TAG, "no shunt voltage provided - for %d", ina_address);
     }
@@ -111,7 +101,7 @@ static int cl_power_initialize_ina(lua_State* L){
         .rst = 0,
     };
 
-    hugo_i2c_write_command_with_data(ina_address, I2C_COMMAND_INA219_COFIGURATION, (uint8_t*)&config, 2);
+    hugo_i2c_tiny(ina_address, I2C_BLOCK_TYPE_ID_POWER, I2C_COMMAND_INA219_COFIGURATION, (uint8_t*)&config, 2, NULL, 0);
 
     return 0;
 }

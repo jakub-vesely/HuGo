@@ -17,10 +17,7 @@ static int cl_tiny_base_set_i2c_address(lua_State* L)
 
     uint8_t address = lua_tointeger(L, 1);
     uint8_t new_address = lua_tointeger(L, 2);
-    uint8_t data[2];
-    data[0] = I2C_COMMAND_CHANGE_I2C_ADDRESS;
-    data[1] = new_address;
-    if (!hugo_i2c_write_data(address, data, 2)){
+    if (!hugo_i2c_tiny(address, I2C_BLOCK_TYPE_ID_BASE, I2C_COMMAND_CHANGE_I2C_ADDRESS, &new_address, 1, NULL, 0)){
         ESP_LOGE(TAG, "i2c address was not changed - for %d", address);
     }
 

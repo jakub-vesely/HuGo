@@ -9,7 +9,6 @@ TinyBlockBase.__index = TinyBlockBase
 
 
 function TinyBlockBase:check_address_type(address)
-    print("address type 2", type(address))
     assert(type(address) == "number", "tiny-block address is not set as a number")
 end
 

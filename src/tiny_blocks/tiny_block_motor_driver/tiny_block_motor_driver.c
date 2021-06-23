@@ -9,6 +9,7 @@
 #include <lualib.h>
 #include <hugo_defines.h>
 #include <i2c.h>
+#include <hugo_tiny_block_defines.h>
 
 static const char *TAG = "motor";
 
@@ -16,34 +17,29 @@ static void _send_command(lua_State* L, uint8_t command){
     LUA_PARAM_NR_CHECK(2);
 
     uint8_t address = lua_tointeger(L, 1);
-    uint8_t data[2];
-    data[0] = command;
-    data[1] = lua_tointeger(L, 2); //motorId
+    uint8_t motor_id = lua_tointeger(L, 2);
 
-    ESP_LOGI(TAG, "sent command %d to address: %d with data %d %d", command, address, data[0], data[1]);
+    ESP_LOGI(TAG, "sent command %d to address: %d with data %d", command, address, motor_id);
 
-    hugo_i2c_write_data(address, data, 2);
+    hugo_i2c_tiny(address, I2C_BLOCK_TYPE_ID_MOTOR_DRVR, command, &motor_id, 1, NULL, 0);
 }
 
 static int32_t _get_counter(lua_State* L){
     LUA_PARAM_NR_CHECK(2);
 
     uint8_t address = lua_tointeger(L, 1);
-    uint8_t data[4];
-    data[0] = I2C_MOTOR_GET_COUNTER;
-    data[1] = lua_tointeger(L, 2); //motorId
-    hugo_i2c_write_data(address, data, 2);
-
-
-    if (!hugo_i2c_read_data(address, data, 4)){
+    uint8_t in_data[4];
+    uint8_t motor_id = lua_tointeger(L, 2);
+    if (!hugo_i2c_tiny(address, I2C_BLOCK_TYPE_ID_MOTOR_DRVR, I2C_MOTOR_GET_COUNTER, &motor_id, 1, in_data, 4)){
+        ESP_LOGE(TAG, "no counter provided - for %d", address);
         return 0; //data are invalid it is better t to return a particular value than a random one
     }
 
-    ESP_LOGI(TAG, "received_data %d %d %d %d", data[0], data[1], data[2], data[3]);
+    ESP_LOGI(TAG, "received_data %d %d %d %d", in_data[0], in_data[1], in_data[2], in_data[3]);
 
     int32_t counter = 0;
     for (uint8_t index = 0; index < 4; ++index){
-        counter |= data[index] << index * 8;
+        counter |= in_data[index] << index * 8;
     }
 
     return counter;

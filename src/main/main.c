@@ -7,12 +7,11 @@
 #include "lualib.h"
 #include "lauxlib.h"
 #include <hugo_defines.h>
-#include <built_in_led.h>
+//#include <built_in_led.h>
 #include <chassis.h>
 #include <gpio.h>
 #include <ir_remote.h>
 #include <i2c.h>
-#include <display.h>
 
 #include <esp_err.h>
 #include <esp_log.h>
@@ -33,9 +32,11 @@
 #include <esp32-hal-gpio.h>
 #include <mpu9250_lua_interface.h>
 #include <tiny_block_base.h>
-#include <tiny_block_rgb_led.h>
+#include <tiny_block_ir_receiver.h>
 #include <tiny_block_motor_driver.h>
 #include <tiny_block_power.h>
+#include <tiny_block_rgb_led.h>
+#include <tiny_block_display.h>
 
 static const char *TAG = "HuGo";
 
@@ -74,18 +75,18 @@ void app_main()
     //peripheral event loop is performed in a task
     xTaskCreate(&_peripheral_event_loop_task, "_peripheral_event_loop_task",  4096, (void *)NULL, 2, NULL);
 
-    hugo_built_in_led_init_module(L);
+    //hugo_built_in_led_init_module(L);
     hugo_timer_init_module(L);
     hugo_gpio_init_module(L);
     //hugo_chassis_init_module(L, LEFT_FRONT_PIN, LEFT_BACK_PIN, RIGHT_FRONT_PIN, RIGHT_BACK_PIN);
     //hugo_ir_remote_init_module(L, IR_REMOTE_PIN);
     //hugo_mpu9250_init(L, MPU9250_FILL_ACCEL_Y | MPU9250_FILL_GYRO_Z);
-    //hugo_display_init(L, true);
-
     tiny_block_base_init(L);
     tiny_rgb_led_init(L);
     tiny_motor_block_init(L);
     tiny_power_init(L);
+    tiny_ir_receiver_init(L);
+    tiny_display_init(L, false);
 
     //REGISTER_LUA_FUNCTION(L, cl_task_delay);
     int status = luaL_dofile(L, "/lua/main.lua");

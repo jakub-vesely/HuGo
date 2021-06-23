@@ -11,6 +11,17 @@
 
 #define TAG "LuaPartition"
 
+static bool is_lua_partition_initialized(){
+    //erasing of flash is expected before each flashing - if ESP is flashed files are not present, if just starts, files  are present and doesnt have to be rewriten
+    //it is expected that main.lua is moved as last one
+    FILE *file;
+    if ((file = fopen("/lua/main.lua", "r"))){
+        fclose(file);
+        return true;
+    }
+    return false;
+}
+
 /*
 taken from file_serving example
 */
@@ -45,6 +56,9 @@ bool hugo_lua_partition_init(void)
     }
 
     ESP_LOGI(TAG, "Partition size: total: %d, used: %d", total, used);
-    create_lua_files();
+
+    if (!is_lua_partition_initialized()){
+        create_lua_files();
+    }
     return true;
 }

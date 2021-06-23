@@ -1,5 +1,15 @@
 #define EEPROM_DEFAULT_VALUE 0xFF
-#define EEPROM_RESERVED_MAX 0x0F
-#define I2C_COMMAND_RESERVED_MAX 0x0F
+#define EEPROM_RESERVED_MAX 0x05 //currently used 1 byte for I2C address
 
-#define I2C_COMMAND_CHANGE_I2C_ADDRESS 0x01
+#define I2C_ADDRESS_NONE                0xFF
+#define I2C_COMMAND_CHANGE_I2C_ADDRESS  0xFE
+#define I2C_COMMAND_NONE                0xFF
+
+#define I2C_BLOCK_TYPE_ID_POWER         0x01
+#define I2C_BLOCK_TYPE_ID_RGB           0x02
+#define I2C_BLOCK_TYPE_ID_MOTOR_DRVR    0x03
+#define I2C_BLOCK_TYPE_ID_IR            0x04
+#define I2C_BLOCK_TYPE_ID_DISPLAY       0x05
+
+#define I2C_BLOCK_TYPE_ID_BASE          0xFA //diferent from CHANGE_I2C_ADDRESS command
+#define I2C_BLOCK_TYPE_ID_NONE          0xFF

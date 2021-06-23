@@ -109,7 +109,7 @@ static bool _ring_buffer_push(loop_properties *properties, uint8_t event_id, voi
     }
     else{
         if (data_size > EVENT_DATA_SIZE) {
-            ESP_LOGE(TAG, "Ask to store too large event data");
+            ESP_LOGE(TAG, "Ask to store too large event data %d > %d (event: %d)", data_size, EVENT_DATA_SIZE, event_id);
         }
         else{
             properties->event_ring_buffer[index].event_id = event_id;

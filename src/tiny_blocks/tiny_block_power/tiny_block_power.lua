@@ -14,7 +14,6 @@ Power.InaAddresses = {
 }
 
 function Power:is_charging()
-    print("self.address", self.address)
     return cl_power_is_charging(self.address)
 end
 

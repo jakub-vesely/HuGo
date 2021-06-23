@@ -9,7 +9,7 @@ local addresses = {}
 local function check_address(address)
     for index, value in ipairs(addresses) do
         if value == address then
-            print("address %s already present", address)
+            print("address", address, "already present") -- TODO: set a proper address when is changed
             return false
         end
     end
@@ -34,6 +34,20 @@ end
 function bf.power_block(address)
     if check_address(address) then
         return (require "tiny_block_power"):new(address)
+    end
+    return nil
+end
+
+function bf.ir_receiver_block(address)
+    if check_address(address) then
+        return (require "tiny_block_ir_receiver"):new(address)
+    end
+    return nil
+end
+
+function bf.display_block(address)
+    if check_address(address) then
+        return (require "tiny_block_display"):new(address)
     end
     return nil
 end

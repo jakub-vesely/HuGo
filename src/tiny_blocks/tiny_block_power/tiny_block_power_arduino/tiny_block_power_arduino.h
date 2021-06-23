@@ -2,10 +2,9 @@
 
 #include <hugo_tiny_block_defines.h>
 
-#define I2C_COMMAND_GET_CHARGING_STATE      I2C_COMMAND_RESERVED_MAX + 1 // charging, not charging
-//#define I2C_COMMAND_GET_INA_A0A1            I2C_COMMAND_RESERVED_MAX + 2 // A0, A1
-#define I2C_COMMAND_SET_INA_A0A1            I2C_COMMAND_RESERVED_MAX + 3
-#define I2C_COMMAND_GET_INA_I2C_ADDRESS     I2C_COMMAND_RESERVED_MAX + 4
+#define I2C_COMMAND_POWER_GET_CHARGING_STATE      0x01 // charging, not charging
+#define I2C_COMMAND_POWER_SET_INA_A0A1            0x02
+#define I2C_COMMAND_POWER_GET_INA_I2C_ADDRESS     0x03
 
 //not managed by attiny
 #define I2C_COMMAND_INA219_COFIGURATION     0x00
