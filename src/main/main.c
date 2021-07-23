@@ -27,7 +27,9 @@
 #include <timer.h>
 #include <unistd.h>
 #include <event_loop.h>
-
+#include <nvs_flash.h>
+#include <ble.h>
+#include <shell.h>
 #include <Arduino.h>
 #include <esp32-hal-gpio.h>
 #include <mpu9250_lua_interface.h>
@@ -75,9 +77,20 @@ void app_main()
     //peripheral event loop is performed in a task
     xTaskCreate(&_peripheral_event_loop_task, "_peripheral_event_loop_task",  4096, (void *)NULL, 2, NULL);
 
+    // Initialize NVS used for BLE. (initialized by initArduino)
+    // esp_err_t ret = nvs_flash_init();
+    // if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+    //     ESP_ERROR_CHECK(nvs_flash_erase());
+    //     ret = nvs_flash_init();
+    // }
+    // ESP_ERROR_CHECK( ret );
+    hugo_shell_init();
+    hugo_ble_initialize(L, "HuGo", hugo_shell_process_command);
+
     //hugo_built_in_led_init_module(L);
     hugo_timer_init_module(L);
     hugo_gpio_init_module(L);
+
     //hugo_chassis_init_module(L, LEFT_FRONT_PIN, LEFT_BACK_PIN, RIGHT_FRONT_PIN, RIGHT_BACK_PIN);
     //hugo_ir_remote_init_module(L, IR_REMOTE_PIN);
     //hugo_mpu9250_init(L, MPU9250_FILL_ACCEL_Y | MPU9250_FILL_GYRO_Z);
@@ -89,12 +102,13 @@ void app_main()
     tiny_display_init(L, false);
 
     //REGISTER_LUA_FUNCTION(L, cl_task_delay);
-    int status = luaL_dofile(L, "/lua/main.lua");
-    if (status) {
-        ESP_LOGE(TAG, "Lua Error: %s\n", lua_tostring(L, -1));
-        return;
+    if (!hugo_shell_is_program_suspended()){
+        int status = luaL_dofile(L, "/lua/main.lua");
+        if (status) {
+            ESP_LOGE(TAG, "Lua Error: %s\n", lua_tostring(L, -1));
+            return;
+        }
     }
-
     //hugo_ir_remote_start_listening();
     hugo_process_events(EVENT_LOOP_TYPE_PRIMARY, false);
 

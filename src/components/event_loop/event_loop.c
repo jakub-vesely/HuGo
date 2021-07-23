@@ -19,6 +19,7 @@ typedef struct {
     uint32_t event_id_counter; // if event loop will be used for timer and timer will be initialized every 100 ms it will take 13 years to reach max uint32
 } loop_properties;
 
+
 static loop_properties s_primary_loop_properties;
 
 static loop_properties s_peripheral_loop_properties;
@@ -102,6 +103,7 @@ bool hugo_remove_event_action(int loop_type, int event_id, action_func_t action)
 static bool _ring_buffer_push(loop_properties *properties, uint8_t event_id, void* data, int data_size) {
     _lock_acquire(&properties->lock);
     int result = false;
+
     int index = properties->ring_buffer_end;
     int new_end = (properties->ring_buffer_end + 1) % EVENT_LOOP_RING_BUFFER_SIZE;
     if (new_end == properties->ring_buffer_begin) {
@@ -162,10 +164,12 @@ static void _process_buffer(int loop_type)
         for (int i = 0; i < EVENT_ACTION_ARRAY_SIZE; ++i) {
             event_action_t item = properties->event_action_array[i];
             if (item.used && item.event_id == event_id) {
+                //ESP_LOGI(TAG, "raised event: %d", event_id);
                 item.action(data, data_size);
             }
         }
     }
+
 }
 
 void hugo_process_events(int loop_type, bool exit_if_empty)

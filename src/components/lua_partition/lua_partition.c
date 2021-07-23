@@ -8,14 +8,16 @@
 #include <esp_spi_flash.h>
 #include <esp_spiffs.h>
 #include <stdbool.h>
+#include <lua_partition.h>
 
 #define TAG "LuaPartition"
+#define MAIN_FILE_PATH LUA_PARTITION_PATH "/main.lua"
 
 static bool is_lua_partition_initialized(){
     //erasing of flash is expected before each flashing - if ESP is flashed files are not present, if just starts, files  are present and doesnt have to be rewriten
     //it is expected that main.lua is moved as last one
     FILE *file;
-    if ((file = fopen("/lua/main.lua", "r"))){
+    if ((file = fopen(MAIN_FILE_PATH, "r"))){
         fclose(file);
         return true;
     }
@@ -30,7 +32,7 @@ bool hugo_lua_partition_init(void)
     ESP_LOGI(TAG, "Initializing SPIFFS");
 
     esp_vfs_spiffs_conf_t conf = {
-      .base_path = "/lua",
+      .base_path = LUA_PARTITION_PATH,
       .partition_label = NULL,
       .max_files = 64,   // This decides the maximum number of files that can be created on the storage
       .format_if_mount_failed = true

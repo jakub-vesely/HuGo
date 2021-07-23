@@ -2,6 +2,7 @@ set (main_dir ${CMAKE_CURRENT_SOURCE_DIR}/../../main)
 set(component_dir ${CMAKE_CURRENT_SOURCE_DIR}/..)
 set(tiny_block_dir ${CMAKE_CURRENT_SOURCE_DIR}/../../tiny_blocks)
 set(lua_files
+    ${component_dir}/ble/ble.lua
     ${component_dir}/built_in_led/built_in_led.lua
     ${component_dir}/chassis/chassis.lua
     ${component_dir}/gpio/gpio.lua
