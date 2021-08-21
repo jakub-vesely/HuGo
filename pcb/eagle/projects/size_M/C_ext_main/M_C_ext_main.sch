@@ -9899,7 +9899,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="C.R6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="5k1"/>
 <part name="C.F2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2"/>
 <part name="C.F1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2"/>
-<part name="PROGRAMMING" library="testpad" library_urn="urn:adsk.eagle:library:385" deviceset="TP" device="B1,27" package3d_urn="urn:adsk.eagle:package:27944/2"/>
+<part name="PROG" library="testpad" library_urn="urn:adsk.eagle:library:385" deviceset="TP" device="B1,27" package3d_urn="urn:adsk.eagle:package:27944/2"/>
 </parts>
 <sheets>
 <sheet>
@@ -9985,7 +9985,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <attribute name="NAME" x="168.91" y="69.977" size="1.778" layer="95"/>
 <attribute name="VALUE" x="168.91" y="65.659" size="1.778" layer="96"/>
 </instance>
-<instance part="PROGRAMMING" gate="G$1" x="119.38" y="157.48" smashed="yes">
+<instance part="PROG" gate="G$1" x="119.38" y="157.48" smashed="yes">
 <attribute name="NAME" x="123.19" y="146.05" size="1.778" layer="95" rot="R90"/>
 <attribute name="TP_SIGNAL_NAME" x="120.65" y="156.21" size="1.778" layer="97"/>
 </instance>
@@ -10279,7 +10279,7 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <segment>
 <pinref part="U1" gate="IC" pin="!RST!"/>
 <wire x1="119.38" y1="154.94" x2="116.84" y2="154.94" width="0.1524" layer="91"/>
-<pinref part="PROGRAMMING" gate="G$1" pin="TP"/>
+<pinref part="PROG" gate="G$1" pin="TP"/>
 </segment>
 </net>
 </nets>
