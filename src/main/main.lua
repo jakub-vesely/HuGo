@@ -96,6 +96,40 @@
 -- gpio.set_logic_value(33, 0)
 -- timer.call_after_time(ChangeDirection, 1)
 
+local hours = 0
+local minutes = 0
+local seconds = 0
+
+local function value_getter(property_id)
+    print("called getter for peroperty_id", property_id)
+    return 42
+end
+
+local function value_setter(property_id, value)
+    print("called setter for peroperty_id", property_id, value)
+    if property_id == 1 then
+        hours = value
+    elseif property_id == 2 then
+        minutes = value
+    elseif property_id == 3 then
+        seconds = value
+    else
+        return false
+    end
+    return true
+end
+
+local function commander(command_id, data)
+    print("called commander", command_id, data)
+    return true
+end
+
+local ble = require "ble"
+ble.register_getter(1, value_getter)
+ble.register_setter(1, value_setter)
+ble.register_setter(2, value_setter)
+ble.register_setter(3, value_setter)
+ble.register_command(1, commander)
 print("behavior definition started")
 local block_factory = require "block_factory"
 local timer = require("timer")
@@ -103,15 +137,31 @@ local timer = require("timer")
 local display = block_factory.display_block(0x02)
 display:print_text_8x8(0, 0, 64, 48, "A1A2A3a4\nB1B2B3b\nC1C2C3c\nD1D2D3d\nE1E2E3e\nF1F2F3f4", true)
 display:showtime()
-local counter = 0;
-
+local counter = 1
 function display_counter()
     display:clean()
-    local text = tostring(counter)
-    print(text)
-    display:print_text_8x8(0, 0, 64, 48, text, true)
+    --local text =  ":" tostring(math.floor(minutes)) ":" tostring(math.floor(seconds))
+    --print(text)
+    -- if hours > 9 then
+    --     display:print_text_8x8(0, 0, 64, 48, tostring(math.floor(hours)), true)
+    -- else
+    --     display:print_text_8x8(8, 0, 64, 48, tostring(math.floor(hours)), true)
+    -- end
+    -- display:print_text_8x8(16, 0, 64, 48, ":", true)
+
+    -- if minutes > 9 then
+    --     display:print_text_8x8(24, 0, 64, 48, tostring(math.floor(minutes)), true)
+    -- else
+    --     display:print_text_8x8(24, 0, 64, 48, "0", true)
+    --     display:print_text_8x8(32, 0, 64, 48, tostring(math.floor(minutes)), true)
+    -- end
+
+    --display:print_text_8x16(10, 20, 64, 48, tostring(math.floor(seconds)), true)
+
+    display:print_text_8x8(10, 20, 64, 48, tostring(counter), true)
+    counter = counter    + 1
     display:showtime()
-    counter = counter + 1
+    --counter = counter + 1
     timer.call_after_time(display_counter, 1)
 end
 display_counter()

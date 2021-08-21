@@ -242,12 +242,12 @@ static int cl_display_print_text_8x16(lua_State *L)
     else {
         hugo_graphics_print_text_8x16(
             s_blocks[index].adapter,
-            lua_tointeger(L, 1),
             lua_tointeger(L, 2),
             lua_tointeger(L, 3),
             lua_tointeger(L, 4),
-            (char*)lua_tostring(L, 5),
-            lua_toboolean(L, 6)
+            lua_tointeger(L, 5),
+            (char*)lua_tostring(L, 6),
+            lua_toboolean(L, 7)
         );
     }
     lua_pushinteger(L, index != -1);

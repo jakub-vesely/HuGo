@@ -5,4 +5,6 @@
 
 #pragma once
 
+#define LUA_PARTITION_PATH "/lua"
+
 bool hugo_lua_partition_init(void);
