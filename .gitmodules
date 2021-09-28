@@ -10,3 +10,7 @@
 [submodule "tiny_blocks/external/TinyWireS"]
 	path = tiny_blocks/external/TinyWireS
 	url = git@github.com:jakub-vesely/TinyWireS.git
+[submodule "micropython"]
+    path = micropython
+	url = git@github.com:jakub-vesely/micropython.git
+
