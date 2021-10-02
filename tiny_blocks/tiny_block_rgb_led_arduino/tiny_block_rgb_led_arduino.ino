@@ -37,6 +37,7 @@ const uint8_t aquamarine[3] = {0, 255, 127};
 
 const uint8_t magenta[3] = {255, 0, 127};
 const uint8_t violet[3] = {127, 0, 255};
+const uint8_t* ext_addresses = { 0x00 };
 
 uint8_t rgb[3] = {255, 255, 255}; //default is white/ON
 
@@ -118,7 +119,7 @@ void setup()
     pinMode(LED_G, OUTPUT);
     pinMode(LED_B, OUTPUT);
 
-    HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_RGB);
+    HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_RGB, ext_addresses);
 }
 
 // the loop function runs over and over again forever

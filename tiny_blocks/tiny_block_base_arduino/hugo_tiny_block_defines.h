@@ -2,6 +2,11 @@
 #define EEPROM_RESERVED_MAX 0x05 //currently used 1 byte for I2C address
 
 #define I2C_ADDRESS_NONE                0xFF
+
+#define I2C_COMMAND_GET_EXT_COUNT       0xFA
+#define I2C_COMMAND_GET_EXT_ADDRESS     0xFB
+#define I2C_COMMAND_SET_EXT_ADDRESS     0xFC
+#define I2C_COMMAND_GET_EXT_ADDR_LIST   0xFD
 #define I2C_COMMAND_CHANGE_I2C_ADDRESS  0xFE
 #define I2C_COMMAND_NONE                0xFF
 

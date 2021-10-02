@@ -6,11 +6,20 @@ typedef struct wire_buffer_t {
     uint8_t size;
 };
 
-//this function processes receiverd i2c command by a particular block - muse be implemented by the including file
+// this function processes received i2c command by a particular block - muse be implemented in te .ino file
 void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
 
-//defines listening and sending callback functions and starts I2C
-void HugoTinyWireInitialize(uint8_t block_type_id);
+// returns I2C address of extension - muse be implemented in te .ino file
+// return address of ext module defined by index
+uint8_t HugoTinyWireGetExtAddress(uint8_t extension_index);
+
+// set I2C address of extension - muse be implemented in te .ino file
+// returns true if successfully set
+bool HugoTinyWireSetExtAddress(uint8_t extension_index, uint8_t address);
+
+// defines listening and sending callback functions and starts I2C
+// ext_addresses is list tof extension which are list of possible addresses. addresslists are terminated by 0x00
+void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t* ext_addresses);
 
 uint8_t HugoTinyWireRead();
 wire_buffer_t* HugoTinyGetBuffer();
