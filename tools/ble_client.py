@@ -163,10 +163,12 @@ def stop_program():
   logging.debug("terminating_program DONE")
 
 def start_program():
-  logging.info("starting_program...")
-  ble.command(Commands.SHELL_START_PROGRAM, b"") #start program
-  logging.debug("starting_program DONE")
-
+  logging.info("starting program...")
+  error = ble.command(Commands.SHELL_START_PROGRAM, b"") #start program
+  if error == b"\1":
+    logging.info("starting program DONE")
+  else:
+    logging.warning("program crashed with error: \n%s", error.decode("utf-8"))
 def get_remote_files():
   remote_files = {}
   while True:
@@ -239,7 +241,7 @@ else:
 
     start_program()
     if uploaded:
-      logging.info("Uploading done")
+      logging.info("Uploading DONE")
     else:
       logging.info("All files are up-to-date")
 

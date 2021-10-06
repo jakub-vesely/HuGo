@@ -5,6 +5,8 @@ Clock Speed: 10MHz
 Programmer: jtag2updi (megaTinyCore)
 */
 
+void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
+
 #include <hugo_tiny_wire.h>
 #include <hugo_tiny_block_defines.h>
 #include "tiny_block_rgb_led_arduino.h"
@@ -19,26 +21,9 @@ Programmer: jtag2updi (megaTinyCore)
 #define G_COMP 100
 #define B_COMP 75
 
+#define I2C_COMMAND_RGB_SET_RGB 1 // followed by 3 bytes (RGB)
+
 const uint8_t black[3] = {0, 0 ,0};
-const uint8_t white[3] = {255, 255 ,255};
-
-const uint8_t red[3] = {255, 0 ,0};
-const uint8_t green[3] = {0, 255, 0};
-const uint8_t blue[3] = {0, 0 ,255};
-
-const uint8_t yellow[3] = {255, 225,0};
-const uint8_t purple[3] = {255, 0 ,255};
-const uint8_t cyan[3] = {0, 255, 255};
-
-const uint8_t orange[3] = {255, 127,0};
-const uint8_t greenyellow[3] = {127, 255,0};
-const uint8_t skyblue[3] = {0, 127,255};
-const uint8_t aquamarine[3] = {0, 255, 127};
-
-const uint8_t magenta[3] = {255, 0, 127};
-const uint8_t violet[3] = {127, 0, 255};
-const uint8_t* ext_addresses = { 0x00 };
-
 uint8_t rgb[3] = {255, 255, 255}; //default is white/ON
 
 int counter = 0;
@@ -53,7 +38,7 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
         rgb[2] = HugoTinyWireRead();
       }
       break;
-    case I2C_COMMAND_RGB_SET_ON:
+/*    case I2C_COMMAND_RGB_SET_ON:
       memcpy(rgb, white, 3);
       break;
     case I2C_COMMAND_RGB_SET_OFF:
@@ -108,7 +93,7 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
             break;
         }
       }
-      break;
+      break;*/
   }
 }
 
@@ -119,7 +104,7 @@ void setup()
     pinMode(LED_G, OUTPUT);
     pinMode(LED_B, OUTPUT);
 
-    HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_RGB, ext_addresses);
+    HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_RGB, NULL, 0);
 }
 
 // the loop function runs over and over again forever
