@@ -8,6 +8,7 @@ from bleak import BleakClient, BleakScanner
 from colorlog import ColoredFormatter
 import hashlib
 import os
+import keyboard
 
 class Commands:
   SHELL_VERSION               = 0x80
@@ -21,10 +22,10 @@ class Commands:
 
 class Ble():
   ble_message_max_size = 512
-  get_property_uuid = uuid.UUID("48754770-0000-1000-8000-00805F9B34FB")
-  set_property_uuid = uuid.UUID("48754771-0000-1000-8000-00805F9B34FB")
-  command_uuid = uuid.UUID("48754772-0000-1000-8000-00805F9B34FB")
-  log_uuid = uuid.UUID("48754773-0000-1000-8000-00805F9B34FB")
+  command_uuid = uuid.UUID("48754770-0000-1000-8000-00805F9B34FB")
+  log_uuid = uuid.UUID("48754771-0000-1000-8000-00805F9B34FB")
+  keyboard_uuid = uuid.UUID("48754772-0000-1000-8000-00805F9B34FB")
+  property_uuid = uuid.UUID("48754773-0000-1000-8000-00805F9B34FB")
 
   def __init__(self, mac_address):
     self.connected = False
@@ -96,6 +97,14 @@ class Ble():
       return None
     else:
       return self.loop.run_until_complete(self._command(command_id, data, wait_for_answer))
+
+  async def _key_pressed(self, scan_code, key_name):
+    data = scan_code.to_bytes(2, byteorder='big', signed=True) + key_name.encode("utf-8")
+    print(("data", data))
+    await self.client.write_gatt_char(self.keyboard_uuid, data, False)
+
+  def key_pressed(self, scan_code, key_name):
+    self.loop.create_task(self._key_pressed(scan_code, key_name))
 
   def _log_callback(self, _sender: int, data: bytearray):
     is_first = not self.log_msg
@@ -177,7 +186,18 @@ class Ble():
     logging.info("disconnecting DONE")
     self.connected = False
 
+  def keyboard_monitor(self, key_event):
+    print(key_event.name, key_event.scan_code)
+    if key_event.name == "esc":
+      keyboard.unhook_all()
+      self.terminating = True
+
+    self.key_pressed(key_event.scan_code, key_event.name)
+
   async def _async_monitor(self):
+    logging.info("Keyboard monitoring. Press 'Esc' to finish.")
+    keyboard.on_press(self.keyboard_monitor, suppress=True)
+
     while True:
       if self.terminating:
         logging.debug("terminating...")
@@ -185,6 +205,7 @@ class Ble():
 
       if not self.connected:
         await self._connect()
+
       await asyncio.sleep(0.1)
 
   def monitor(self):
