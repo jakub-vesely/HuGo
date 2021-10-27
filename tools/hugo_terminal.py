@@ -100,7 +100,6 @@ class Ble():
 
   async def _key_pressed(self, scan_code, key_name):
     data = scan_code.to_bytes(2, byteorder='big', signed=True) + key_name.encode("utf-8")
-    print(("data", data))
     await self.client.write_gatt_char(self.keyboard_uuid, data, False)
 
   def key_pressed(self, scan_code, key_name):
@@ -187,12 +186,11 @@ class Ble():
     self.connected = False
 
   def keyboard_monitor(self, key_event):
-    print(key_event.name, key_event.scan_code)
     if key_event.name == "esc":
       keyboard.unhook_all()
       self.terminating = True
-
-    self.key_pressed(key_event.scan_code, key_event.name)
+    else:
+      self.key_pressed(key_event.scan_code, key_event.name)
 
   async def _async_monitor(self):
     logging.info("Keyboard monitoring. Press 'Esc' to finish.")
