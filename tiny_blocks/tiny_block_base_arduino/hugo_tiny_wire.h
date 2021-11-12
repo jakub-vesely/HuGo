@@ -1,33 +1,56 @@
 #pragma once
 
-
 // this function processes received i2c command by a particular block - muse be implemented in te .ino file
 void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
 
-// returns I2C address of extension - muse be implemented in te .ino file
-// return address of ext module defined by index
-uint8_t HugoTinyWireGetExtAddress(uint8_t extension_index);
+// returns I2C address of the active extension - muse be implemented in te .ino file
+uint8_t HugoTinyWireGetExtAddress();
 
-// set I2C address of extension - muse be implemented in te .ino file
-// returns true if successfully set
-bool HugoTinyWireChangeExtAddress(uint8_t extension_index, uint8_t address);
+// set I2C address of the active extension - muse be implemented in te .ino file
+void HugoTinyWireChangeExtAddress(uint8_t address);
 // defines listening and sending callback functions and starts I2C
 // ext_addresses is list tof extension which are list of possible addresses. addresslists are terminated by 0x00
-void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t* ext_addresses, uint8_t ext_addresses_size);
+void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t** ext_addresses);
 
 uint8_t HugoTinyWireRead();
 
+// fills module_type + mayor(PCB) version + minor(adjustments) version to s_buffer
+// muse be implemented in te .ino file
+void HugoTinyWireFillModuleVersion();
 
 //code located in header file to be possible to use conditional compilation (HUGO_TINY_EXTENSIONS)
 
 #include <stdint.h>
 #include "hugo_tiny_wire.h"
-#include "hugo_tiny_block_defines.h"
 #include <EEPROM.h>
 #include <Wire.h>
+#include<avr/wdt.h>
 
-#define EEPROM_I2C_ADDRESSS_POS 0x01
+#define EEPROM_DEFAULT_VALUE 0xFF
+#define EEPROM_RESERVED_MAX 0x05 //currently used 1 byte for I2C address
+#define EEPROM_I2C_ADDRESS_POS 0x01
+
+#define I2C_ADDRESS_NONE 0xFF
 #define I2C_DEFAULT_VALUE 0x02
+
+#define I2C_COMMAND_GET_MODULE_VERSION  0xF7
+#define I2C_COMMAND_ACTIVATE_EXTENSION  0xF8
+#define I2C_COMMAND_GET_EXT_COUNT       0xF9
+#define I2C_COMMAND_GET_EXT_ADDRESS     0xFA
+#define I2C_COMMAND_CHANGE_EXT_ADDRESS  0xFB
+#define I2C_COMMAND_GET_EXT_ADDR_COUNT  0xFC
+#define I2C_COMMAND_GET_EXT_ADDR_LIST   0xFD
+#define I2C_COMMAND_CHANGE_I2C_ADDRESS  0xFE
+#define I2C_COMMAND_NONE                0xFF
+
+#define I2C_BLOCK_TYPE_ID_POWER         0x01
+#define I2C_BLOCK_TYPE_ID_RGB           0x02
+#define I2C_BLOCK_TYPE_ID_MOTOR_DRVR    0x03
+#define I2C_BLOCK_TYPE_ID_IR            0x04
+#define I2C_BLOCK_TYPE_ID_DISPLAY       0x05
+
+#define I2C_BLOCK_TYPE_ID_BASE          0xFA //different from CHANGE_I2C_ADDRESS command
+#define I2C_BLOCK_TYPE_ID_NONE          0xFF
 
 typedef struct wire_buffer_t {
     uint8_t data[16]; //not big amount of data is expected 16B should be more than enough
@@ -37,9 +60,9 @@ typedef struct wire_buffer_t {
 uint8_t s_block_type_id = I2C_BLOCK_TYPE_ID_NONE;
 static wire_buffer_t s_buffer;
 
-#ifdef HUGO_TINY_EXTENSIONS
-    static uint8_t* s_ext_addresses = NULL;
-    static uint8_t s_ext_addresses_size = 0;
+#if defined(HUGO_TINY_EXTENSIONS) || defined (HUGO_TINY_ONE_EXTENSION)
+    static uint8_t** s_ext_addresses = NULL;
+    static uint8_t* s_active_extension = NULL;
 #endif
 
 static void i2c_request_event() {
@@ -81,64 +104,57 @@ static void i2c_receive_data(int count) {
         HugoTinyWireProcessCommand(command, count - 2);
     }
     else{
+        s_buffer.size = 0;
         switch (command){
-#ifdef HUGO_TINY_EXTENSIONS
-            case I2C_COMMAND_GET_EXT_COUNT:
-                s_buffer.data[0] = 0;
-                for (uint8_t index = 0; index < s_ext_addresses_size; ++index){
-                    if (s_ext_addresses[index] == 0x00){
-                        s_buffer.data[0]++;
-                    }
+#if defined(HUGO_TINY_EXTENSIONS)
+            case I2C_COMMAND_GET_EXT_COUNT:{
+                uint8_t index = 0;
+                while (s_ext_addresses[index] != NULL){
+                    index++;
                 }
+                s_buffer.data[0] = index;
+                s_buffer.size = 1;
+            }
+            break;
+#elif defined (HUGO_TINY_ONE_EXTENSION)
+            case I2C_COMMAND_GET_EXT_COUNT:
+                s_buffer.data[0] = 1;
                 s_buffer.size = 1;
             break;
-
+#endif
+#if defined(HUGO_TINY_EXTENSIONS)
+            case I2C_COMMAND_ACTIVATE_EXTENSION:
+                s_active_extension = s_ext_addresses[Wire.read()]
+            break;
+#endif
+#if defined(HUGO_TINY_EXTENSIONS) || defined (HUGO_TINY_ONE_EXTENSION)
             case I2C_COMMAND_GET_EXT_ADDRESS:
-                s_buffer.data[0] = HugoTinyWireGetExtAddress(Wire.read());
+                s_buffer.data[0] = HugoTinyWireGetExtAddress();
                 s_buffer.size = 1;
             break;
 
             case I2C_COMMAND_CHANGE_EXT_ADDRESS:{
-                uint8_t extension_index = Wire.read();
                 uint8_t new_address = Wire.read();
-                s_buffer.data[0] = HugoTinyWireChangeExtAddress(extension_index, new_address);
-                s_buffer.size = 1;
+                HugoTinyWireChangeExtAddress(new_address);
             }
             break;
 
             case I2C_COMMAND_GET_EXT_ADDR_COUNT:{
-                s_buffer.data[0] = 0; //size is the first byte
+                uint8_t index = 0;
+                while (s_active_extension[index] != 0x00){
+                    index++;
+                }
+                s_buffer.data[0] = index;
                 s_buffer.size = 1;
 
-                uint8_t order = Wire.read();
-                for (int8_t index = 0; index < s_ext_addresses_size; ++index){
-                    if (order == 0){
-                        if (s_ext_addresses[index] == 0x00){
-                            break;
-                        }
-                        s_buffer.data[0]++;
-                    }
-                    else if (s_ext_addresses[index] == 0x00){
-                        order--;
-                    }
-                }
             }
             break;
 
             case I2C_COMMAND_GET_EXT_ADDR_LIST:{
                 s_buffer.size = 0;
-
-                uint8_t order = Wire.read();
-                for (int8_t index = 0; index < s_ext_addresses_size; ++index){
-                    if (order == 0){
-                        if (s_ext_addresses[index] == 0x00){
-                            break;
-                        }
-                        s_buffer.data[s_buffer.size++] = s_ext_addresses[index];
-                    }
-                    else if (s_ext_addresses[index] == 0x00){
-                        order--;
-                    }
+                while (s_active_extension[s_buffer.size] != 0x00){
+                    s_buffer.data[s_buffer.size] = s_active_extension[s_buffer.size];
+                    s_buffer.size++;
                 }
             }
             break;
@@ -146,21 +162,31 @@ static void i2c_receive_data(int count) {
             case I2C_COMMAND_CHANGE_I2C_ADDRESS:
                 if (count  > 2){
                     uint8_t new_address = Wire.read();
-                    EEPROM.write(EEPROM_I2C_ADDRESSS_POS, new_address);
+                    EEPROM.write(EEPROM_I2C_ADDRESS_POS, new_address);
+
+                    // workaround standard wire do not allow to change i2c address
+                    // it seems avr do not have an instruction for soft reset reset van be done via watchdog
+                    // minimal WTD timeout is 15 milisec
+                    wdt_enable(WDTO_15MS);
+                    while(1){};
+
                 }
             break;
+            case I2C_COMMAND_GET_MODULE_VERSION:
+                HugoTinyWireFillModuleVersion();
+                break;
         }
     }
 }
 
-void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t* ext_addresses, uint8_t ext_addresses_size){
+void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t** ext_addresses){
     s_block_type_id = block_type_id;
     s_buffer.size = 0;
-#ifdef HUGO_TINY_EXTENSIONS
+#if defined(HUGO_TINY_EXTENSIONS) || defined (HUGO_TINY_ONE_EXTENSION)
     s_ext_addresses = ext_addresses;
-    s_ext_addresses_size = ext_addresses_size;
+    s_active_extension = ext_addresses[0];
 #endif
-    uint8_t address = EEPROM.read(EEPROM_I2C_ADDRESSS_POS);
+    uint8_t address = EEPROM.read(EEPROM_I2C_ADDRESS_POS);
     if (address == EEPROM_DEFAULT_VALUE){
         address =  I2C_DEFAULT_VALUE;
     }
@@ -170,6 +196,6 @@ void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t* ext_addresses, uint8
     Wire.onRequest(i2c_request_event);
 }
 
-uint8_t HugoTinyWireRead(){
+uint8_t HugoTinyWireRead() {
     return Wire.read();
 }

@@ -11856,7 +11856,7 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <junction x="-96.52" y="162.56"/>
 </segment>
 </net>
-<net name="PA3" class="0">
+<net name="STAT1" class="0">
 <segment>
 <pinref part="D.U1" gate="G$1" pin="STAT1"/>
 <wire x1="-78.74" y1="200.66" x2="-81.28" y2="200.66" width="0.1524" layer="91"/>
@@ -11994,7 +11994,7 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <pinref part="P+2" gate="VCC" pin="VCC"/>
 </segment>
 </net>
-<net name="N$3" class="0">
+<net name="PA3" class="0">
 <segment>
 <pinref part="D.J2" gate="A" pin="5"/>
 <wire x1="-129.54" y1="116.84" x2="-91.44" y2="116.84" width="0.1524" layer="91"/>

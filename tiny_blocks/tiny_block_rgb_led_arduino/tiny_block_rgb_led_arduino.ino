@@ -6,11 +6,12 @@ Programmer: jtag2updi (megaTinyCore)
 */
 
 void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
+void HugoTinyWireFillModuleVersion();
 
 #include <hugo_tiny_wire.h>
-#include <hugo_tiny_block_defines.h>
-#include "tiny_block_rgb_led_arduino.h"
 
+#define PCB_VERSION 1
+#define ADJUSTMENT_VERSION 1
 //#include <Time.h>
 #define LED_R PIN_PA6
 #define LED_G PIN_PA7
@@ -95,6 +96,13 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
       }
       break;*/
   }
+}
+
+void HugoTinyWireFillModuleVersion(){
+  s_buffer.data[0] = I2C_BLOCK_TYPE_ID_RGB;
+  s_buffer.data[1] = 0;
+  s_buffer.data[2] = 0;
+  s_buffer.size = 3;
 }
 
 void setup()

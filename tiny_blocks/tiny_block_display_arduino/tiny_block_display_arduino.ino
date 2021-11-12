@@ -8,16 +8,15 @@ Programmer: jtag2updi (megaTinyCore)
 */
 
 void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
-uint8_t HugoTinyWireGetExtAddress(uint8_t extension_index);
-bool HugoTinyWireChangeExtAddress(uint8_t extension_index, uint8_t address);
+uint8_t HugoTinyWireGetExtAddress();
+void HugoTinyWireChangeExtAddress(uint8_t address);
+void HugoTinyWireFillModuleVersion();
 
-#define HUGO_TINY_EXTENSIONS
+#define HUGO_TINY_ONE_EXTENSION
 
 #include <hugo_tiny_wire.h>
 #include <avr/sleep.h>
 #include <EEPROM.h>
-//#include <hugo_tiny_block_base_arduino.h>
-#include "tiny_block_display_arduino.h"
 
 #define WIDTH   64
 #define HEIGHT  48
@@ -28,9 +27,13 @@ bool HugoTinyWireChangeExtAddress(uint8_t extension_index, uint8_t address);
 
 #define I2C_COMMAND_DISP_GET_DIMENSIONS 0x03
 
-static const uint8_t ext_addresses[3] = { 0x3c, 0x3d, 0x00 };
+#define EXT_ADDRESS_NA0   0x3c
+#define EXT_ADDRESS_A0    0x3d
 
-static uint8_t s_ssd_a0; //lowest bite is relevant
+static const uint8_t ext1_addresses[3] = { EXT_ADDRESS_NA0, EXT_ADDRESS_A0, 0x00 };
+static const uint8_t* ext_addresses[2] = { (uint8_t*)ext1_addresses, NULL };
+
+static uint8_t s_current_ext_address = 0;
 
 void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
   switch (command){
@@ -42,41 +45,33 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
   }
 }
 
-void set_ssd_a0_pin(){
-  digitalWrite(SSD_A0_PIN, s_ssd_a0 != 0);
+uint8_t HugoTinyWireGetExtAddress(){
+  return s_current_ext_address;
 }
 
-uint8_t HugoTinyWireGetExtAddress(uint8_t extension_index){
-  return s_ssd_a0 ? ext_addresses[1] : ext_addresses[0];
-}
-
-bool HugoTinyWireChangeExtAddress(uint8_t extension_index, uint8_t address){
-  if (extension_index == 0){
-    if (address == ext_addresses[0]){
-      s_ssd_a0 = 0;
-    }
-    else if (address == ext_addresses[1]){
-      s_ssd_a0 = 1;
-    }
-    else{
-      return false;
-    }
-    EEPROM.write(EEPROM_A0_POS, s_ssd_a0);
-    set_ssd_a0_pin();
-    return true;
-  }
-  return false;
+void HugoTinyWireChangeExtAddress( uint8_t address){
+  s_current_ext_address = address;
+  uint8_t a0_value = (address == EXT_ADDRESS_A0 ? 1 : 0);
+  EEPROM.write(EEPROM_A0_POS, a0_value);
+  digitalWrite(SSD_A0_PIN, a0_value);
 }
 
 void setup(){
   pinMode(SSD_A0_PIN, OUTPUT);
+  uint8_t a0_value = EEPROM.read(EEPROM_A0_POS);  //default value of eeprom should be 0xFF
+  s_current_ext_address = a0_value ? EXT_ADDRESS_A0 : EXT_ADDRESS_NA0;
+  digitalWrite(SSD_A0_PIN, a0_value);
 
-  s_ssd_a0 = EEPROM.read(EEPROM_A0_POS); //default value should be 0xFF
-  set_ssd_a0_pin();
-
-  HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_DISPLAY, (uint8_t *)ext_addresses, sizeof(ext_addresses));
+  HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_DISPLAY, (uint8_t**)ext_addresses);
 }
 
-void loop(){
+void HugoTinyWireFillModuleVersion(){
+  s_buffer.data[0] = I2C_BLOCK_TYPE_ID_DISPLAY;
+  s_buffer.data[1] = 0;
+  s_buffer.data[2] = 0;
+  s_buffer.size = 3;
+}
+
+void loop() {
   delayMicroseconds(500);
 }

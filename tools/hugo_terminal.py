@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import sys
 import argparse
 import time
@@ -9,6 +11,7 @@ from colorlog import ColoredFormatter
 import hashlib
 import os
 import keyboard
+#import toga
 
 class Commands:
   SHELL_VERSION               = 0x80
@@ -27,7 +30,8 @@ class Ble():
   keyboard_uuid = uuid.UUID("48754772-0000-1000-8000-00805F9B34FB")
   property_uuid = uuid.UUID("48754773-0000-1000-8000-00805F9B34FB")
 
-  def __init__(self, mac_address):
+  def __init__(self, hook_keyboard, mac_address):
+    self.hook_keyboard = hook_keyboard
     self.connected = False
     self.notification_data = None
     self.mac_address = mac_address
@@ -37,44 +41,12 @@ class Ble():
     self.log_level = 0
     self.terminating = False
 
-    self.loop = asyncio.new_event_loop()
+    self.loop = asyncio.get_event_loop()
     logging.getLogger('bleak').setLevel(logging.CRITICAL)
 
   def _disconnected_callback(self, client):
     logging.debug("disconnected callback for: %s", client)
     self.connected = False
-
-  # async def _notyfy_callback(self, sender: int, data: bytearray):
-  #   logging.debug("notification from: %d, %s", sender, str(data))
-  #   self.notification_data = data
-
-  # async def _get_value_notyfy_callback(self, sender: int, data: bytearray):
-  #   self.notification_data = data
-
-  # async def _get_value(self, property_id):
-  #   self.notification_data = None
-  #   answer = await self.client.write_gatt_char(self.get_property_uuid, bytes([property_id]), False)
-  #   while not self.notification_data:
-  #     await asyncio.sleep(0.01)
-
-  # def get_value(self, property_id):
-  #   return self.loop.run_until_complete(self._get_value(property_id))
-
-  # async def _set_value_notyfy_callback(self, sender: int, data: bytearray):
-  #   self.notification_data = data
-
-  # async def _set_value(self, property_id, value):
-  #   data = bytes([property_id])
-  #   data += struct.pack("d", value)
-
-  #   self.notification_data = None
-  #   answer = await self.client.write_gatt_char(self.set_property_uuid, data, False)
-  #   while not self.notification_data:
-  #     await asyncio.sleep(0.01)
-
-  # def set_value(self, property_id, value):
-  #   return self.loop.run_until_complete(self._set_value(property_id, value))
-
 
   def _command_notyfy_callback(self, _sender: int, data: bytearray):
     self.notification_data = data
@@ -193,8 +165,9 @@ class Ble():
       self.key_pressed(key_event.scan_code, key_event.name)
 
   async def _async_monitor(self):
-    logging.info("Keyboard monitoring. Press 'Esc' to finish.")
-    keyboard.on_press(self.keyboard_monitor, suppress=True)
+    if self.hook_keyboard:
+      logging.info("Keyboard monitoring. Press 'Esc' to finish.")
+      keyboard.on_press(self.keyboard_monitor, suppress=True)
 
     while True:
       if self.terminating:
@@ -213,10 +186,12 @@ class Ble():
       self.terminating = True
 
 class Terminal():
-  flashing_folder = "./export"
-  def __init__(self, mac_address, verbose):
+  devel_flashing_folder = "./devel"
+  release_flashing_folder = "./upload"
+  def __init__(self, hook_keyboard, mac_address, verbose, devel):
+    self.flashing_folder = self.devel_flashing_folder if devel else self.release_flashing_folder
     self._init_logger(logging.DEBUG if verbose else logging.INFO)
-    self.ble = Ble(mac_address)
+    self.ble = Ble(hook_keyboard, mac_address)
 
   def _init_logger(self, log_level):
     REMOTE_CRITICAL = 51
@@ -225,11 +200,11 @@ class Terminal():
     REMOTE_INFO     = 21
     REMOTE_DEBUG    = 11
 
-    logging.addLevelName(REMOTE_CRITICAL, " CRITICAL")
-    logging.addLevelName(REMOTE_ERROR, " ERROR")
-    logging.addLevelName(REMOTE_WARNING, " WARNING")
-    logging.addLevelName(REMOTE_INFO, " INFO")
-    logging.addLevelName(REMOTE_DEBUG, " DEBUG")
+    logging.addLevelName(REMOTE_CRITICAL, "=CRITICAL")
+    logging.addLevelName(REMOTE_ERROR, "=ERROR")
+    logging.addLevelName(REMOTE_WARNING, "=WARNING")
+    logging.addLevelName(REMOTE_INFO, "=INFO")
+    logging.addLevelName(REMOTE_DEBUG, "=DEBUG")
 
     stream_handler = logging.StreamHandler()
     stream_handler.setFormatter(ColoredFormatter(
@@ -240,11 +215,11 @@ class Terminal():
           "WARNING": "yellow",
           "INFO": "green",
           "DEBUG": "white",
-          " CRITICAL": "bold_red,bg_white",
-          " ERROR": "bold_red",
-          " WARNING": "bold_yellow",
-          " INFO": "bold_green",
-          " DEBUG": "bold_white"
+          "=CRITICAL": "bold_red,bg_white",
+          "=ERROR": "bold_red",
+          "=WARNING": "bold_yellow",
+          "=INFO": "bold_green",
+          "=DEBUG": "bold_white"
         }
     ))
     stream_handler.setLevel(log_level)
@@ -365,23 +340,51 @@ def process_cmd_arguments():
 
   parser = argparse.ArgumentParser(description='This tool provide a BLE communication interface for HuGo module kit')
 
-  parser.add_argument('--flash', '-f', action='store_true', help=f'Uploads content of the"{Terminal.flashing_folder}" directory to device. Deprecated file will be removed.')
+  parser.add_argument('--flash', '-f', action='store_true', help=f'Uploads content of one of "self.devel_flashing_folder", "self.release_flashing_folderdirectory" directories to device (in base of --devel option). Deprecated content will be removed.')
+  parser.add_argument('--keyboard', '-k', action='store_true', help='read pressed keys and provide them as a remore control.')
   parser.add_argument('--monitor', '-m', action='store_true', help='Stay conected to receive log messages.')
   parser.add_argument('--mac_address', '-a', help='mac address of the main HuGo module')
   parser.add_argument('--verbose', '-v', action='store_true', help='debug messages are printed')
+  parser.add_argument('--devel', '-d', action='store_true', help='files from the "devel" directory will be uploaded')
+
   args = parser.parse_args()
   if not args.flash and not args.monitor:
     parser.print_help()
     return(None, None, None, None)
 
-  return (args.flash, args.monitor, args.mac_address, args.verbose)
+  return (args.flash, args.keyboard, args.monitor, args.mac_address, args.verbose, args.devel)
+
+# def button_handler(widget):
+#     print("hello")
+
+
+def build(app):
+    box = toga.Box()
+
+    # button = toga.Button('Hello world', on_press=button_handler)
+    # button.style.padding = 50
+    # button.style.flex = 1
+    # box.add(button)
+
+    return box
 
 def main():
-  flash, monitor, mac_address, verbose = process_cmd_arguments()
+  flash, keyboard, monitor, mac_address, verbose, devel = process_cmd_arguments()
   if not flash and not monitor:
     return True
 
-  terminal = Terminal(mac_address, verbose)
+  # app = toga.App(
+  #       'HuGo terminal',
+  #       'org.hugo.terminal',
+  #       author='Jakub Vesely',
+  #       description="service app for HuGo project",
+  #       version="1",
+  #       home_page="https://github.com/jakub-vesely/HuGo",
+  #       startup=build
+  #   )
+  #app.main_loop()
+
+  terminal = Terminal(keyboard, mac_address, verbose, devel)
   if not terminal.connect():
     return False
 
