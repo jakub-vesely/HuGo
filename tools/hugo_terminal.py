@@ -186,10 +186,8 @@ class Ble():
       self.terminating = True
 
 class Terminal():
-  devel_flashing_folder = "./devel"
-  release_flashing_folder = "./upload"
-  def __init__(self, hook_keyboard, mac_address, verbose, devel):
-    self.flashing_folder = self.devel_flashing_folder if devel else self.release_flashing_folder
+  def __init__(self, hook_keyboard, mac_address, verbose, source_dir):
+    self.flashing_folder = source_dir
     self._init_logger(logging.DEBUG if verbose else logging.INFO)
     self.ble = Ble(hook_keyboard, mac_address)
 
@@ -278,7 +276,7 @@ class Terminal():
         local_files[file_name] = hashlib.sha1(data).digest().hex();
     return local_files
 
-  def _remove_unncesarry_files(self, remote_files, local_files):
+  def _remove_unnecessary_files(self, remote_files, local_files):
     removed = False
     for file_name in remote_files:
       self.ble.notification_data = None
@@ -311,7 +309,7 @@ class Terminal():
   def _process_files(self):
     remote_files = self._get_remote_files()
     local_files = self._get_local_files()
-    changed = self._remove_unncesarry_files(remote_files, local_files)
+    changed = self._remove_unnecessary_files(remote_files, local_files)
     changed |= self._import_files(remote_files, local_files)
     return changed
 
@@ -334,25 +332,21 @@ class Terminal():
     logging.info("Monitoring Terminated")
 
 def process_cmd_arguments():
-  flash = False
-  monitor = False
-  mac_address = None
-
   parser = argparse.ArgumentParser(description='This tool provide a BLE communication interface for HuGo module kit')
 
-  parser.add_argument('--flash', '-f', action='store_true', help=f'Uploads content of one of "self.devel_flashing_folder", "self.release_flashing_folderdirectory" directories to device (in base of --devel option). Deprecated content will be removed.')
-  parser.add_argument('--keyboard', '-k', action='store_true', help='read pressed keys and provide them as a remore control.')
-  parser.add_argument('--monitor', '-m', action='store_true', help='Stay conected to receive log messages.')
-  parser.add_argument('--mac_address', '-a', help='mac address of the main HuGo module')
+  parser.add_argument('--flash', '-f', action='store_true', help=f'Uploads content of folder specified by -s argument. When the -s argument is not entered "upload" folder will be used. Deprecated content will be removed.')
+  parser.add_argument('--mac_addr', '-a', help='mac address of the main HuGo module')
+  parser.add_argument('--monitor', '-m', action='store_true', help='Stay connected to receive log messages.')
+  parser.add_argument('--remote_control', '-r', action='store_true', help='read pressed keys and provide them as a remore control.')
   parser.add_argument('--verbose', '-v', action='store_true', help='debug messages are printed')
-  parser.add_argument('--devel', '-d', action='store_true', help='files from the "devel" directory will be uploaded')
+  parser.add_argument('--source_dir', '-s', default="upload", help='defines path to directory containing events.py which will be uploaded. If the source dir is not defined, the"upload" folder will be used.')
 
   args = parser.parse_args()
   if not args.flash and not args.monitor:
     parser.print_help()
-    return(None, None, None, None)
+    return None
 
-  return (args.flash, args.keyboard, args.monitor, args.mac_address, args.verbose, args.devel)
+  return args
 
 # def button_handler(widget):
 #     print("hello")
@@ -369,8 +363,11 @@ def build(app):
     return box
 
 def main():
-  flash, keyboard, monitor, mac_address, verbose, devel = process_cmd_arguments()
-  if not flash and not monitor:
+  args = process_cmd_arguments()
+  if not args:
+    return
+
+  if not args.flash and not args.monitor:
     return True
 
   # app = toga.App(
@@ -384,20 +381,21 @@ def main():
   #   )
   #app.main_loop()
 
-  terminal = Terminal(keyboard, mac_address, verbose, devel)
+  terminal = Terminal(args.remote_control, args.mac_addr, args.verbose, args.source_dir)
+  print(args.source_dir)
   if not terminal.connect():
     return False
 
   if not terminal.stop_program():
     return False
 
-  if flash:
+  if args.flash:
     if not terminal.flash_files():
       return False
 
   terminal.start_program()
 
-  if monitor:
+  if args.monitor:
     terminal.monitor()
 
   terminal.disconnect()

@@ -112,7 +112,7 @@ void setup()
     pinMode(LED_G, OUTPUT);
     pinMode(LED_B, OUTPUT);
 
-    HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_RGB, NULL, 0);
+    HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_RGB, NULL);
 }
 
 // the loop function runs over and over again forever
