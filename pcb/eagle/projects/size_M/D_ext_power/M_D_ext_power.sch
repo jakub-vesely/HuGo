@@ -11538,9 +11538,9 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <part name="D.C6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="4u7"/>
 <part name="D.U2" library="!stavebnice03" deviceset="STABILISER_APE8865" device="" value="LM3671_3.3"/>
 <part name="D.T1" library="!stavebnice03" deviceset="P-MOSFET-FDV304P" device="" value="FDV"/>
-<part name="D.C7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="22u"/>
+<part name="D.C7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="10u"/>
 <part name="D.R6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="3k3"/>
-<part name="D.R7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="100k"/>
+<part name="D.R7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="390k"/>
 <part name="D.D1" library="hugo" deviceset="LED_1.8_FLIPPED" device=""/>
 <part name="D.L1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="L-EU" device="L3230M" package3d_urn="urn:adsk.eagle:package:23481/3" value="2u2"/>
 <part name="D.LIPOL" library="pinhead2" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
@@ -11551,17 +11551,18 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <part name="D.U3" library="SamacSys_Parts" deviceset="INA219AIDR" device=""/>
 <part name="D.C1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="100n"/>
 <part name="D.R1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="4k7"/>
-<part name="D.F1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2"/>
+<part name="D.F1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="0.5A"/>
 <part name="D.R2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="5k1"/>
 <part name="D.R5" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="5k1"/>
 <part name="D.U1" library="SamacSys_Parts" deviceset="MCP73833-AMI_UN" device=""/>
 <part name="D.R9" library="hugo" deviceset="THERM" device="" value="TERM_10K"/>
-<part name="D.F2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2"/>
+<part name="D.F2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="1.1A"/>
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="P+2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
+<part name="D.C2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="4u7"/>
 </parts>
 <sheets>
 <sheet>
@@ -11576,9 +11577,9 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <attribute name="NAME" x="-42.1386" y="184.15" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="-37.338" y="153.67" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="D.C4" gate="G$1" x="-101.6" y="177.8" smashed="yes" rot="R180">
-<attribute name="NAME" x="-103.124" y="177.419" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="-103.124" y="182.499" size="1.778" layer="96" rot="R180"/>
+<instance part="D.C4" gate="G$1" x="-114.3" y="177.8" smashed="yes" rot="R180">
+<attribute name="NAME" x="-115.824" y="177.419" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="-115.824" y="182.499" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="D.C6" gate="G$1" x="-27.94" y="187.96" smashed="yes" rot="R180">
 <attribute name="NAME" x="-29.464" y="187.579" size="1.778" layer="95" rot="R180"/>
@@ -11595,15 +11596,15 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <attribute name="NAME" x="72.136" y="179.959" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="72.136" y="185.039" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="D.R6" gate="G$1" x="-96.52" y="208.28" smashed="yes" rot="R90">
-<attribute name="NAME" x="-98.0186" y="204.47" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="-93.218" y="204.47" size="1.778" layer="96" rot="R90"/>
+<instance part="D.R6" gate="G$1" x="-109.22" y="208.28" smashed="yes" rot="R90">
+<attribute name="NAME" x="-110.7186" y="204.47" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="-105.918" y="204.47" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="D.R7" gate="G$1" x="17.78" y="200.66" smashed="yes" rot="R270">
-<attribute name="NAME" x="19.2786" y="204.47" size="1.778" layer="95" rot="R270"/>
-<attribute name="VALUE" x="14.478" y="204.47" size="1.778" layer="96" rot="R270"/>
+<instance part="D.R7" gate="G$1" x="20.32" y="200.66" smashed="yes" rot="R270">
+<attribute name="NAME" x="21.8186" y="204.47" size="1.778" layer="95" rot="R270"/>
+<attribute name="VALUE" x="17.018" y="204.47" size="1.778" layer="96" rot="R270"/>
 </instance>
-<instance part="D.D1" gate="G$1" x="-83.82" y="200.66" smashed="yes"/>
+<instance part="D.D1" gate="G$1" x="-96.52" y="200.66" smashed="yes"/>
 <instance part="D.L1" gate="G$1" x="66.04" y="205.74" smashed="yes" rot="R90">
 <attribute name="NAME" x="69.85" y="204.2414" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="69.85" y="209.042" size="1.778" layer="96" rot="R180"/>
@@ -11616,9 +11617,9 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <attribute name="NAME" x="49.53" y="120.015" size="1.778" layer="95"/>
 <attribute name="VALUE" x="49.53" y="101.6" size="1.778" layer="96"/>
 </instance>
-<instance part="D.ON/OFF/RESET" gate="G$1" x="15.24" y="185.42" smashed="yes" rot="MR270"/>
-<instance part="U$1" gate="G$1" x="-142.24" y="175.26" smashed="yes">
-<attribute name="NAME" x="-147.32" y="195.58" size="1.27" layer="95"/>
+<instance part="D.ON/OFF/RESET" gate="G$1" x="17.78" y="185.42" smashed="yes" rot="MR270"/>
+<instance part="U$1" gate="G$1" x="-154.94" y="175.26" smashed="yes">
+<attribute name="NAME" x="-160.02" y="195.58" size="1.27" layer="95"/>
 </instance>
 <instance part="D.R8" gate="G$1" x="-17.78" y="195.58" smashed="yes" rot="R270">
 <attribute name="NAME" x="-16.2814" y="199.39" size="1.778" layer="95" rot="R270"/>
@@ -11632,21 +11633,21 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <attribute name="NAME" x="-36.576" y="107.061" size="1.778" layer="95"/>
 <attribute name="VALUE" x="-36.576" y="101.981" size="1.778" layer="96"/>
 </instance>
-<instance part="D.R1" gate="G$1" x="-96.52" y="190.5" smashed="yes" rot="R90">
-<attribute name="NAME" x="-98.0186" y="186.69" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="-93.218" y="189.23" size="1.778" layer="96" rot="R90"/>
+<instance part="D.R1" gate="G$1" x="-109.22" y="190.5" smashed="yes" rot="R90">
+<attribute name="NAME" x="-110.7186" y="186.69" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="-105.918" y="189.23" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="D.F1" gate="G$1" x="22.86" y="111.76" smashed="yes">
 <attribute name="NAME" x="19.05" y="113.157" size="1.778" layer="95"/>
 <attribute name="VALUE" x="19.05" y="108.839" size="1.778" layer="96"/>
 </instance>
-<instance part="D.R2" gate="G$1" x="-121.92" y="182.88" smashed="yes">
-<attribute name="NAME" x="-125.73" y="184.3786" size="1.778" layer="95"/>
-<attribute name="VALUE" x="-125.73" y="179.578" size="1.778" layer="96"/>
+<instance part="D.R2" gate="G$1" x="-134.62" y="182.88" smashed="yes">
+<attribute name="NAME" x="-138.43" y="184.3786" size="1.778" layer="95"/>
+<attribute name="VALUE" x="-138.43" y="179.578" size="1.778" layer="96"/>
 </instance>
-<instance part="D.R5" gate="G$1" x="-121.92" y="167.64" smashed="yes">
-<attribute name="NAME" x="-125.73" y="169.1386" size="1.778" layer="95"/>
-<attribute name="VALUE" x="-125.73" y="164.338" size="1.778" layer="96"/>
+<instance part="D.R5" gate="G$1" x="-134.62" y="167.64" smashed="yes">
+<attribute name="NAME" x="-138.43" y="169.1386" size="1.778" layer="95"/>
+<attribute name="VALUE" x="-138.43" y="164.338" size="1.778" layer="96"/>
 </instance>
 <instance part="D.U1" gate="G$1" x="-78.74" y="205.74" smashed="yes">
 <attribute name="NAME" x="-46.99" y="213.36" size="1.778" layer="95" align="center-left"/>
@@ -11674,6 +11675,10 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 </instance>
 <instance part="P+2" gate="VCC" x="0" y="144.78" smashed="yes">
 <attribute name="VALUE" x="-2.54" y="142.24" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="D.C2" gate="G$1" x="7.62" y="182.88" smashed="yes" rot="R180">
+<attribute name="NAME" x="6.096" y="182.499" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="6.096" y="187.579" size="1.778" layer="96" rot="R180"/>
 </instance>
 </instances>
 <busses>
@@ -11706,24 +11711,24 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 </net>
 <net name="VUSB" class="0">
 <segment>
-<wire x1="-109.22" y1="187.96" x2="-109.22" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="-121.92" y1="187.96" x2="-121.92" y2="215.9" width="0.1524" layer="91"/>
 <pinref part="D.C4" gate="G$1" pin="2"/>
-<wire x1="-101.6" y1="182.88" x2="-101.6" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="-114.3" y1="182.88" x2="-114.3" y2="215.9" width="0.1524" layer="91"/>
 <pinref part="D.T1" gate="G$1" pin="G"/>
 <wire x1="0" y1="213.36" x2="0" y2="215.9" width="0.1524" layer="91"/>
 <wire x1="0" y1="215.9" x2="-81.28" y2="215.9" width="0.1524" layer="91"/>
-<wire x1="-81.28" y1="215.9" x2="-96.52" y2="215.9" width="0.1524" layer="91"/>
-<wire x1="-96.52" y1="215.9" x2="-101.6" y2="215.9" width="0.1524" layer="91"/>
-<wire x1="-101.6" y1="215.9" x2="-109.22" y2="215.9" width="0.1524" layer="91"/>
-<wire x1="-109.22" y1="165.1" x2="-109.22" y2="124.46" width="0.1524" layer="91"/>
-<wire x1="-109.22" y1="124.46" x2="2.54" y2="124.46" width="0.1524" layer="91"/>
+<wire x1="-81.28" y1="215.9" x2="-109.22" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="-109.22" y1="215.9" x2="-114.3" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="-114.3" y1="215.9" x2="-121.92" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="-121.92" y1="165.1" x2="-121.92" y2="124.46" width="0.1524" layer="91"/>
+<wire x1="-121.92" y1="124.46" x2="2.54" y2="124.46" width="0.1524" layer="91"/>
 <wire x1="2.54" y1="124.46" x2="2.54" y2="116.84" width="0.1524" layer="91"/>
 <pinref part="U$1" gate="G$1" pin="VBUS1"/>
-<wire x1="-132.08" y1="187.96" x2="-109.22" y2="187.96" width="0.1524" layer="91"/>
+<wire x1="-144.78" y1="187.96" x2="-121.92" y2="187.96" width="0.1524" layer="91"/>
 <pinref part="U$1" gate="G$1" pin="VBUS2"/>
-<wire x1="-132.08" y1="165.1" x2="-109.22" y2="165.1" width="0.1524" layer="91"/>
-<wire x1="-109.22" y1="165.1" x2="-109.22" y2="187.96" width="0.1524" layer="91"/>
-<junction x="-109.22" y="187.96"/>
+<wire x1="-144.78" y1="165.1" x2="-121.92" y2="165.1" width="0.1524" layer="91"/>
+<wire x1="-121.92" y1="165.1" x2="-121.92" y2="187.96" width="0.1524" layer="91"/>
+<junction x="-121.92" y="187.96"/>
 <pinref part="D.J3" gate="A" pin="1"/>
 <wire x1="53.34" y1="116.84" x2="2.54" y2="116.84" width="0.1524" layer="91"/>
 <label x="40.64" y="116.84" size="1.778" layer="95"/>
@@ -11733,11 +11738,11 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <wire x1="-81.28" y1="205.74" x2="-81.28" y2="203.2" width="0.1524" layer="91"/>
 <wire x1="-81.28" y1="203.2" x2="-78.74" y2="203.2" width="0.1524" layer="91"/>
 <junction x="-81.28" y="205.74"/>
-<junction x="-109.22" y="165.1"/>
+<junction x="-121.92" y="165.1"/>
 <pinref part="D.R6" gate="G$1" pin="2"/>
-<wire x1="-96.52" y1="213.36" x2="-96.52" y2="215.9" width="0.1524" layer="91"/>
-<junction x="-96.52" y="215.9"/>
-<junction x="-101.6" y="215.9"/>
+<wire x1="-109.22" y1="213.36" x2="-109.22" y2="215.9" width="0.1524" layer="91"/>
+<junction x="-109.22" y="215.9"/>
+<junction x="-114.3" y="215.9"/>
 <wire x1="-81.28" y1="205.74" x2="-81.28" y2="215.9" width="0.1524" layer="91"/>
 <junction x="-81.28" y="215.9"/>
 </segment>
@@ -11746,15 +11751,19 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <segment>
 <pinref part="D.T1" gate="G$1" pin="S"/>
 <pinref part="D.U2" gate="G$1" pin="VIN"/>
-<wire x1="17.78" y1="205.74" x2="30.48" y2="205.74" width="0.1524" layer="91"/>
-<wire x1="17.78" y1="205.74" x2="7.62" y2="205.74" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="205.74" x2="30.48" y2="205.74" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="205.74" x2="12.7" y2="205.74" width="0.1524" layer="91"/>
 <pinref part="D.R7" gate="G$1" pin="1"/>
-<junction x="17.78" y="205.74"/>
+<junction x="20.32" y="205.74"/>
+<wire x1="12.7" y1="205.74" x2="7.62" y2="205.74" width="0.1524" layer="91"/>
 <wire x1="7.62" y1="205.74" x2="5.08" y2="205.74" width="0.1524" layer="91"/>
-<wire x1="7.62" y1="205.74" x2="7.62" y2="114.3" width="0.1524" layer="91"/>
-<junction x="7.62" y="205.74"/>
-<wire x1="7.62" y1="114.3" x2="27.94" y2="114.3" width="0.1524" layer="91"/>
+<wire x1="12.7" y1="205.74" x2="12.7" y2="114.3" width="0.1524" layer="91"/>
+<junction x="12.7" y="205.74"/>
+<wire x1="12.7" y1="114.3" x2="27.94" y2="114.3" width="0.1524" layer="91"/>
 <pinref part="D.F2" gate="G$1" pin="1"/>
+<wire x1="7.62" y1="187.96" x2="7.62" y2="205.74" width="0.1524" layer="91"/>
+<junction x="7.62" y="205.74"/>
+<pinref part="D.C2" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="N$2" class="0">
@@ -11788,9 +11797,9 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <segment>
 <wire x1="73.66" y1="162.56" x2="27.94" y2="162.56" width="0.1524" layer="91"/>
 <wire x1="-40.64" y1="162.56" x2="-81.28" y2="162.56" width="0.1524" layer="91"/>
-<wire x1="-81.28" y1="162.56" x2="-96.52" y2="162.56" width="0.1524" layer="91"/>
-<wire x1="-96.52" y1="162.56" x2="-101.6" y2="162.56" width="0.1524" layer="91"/>
-<wire x1="-101.6" y1="162.56" x2="-114.3" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="-81.28" y1="162.56" x2="-109.22" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="-109.22" y1="162.56" x2="-114.3" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="-114.3" y1="162.56" x2="-127" y2="162.56" width="0.1524" layer="91"/>
 <junction x="27.94" y="162.56"/>
 <wire x1="-17.78" y1="175.26" x2="-17.78" y2="162.56" width="0.1524" layer="91"/>
 <wire x1="-40.64" y1="182.88" x2="-40.64" y2="162.56" width="0.1524" layer="91"/>
@@ -11799,8 +11808,9 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <pinref part="D.R3" gate="G$1" pin="1"/>
 <wire x1="-33.02" y1="162.56" x2="-27.94" y2="162.56" width="0.1524" layer="91"/>
 <wire x1="-27.94" y1="162.56" x2="-17.78" y2="162.56" width="0.1524" layer="91"/>
-<wire x1="-17.78" y1="162.56" x2="17.78" y2="162.56" width="0.1524" layer="91"/>
-<wire x1="17.78" y1="162.56" x2="27.94" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="-17.78" y1="162.56" x2="7.62" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="7.62" y1="162.56" x2="20.32" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="162.56" x2="27.94" y2="162.56" width="0.1524" layer="91"/>
 <pinref part="D.C6" gate="G$1" pin="1"/>
 <junction x="-40.64" y="162.56"/>
 <junction x="-17.78" y="162.56"/>
@@ -11809,37 +11819,37 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <wire x1="27.94" y1="200.66" x2="27.94" y2="162.56" width="0.1524" layer="91"/>
 <junction x="27.94" y="162.56"/>
 <pinref part="D.C4" gate="G$1" pin="1"/>
-<wire x1="-101.6" y1="162.56" x2="-101.6" y2="175.26" width="0.1524" layer="91"/>
-<junction x="-101.6" y="162.56"/>
+<wire x1="-114.3" y1="162.56" x2="-114.3" y2="175.26" width="0.1524" layer="91"/>
+<junction x="-114.3" y="162.56"/>
 <pinref part="D.C7" gate="G$1" pin="1"/>
 <wire x1="73.66" y1="177.8" x2="73.66" y2="162.56" width="0.1524" layer="91"/>
-<junction x="-101.6" y="162.56"/>
+<junction x="-114.3" y="162.56"/>
 <junction x="27.94" y="162.56"/>
 <pinref part="D.LIPOL" gate="G$1" pin="1"/>
 <wire x1="-20.32" y1="175.26" x2="-17.78" y2="175.26" width="0.1524" layer="91"/>
-<junction x="-114.3" y="162.56"/>
-<junction x="17.78" y="162.56"/>
+<junction x="-127" y="162.56"/>
+<junction x="20.32" y="162.56"/>
 <pinref part="U$1" gate="G$1" pin="GND2"/>
-<wire x1="-132.08" y1="162.56" x2="-114.3" y2="162.56" width="0.1524" layer="91"/>
-<wire x1="-114.3" y1="162.56" x2="-114.3" y2="167.64" width="0.1524" layer="91"/>
-<junction x="-114.3" y="162.56"/>
+<wire x1="-144.78" y1="162.56" x2="-127" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="-127" y1="162.56" x2="-127" y2="167.64" width="0.1524" layer="91"/>
+<junction x="-127" y="162.56"/>
 <pinref part="U$1" gate="G$1" pin="GND1"/>
-<wire x1="-114.3" y1="167.64" x2="-114.3" y2="182.88" width="0.1524" layer="91"/>
-<wire x1="-114.3" y1="182.88" x2="-114.3" y2="190.5" width="0.1524" layer="91"/>
-<wire x1="-114.3" y1="190.5" x2="-132.08" y2="190.5" width="0.1524" layer="91"/>
+<wire x1="-127" y1="167.64" x2="-127" y2="182.88" width="0.1524" layer="91"/>
+<wire x1="-127" y1="182.88" x2="-127" y2="190.5" width="0.1524" layer="91"/>
+<wire x1="-127" y1="190.5" x2="-144.78" y2="190.5" width="0.1524" layer="91"/>
 <pinref part="D.ON/OFF/RESET" gate="G$1" pin="P$2"/>
-<wire x1="15.24" y1="185.42" x2="17.78" y2="185.42" width="0.1524" layer="91"/>
-<wire x1="17.78" y1="185.42" x2="17.78" y2="182.88" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="185.42" x2="20.32" y2="185.42" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="185.42" x2="20.32" y2="182.88" width="0.1524" layer="91"/>
 <pinref part="D.ON/OFF/RESET" gate="G$1" pin="P$3"/>
-<wire x1="15.24" y1="182.88" x2="17.78" y2="182.88" width="0.1524" layer="91"/>
-<junction x="17.78" y="182.88"/>
-<wire x1="17.78" y1="182.88" x2="17.78" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="182.88" x2="20.32" y2="182.88" width="0.1524" layer="91"/>
+<junction x="20.32" y="182.88"/>
+<wire x1="20.32" y1="182.88" x2="20.32" y2="162.56" width="0.1524" layer="91"/>
 <pinref part="D.R2" gate="G$1" pin="2"/>
-<wire x1="-116.84" y1="182.88" x2="-114.3" y2="182.88" width="0.1524" layer="91"/>
-<junction x="-114.3" y="182.88"/>
+<wire x1="-129.54" y1="182.88" x2="-127" y2="182.88" width="0.1524" layer="91"/>
+<junction x="-127" y="182.88"/>
 <pinref part="D.R5" gate="G$1" pin="2"/>
-<wire x1="-116.84" y1="167.64" x2="-114.3" y2="167.64" width="0.1524" layer="91"/>
-<junction x="-114.3" y="167.64"/>
+<wire x1="-129.54" y1="167.64" x2="-127" y2="167.64" width="0.1524" layer="91"/>
+<junction x="-127" y="167.64"/>
 <pinref part="D.U1" gate="G$1" pin="VSS"/>
 <wire x1="-78.74" y1="195.58" x2="-81.28" y2="195.58" width="0.1524" layer="91"/>
 <wire x1="-81.28" y1="195.58" x2="-81.28" y2="162.56" width="0.1524" layer="91"/>
@@ -11852,15 +11862,18 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <pinref part="GND2" gate="1" pin="GND"/>
 <wire x1="27.94" y1="160.02" x2="27.94" y2="162.56" width="0.1524" layer="91"/>
 <pinref part="D.R1" gate="G$1" pin="1"/>
-<wire x1="-96.52" y1="185.42" x2="-96.52" y2="162.56" width="0.1524" layer="91"/>
-<junction x="-96.52" y="162.56"/>
+<wire x1="-109.22" y1="185.42" x2="-109.22" y2="162.56" width="0.1524" layer="91"/>
+<junction x="-109.22" y="162.56"/>
+<wire x1="7.62" y1="180.34" x2="7.62" y2="162.56" width="0.1524" layer="91"/>
+<junction x="7.62" y="162.56"/>
+<pinref part="D.C2" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="STAT1" class="0">
 <segment>
 <pinref part="D.U1" gate="G$1" pin="STAT1"/>
-<wire x1="-78.74" y1="200.66" x2="-81.28" y2="200.66" width="0.1524" layer="91"/>
 <pinref part="D.D1" gate="G$1" pin="K"/>
+<wire x1="-93.98" y1="200.66" x2="-78.74" y2="200.66" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="SCL" class="0">
@@ -11882,12 +11895,12 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <net name="N$5" class="0">
 <segment>
 <pinref part="D.U2" gate="G$1" pin="N_SHDN"/>
-<wire x1="30.48" y1="195.58" x2="17.78" y2="195.58" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="195.58" x2="20.32" y2="195.58" width="0.1524" layer="91"/>
 <pinref part="D.R7" gate="G$1" pin="2"/>
-<junction x="17.78" y="195.58"/>
-<wire x1="17.78" y1="195.58" x2="17.78" y2="187.96" width="0.1524" layer="91"/>
+<junction x="20.32" y="195.58"/>
+<wire x1="20.32" y1="195.58" x2="20.32" y2="187.96" width="0.1524" layer="91"/>
 <pinref part="D.ON/OFF/RESET" gate="G$1" pin="P$1"/>
-<wire x1="15.24" y1="187.96" x2="17.78" y2="187.96" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="187.96" x2="20.32" y2="187.96" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="PA6" class="0">
@@ -11932,14 +11945,14 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <segment>
 <pinref part="U$1" gate="G$1" pin="CC2"/>
 <pinref part="D.R5" gate="G$1" pin="1"/>
-<wire x1="-132.08" y1="167.64" x2="-127" y2="167.64" width="0.1524" layer="91"/>
+<wire x1="-144.78" y1="167.64" x2="-139.7" y2="167.64" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$6" class="0">
 <segment>
 <pinref part="D.R2" gate="G$1" pin="1"/>
 <pinref part="U$1" gate="G$1" pin="CC1"/>
-<wire x1="-127" y1="182.88" x2="-132.08" y2="182.88" width="0.1524" layer="91"/>
+<wire x1="-139.7" y1="182.88" x2="-144.78" y2="182.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$7" class="0">
@@ -11997,18 +12010,18 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <net name="PA3" class="0">
 <segment>
 <pinref part="D.J2" gate="A" pin="5"/>
-<wire x1="-129.54" y1="116.84" x2="-91.44" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="-129.54" y1="116.84" x2="-104.14" y2="116.84" width="0.1524" layer="91"/>
 <label x="-124.46" y="116.84" size="1.778" layer="95"/>
 <pinref part="D.D1" gate="G$1" pin="A"/>
 <pinref part="D.R6" gate="G$1" pin="1"/>
 <pinref part="D.R1" gate="G$1" pin="2"/>
-<wire x1="-88.9" y1="200.66" x2="-91.44" y2="200.66" width="0.1524" layer="91"/>
-<junction x="-91.44" y="200.66"/>
-<wire x1="-91.44" y1="200.66" x2="-91.44" y2="116.84" width="0.1524" layer="91"/>
-<wire x1="-96.52" y1="195.58" x2="-96.52" y2="200.66" width="0.1524" layer="91"/>
-<wire x1="-96.52" y1="200.66" x2="-96.52" y2="203.2" width="0.1524" layer="91"/>
-<wire x1="-91.44" y1="200.66" x2="-96.52" y2="200.66" width="0.1524" layer="91"/>
-<junction x="-96.52" y="200.66"/>
+<wire x1="-101.6" y1="200.66" x2="-104.14" y2="200.66" width="0.1524" layer="91"/>
+<junction x="-104.14" y="200.66"/>
+<wire x1="-104.14" y1="200.66" x2="-104.14" y2="116.84" width="0.1524" layer="91"/>
+<wire x1="-109.22" y1="195.58" x2="-109.22" y2="200.66" width="0.1524" layer="91"/>
+<wire x1="-109.22" y1="200.66" x2="-109.22" y2="203.2" width="0.1524" layer="91"/>
+<wire x1="-104.14" y1="200.66" x2="-109.22" y2="200.66" width="0.1524" layer="91"/>
+<junction x="-109.22" y="200.66"/>
 </segment>
 </net>
 </nets>

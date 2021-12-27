@@ -12,7 +12,7 @@ uint8_t HugoTinyWireGetExtAddress();
 void HugoTinyWireChangeExtAddress(uint8_t address);
 void HugoTinyWireFillModuleVersion();
 
-#define PCB_VERSION 1
+#define PCB_VERSION 2
 #define ADJUSTMENT_VERSION 1
 
 #define HUGO_TINY_ONE_EXTENSION

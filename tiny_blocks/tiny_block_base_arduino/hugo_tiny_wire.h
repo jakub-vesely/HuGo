@@ -159,7 +159,7 @@ void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t** ext_addresses){
 #endif
     uint8_t address = EEPROM.read(EEPROM_I2C_ADDRESS_POS);
     if (address == EEPROM_DEFAULT_VALUE){
-        address =  I2C_DEFAULT_VALUE;
+        address =  block_type_id; //block type IDs are chosen to be possible to use them as default I2c address
     }
 
     Wire.begin(address);

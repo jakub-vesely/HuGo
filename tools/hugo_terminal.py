@@ -382,7 +382,6 @@ def main():
   #app.main_loop()
 
   terminal = Terminal(args.remote_control, args.mac_addr, args.verbose, args.source_dir)
-  print(args.source_dir)
   if not terminal.connect():
     return False
 
