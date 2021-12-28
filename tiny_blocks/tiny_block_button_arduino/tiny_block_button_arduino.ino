@@ -47,5 +47,5 @@ void loop()
 {
     s_state = digitalRead(BUTTON_PIN);
     //TODO: an interupt can be used instead of pooling it could decrease power consumption
-    delay(1); // 1 ms should be enough for button
+    delay(10); // 10 ms should be enough for button
 }
