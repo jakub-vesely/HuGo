@@ -11617,7 +11617,7 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <attribute name="NAME" x="49.53" y="120.015" size="1.778" layer="95"/>
 <attribute name="VALUE" x="49.53" y="101.6" size="1.778" layer="96"/>
 </instance>
-<instance part="D.ON/OFF/RESET" gate="G$1" x="17.78" y="185.42" smashed="yes" rot="MR270"/>
+<instance part="D.ON/OFF/RESET" gate="G$1" x="22.86" y="185.42" smashed="yes" rot="MR90"/>
 <instance part="U$1" gate="G$1" x="-154.94" y="175.26" smashed="yes">
 <attribute name="NAME" x="-160.02" y="195.58" size="1.27" layer="95"/>
 </instance>
@@ -11837,14 +11837,9 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <wire x1="-127" y1="167.64" x2="-127" y2="182.88" width="0.1524" layer="91"/>
 <wire x1="-127" y1="182.88" x2="-127" y2="190.5" width="0.1524" layer="91"/>
 <wire x1="-127" y1="190.5" x2="-144.78" y2="190.5" width="0.1524" layer="91"/>
-<pinref part="D.ON/OFF/RESET" gate="G$1" pin="P$2"/>
-<wire x1="17.78" y1="185.42" x2="20.32" y2="185.42" width="0.1524" layer="91"/>
 <wire x1="20.32" y1="185.42" x2="20.32" y2="182.88" width="0.1524" layer="91"/>
-<pinref part="D.ON/OFF/RESET" gate="G$1" pin="P$3"/>
-<wire x1="17.78" y1="182.88" x2="20.32" y2="182.88" width="0.1524" layer="91"/>
-<junction x="20.32" y="182.88"/>
-<wire x1="20.32" y1="182.88" x2="20.32" y2="162.56" width="0.1524" layer="91"/>
 <pinref part="D.R2" gate="G$1" pin="2"/>
+<wire x1="20.32" y1="182.88" x2="20.32" y2="162.56" width="0.1524" layer="91"/>
 <wire x1="-129.54" y1="182.88" x2="-127" y2="182.88" width="0.1524" layer="91"/>
 <junction x="-127" y="182.88"/>
 <pinref part="D.R5" gate="G$1" pin="2"/>
@@ -11867,6 +11862,11 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <wire x1="7.62" y1="180.34" x2="7.62" y2="162.56" width="0.1524" layer="91"/>
 <junction x="7.62" y="162.56"/>
 <pinref part="D.C2" gate="G$1" pin="1"/>
+<pinref part="D.ON/OFF/RESET" gate="G$1" pin="P$2"/>
+<wire x1="20.32" y1="185.42" x2="22.86" y2="185.42" width="0.1524" layer="91"/>
+<pinref part="D.ON/OFF/RESET" gate="G$1" pin="P$1"/>
+<wire x1="22.86" y1="182.88" x2="20.32" y2="182.88" width="0.1524" layer="91"/>
+<junction x="20.32" y="182.88"/>
 </segment>
 </net>
 <net name="STAT1" class="0">
@@ -11899,8 +11899,8 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <pinref part="D.R7" gate="G$1" pin="2"/>
 <junction x="20.32" y="195.58"/>
 <wire x1="20.32" y1="195.58" x2="20.32" y2="187.96" width="0.1524" layer="91"/>
-<pinref part="D.ON/OFF/RESET" gate="G$1" pin="P$1"/>
-<wire x1="17.78" y1="187.96" x2="20.32" y2="187.96" width="0.1524" layer="91"/>
+<pinref part="D.ON/OFF/RESET" gate="G$1" pin="P$3"/>
+<wire x1="20.32" y1="187.96" x2="22.86" y2="187.96" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="PA6" class="0">
