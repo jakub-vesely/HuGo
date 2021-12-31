@@ -11,6 +11,9 @@ def main():
   for file_name in file_names:
     if file_name in (devel_only_file_names):
       continue
+    if os.path.isdir(devel_folder_path + "/" + file_name):
+      continue
+
     firmware_file_name = file_name.replace(devel_prefix, "")
     with open(devel_folder_path + file_name, "r") as devel_file:
       devel_lines = devel_file.readlines()

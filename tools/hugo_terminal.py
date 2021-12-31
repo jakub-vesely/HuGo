@@ -186,6 +186,7 @@ class Ble():
       self.terminating = True
 
 class Terminal():
+  output_dir = ".build"
   def __init__(self, hook_keyboard, mac_address, verbose, source_dir):
     self.flashing_folder = source_dir
     self._init_logger(logging.DEBUG if verbose else logging.INFO)
@@ -267,11 +268,14 @@ class Terminal():
       remote_files[file_info[20:].decode("utf-8")] = file_info[:20].hex()
     return remote_files
 
-  def _get_local_files(self):
+  def _get_local_files(self, directory):
     local_files = {}
-    dir_content = os.listdir(self.flashing_folder)
+    dir_content = os.listdir(directory)
     for file_name in dir_content:
-      with open(self.flashing_folder + "/" + file_name, "rb") as f:
+      if os.path.isdir(directory + "/" + file_name):
+        continue
+
+      with open(directory + "/" + file_name, "rb") as f:
         data = f.read()
         local_files[file_name] = hashlib.sha1(data).digest().hex();
     return local_files
@@ -293,7 +297,7 @@ class Terminal():
       if file_name not in remote_files or remote_files[file_name] != local_files[file_name]:
         imported = True
         logging.info(f"flashing file {file_name}")
-        with open(self.flashing_folder + "/" + file_name, "rb") as f:
+        with open(self.flashing_folder + "/" + self.output_dir + "/" + file_name, "rb") as f:
           data = f.read()
           self.ble.notification_data = None
           self.ble.command(Commands.SHELL_HANDLE_FILE, file_name.encode("utf-8"))
@@ -305,10 +309,33 @@ class Terminal():
           logging.error("file %s has not been stored properly: %s", file_name, str((stored_file_checksum.hex(), local_files[file_name])))
     return imported
 
+  def _remove_dir_content(self, dir_path):
+    dir_content = os.listdir(dir_path)
+    for file_name in dir_content:
+      os.remove(dir_path + "/" + file_name)
+
+  def _build_local_files(self, directory):
+    out_dir_path = directory + "/" + self.output_dir
+    if os.path.exists(out_dir_path):
+      self._remove_dir_content(out_dir_path)
+    else:
+      os.mkdir(out_dir_path)
+
+    dir_content = os.listdir(directory)
+    for file_name in dir_content:
+      file_path = directory + "/" + file_name
+      if os.path.isdir(file_path):
+        continue
+      if file_name == "boot.py":
+        os.system(f"cp {directory + '/' + file_name} { directory + '/' + self.output_dir}")
+      else:
+        new_file_path = out_dir_path + "/" + file_name.split(".")[0] + ".mpy"
+        os.system(f"mpy-cross {file_path} -o {new_file_path}")
 
   def _process_files(self):
     remote_files = self._get_remote_files()
-    local_files = self._get_local_files()
+    self._build_local_files(self.flashing_folder)
+    local_files = self._get_local_files(self.flashing_folder + "/" + self.output_dir)
     changed = self._remove_unnecessary_files(remote_files, local_files)
     changed |= self._import_files(remote_files, local_files)
     return changed

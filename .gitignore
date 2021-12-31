@@ -10,3 +10,5 @@ sdkconfig.old
 *.s#*
 *.job
 *.pro
+pcb/datasheets/local
+.build
