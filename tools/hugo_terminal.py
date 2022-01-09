@@ -102,11 +102,12 @@ class Ble():
     scanner.register_detection_callback(self._detection_callback)
 
     logging.debug("searching HuGo device")
-    countdown = 30
+    waiting = 0.5 # to be cough power_up window in case of power save
+    countdown = int(90 / waiting) #~1.5 min
     self.server = None
     while countdown:
       await scanner.start()
-      await asyncio.sleep(1)
+      await asyncio.sleep(waiting)
       await scanner.stop()
 
       if self.server:
@@ -127,7 +128,7 @@ class Ble():
 
     logging.info("connecting to %s", str(self.server))
     self.client = BleakClient(self.server, loop=self.loop)
-    for _i in range(3):
+    for _i in range(9): # ~90 sec
       try:
         self.connected = await self.client.connect()
         logging.debug("device was connected with status: %s", self.connected)
@@ -296,7 +297,7 @@ class Terminal():
       self.ble.notification_data = None
       if file_name not in remote_files or remote_files[file_name] != local_files[file_name]:
         imported = True
-        logging.info(f"flashing file {file_name}")
+        logging.info(f"uploading file {file_name}")
         with open(self.flashing_folder + "/" + self.output_dir + "/" + file_name, "rb") as f:
           data = f.read()
           self.ble.notification_data = None
@@ -341,16 +342,16 @@ class Terminal():
     return changed
 
   def flash_files(self):
+    logging.info("Uploading...")
     timestamp = time.time()
     flashed = self._process_files()
     if flashed:
-      logging.info("flashing time: %d s", time.time() - timestamp)
+      logging.info("uploading time: %d s", time.time() - timestamp)
 
     if flashed:
       logging.info("Uploading DONE")
     else:
       logging.info("All files are up-to-date")
-
     return True
 
   def monitor(self):
@@ -367,6 +368,8 @@ def process_cmd_arguments():
   parser.add_argument('--remote_control', '-r', action='store_true', help='read pressed keys and provide them as a remore control.')
   parser.add_argument('--verbose', '-v', action='store_true', help='debug messages are printed')
   parser.add_argument('--source_dir', '-s', default="upload", help='defines path to directory containing events.py which will be uploaded. If the source dir is not defined, the"upload" folder will be used.')
+  parser.add_argument('--extra_reboot', '-xr', action='store_true', help='perform an extra reboot after flashing. It is usefull when a core scripts that are already loaded are changed')
+
 
   args = parser.parse_args()
   if not args.flash and not args.monitor:
@@ -418,6 +421,10 @@ def main():
   if args.flash:
     if not terminal.flash_files():
       return False
+
+    if args.extra_reboot:
+      if not terminal.stop_program():
+        return False
 
   terminal.start_program()
 

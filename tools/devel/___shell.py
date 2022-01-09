@@ -80,7 +80,6 @@ class Shell():
     return sha1.digest()
 
   def command_request(self, data):
-    #print(("command_request", data))
     if data and len(data) > 0:
         command = data[0]
         if command == self._cmd_version:

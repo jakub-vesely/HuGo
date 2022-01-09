@@ -3,6 +3,9 @@ import bluetooth
 import struct
 from ___logging import Logging, LoggerBase
 import ___planner
+from ___power_mgmt import PowerMgmt, PowerPlan
+from ___active_variable import ActiveVariable
+import time
 
 _ADV_TYPE_FLAGS = const(0x01)
 _ADV_TYPE_NAME = const(0x09)
@@ -64,18 +67,60 @@ class BleLogger(LoggerBase):
     ___planner.plan(self._log_to_ble, message)
 
 class Ble():
+
   def __init__(self) -> None:
-    self._ble = bluetooth.BLE()
+    self._ble = None
     self._shell = None
     self._keyboard = None
     self._shell_command_handle = None
     self._log_handle = None
     self._keyboard_handle = None
-    self._start_ble()
+
+    PowerMgmt.register_management_change_callback(self._set_power_save_timeouts)
+
+    self.initial_time_up = None
+    self.runing_time_up = None
+    self.time_down = None
+    self.time_to_power_save = None
+    self._set_power_save_timeouts(PowerMgmt.get_plan()) # to be set defaults
+
+    ___planner.plan(self._check_time_to_power_save, True)
+
+    Logging.add_logger(BleLogger(self))
+    #self._start_ble()
+
+  def _set_power_save_timeouts(self, power_plan:PowerPlan):
+    self.initial_time_up = power_plan.ble_plan.initial_time_up
+    self.runing_time_up = power_plan.ble_plan.running_time_up
+    self.time_down = power_plan.ble_plan.time_down
+    if self.time_to_power_save != 0: #if ble connection is not established already
+      self.time_to_power_save = self.initial_time_up
+
+  def _check_time_to_power_save(self, wake_up):
+    go_to_power_save = False
+
+    if wake_up:
+      PowerMgmt.block_power_save()
+      if not self.time_to_power_save: #can be reset from constructor
+        self.time_to_power_save = self.runing_time_up
+      self._start_ble()
+      print("BLE power-save blocked")
+    else:
+      if self.time_to_power_save: #if time was not reset externally (e.g. ble connection)
+        self.time_to_power_save -= 1
+        if self.time_to_power_save == 0: #if time has been reset by decreasing
+          go_to_power_save = True
+          # ble is disabled automatically when power save is activated and is enabled again when the program runs again
+          # but it is not reliable (advertisement si not started) - lets do it manually
+          self._stop_ble()
+          PowerMgmt.unblock_power_save()
+          print("BLE power-save allowed")
+
+    delay = self.time_down if go_to_power_save else 1
+    ___planner.postpone(delay, self._check_time_to_power_save, go_to_power_save)
 
   def _start_ble(self):
-    Logging.add_logger(BleLogger(self))
-
+    self._ble = bluetooth.BLE()
     self._ble.active(True)
     self._ble.config(rxbuf=_BMS_MTU)
     self._ble.irq(self._irq)
@@ -88,6 +133,10 @@ class Ble():
     )
 
     self._advertise()
+
+  def _stop_ble(self):
+    self.disconnect()
+    self._ble.active(False)
 
   def get_shell(self):
     if not self._shell:
@@ -104,14 +153,28 @@ class Ble():
   def _irq(self, event, data):
     # Track connections so we can send notifications.
     if event == _IRQ_CENTRAL_CONNECT:
+      self.time_to_power_save = 0 # disable power save while a connection is active
       conn_handle, _, _ = data
-      self._connections.add(conn_handle)
       #NOTE: use when mtu is necessary to change
-      self._ble.gattc_exchange_mtu(conn_handle)
-      print("BLE new connection: " + str(conn_handle))
+      connected = False
+      for _ in range(3): #sometimes attempts to exchange mtu fails
+        try:
+          self._ble.gattc_exchange_mtu(conn_handle)
+          connected =True
+          break
+        except IOError:
+          print("Error: gattc_exchange_mtu failed")
+      if connected:
+        self._connections.add(conn_handle)
+        print("BLE new connection: " + str(conn_handle))
+      else:
+        self._ble.gap_disconnect(conn_handle)
+
     elif event == _IRQ_CENTRAL_DISCONNECT:
       conn_handle, _, _ = data
       self._connections.remove(conn_handle)
+      if not self._connections:
+        self.time_to_power_save = self.runing_time_up # disable power save while a connection is active
       print("BLE disconnected " + str(conn_handle))
       # Start advertising again to allow a new connection.
       self._advertise()
