@@ -1,5 +1,5 @@
 print ("boot.py loaded")
-import ___main_block
+from ___main_block import MainBlock
 
-___main_block.run()
+MainBlock.run()
 
