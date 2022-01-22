@@ -1,19 +1,20 @@
 from chassis import Chassis, Speed, Manoeuver, Direction
-import main_block as main_block
+from main_block import MainBlock
 from logging import Logging
-import planner as planner
+from planner import Planner
+
 class Plan():
   def __init__(self) -> None:
     self.logging = Logging("events")
     self.chassis = Chassis(0x11, 0x12, None)
-    main_block.ble.get_keyboard().add_callback("a", self.pressed_a)
-    main_block.ble.get_keyboard().add_callback("d", self.pressed_d)
-    main_block.ble.get_keyboard().add_callback("w", self.pressed_w)
-    main_block.ble.get_keyboard().add_callback("s", self.pressed_s)
-    main_block.ble.get_keyboard().add_callback("z", self.pressed_z)
-    main_block.ble.get_keyboard().add_callback("x", self.pressed_x)
+    MainBlock.ble.get_keyboard().add_callback("a", self.pressed_a)
+    MainBlock.ble.get_keyboard().add_callback("d", self.pressed_d)
+    MainBlock.ble.get_keyboard().add_callback("w", self.pressed_w)
+    MainBlock.ble.get_keyboard().add_callback("s", self.pressed_s)
+    MainBlock.ble.get_keyboard().add_callback("z", self.pressed_z)
+    MainBlock.ble.get_keyboard().add_callback("x", self.pressed_x)
 
-    planner.repeat(1, self.print_power_info)
+    Planner.repeat(1, self.print_power_info)
 
   def print_power_info(self):
     voltage = self.chassis.power.battery_voltage_V.get_value()
