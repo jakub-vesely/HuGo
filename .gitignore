@@ -10,5 +10,6 @@ sdkconfig.old
 *.s#*
 *.job
 *.pro
+*.pyc
 pcb/datasheets/local
 .build
