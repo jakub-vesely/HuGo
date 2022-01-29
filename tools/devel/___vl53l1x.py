@@ -98,6 +98,9 @@ class VL53L1X:
     def __init__(self,i2c, address=0x29):
         self.i2c = i2c
         self.address = address
+        self.init()
+
+    def init(self):
         self.reset()
         time.sleep(1 / 1000)
         if self.read_model_id() != 0xEACC:
@@ -112,19 +115,25 @@ class VL53L1X:
 
     def writeReg(self, reg, value):
         return self.i2c.writeto_mem(self.address, reg, bytes([value]), addrsize=16)
+
     def writeReg16Bit(self, reg, value):
         return self.i2c.writeto_mem(self.address, reg, bytes([(value >> 8) & 0xFF, value & 0xFF]), addrsize=16)
+
     def readReg(self, reg):
         return self.i2c.readfrom_mem(self.address, reg, 1, addrsize=16)[0]
+
     def readReg16Bit(self, reg):
         data = self.i2c.readfrom_mem(self.address, reg, 2, addrsize=16)
         return (data[0]<<8) + data[1]
+
     def read_model_id(self):
         return self.readReg16Bit(0x010F)
+
     def reset(self):
         self.writeReg(0x0000, 0x00)
         time.sleep(100 / 1000)
         self.writeReg(0x0000, 0x01)
+
     def read(self):
         data = self.i2c.readfrom_mem(self.address, 0x0089, 17, addrsize=16) # RESULT__RANGE_STATUS
         range_status = data[0]

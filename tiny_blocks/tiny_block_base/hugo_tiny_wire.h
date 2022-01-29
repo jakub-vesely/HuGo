@@ -1,5 +1,10 @@
 #pragma once
 
+//this function ask setting of power save level
+// one of three values is expected for parameter "level":
+// no_power_save = 0, light_power_save = 1, deep_power_save = 2
+void HugoTinyWirePowerSave(uint8_t level);
+
 // this function processes received i2c command by a particular block - muse be implemented in te .ino file
 void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
 
@@ -56,6 +61,12 @@ static void i2c_request_event() {
 
 // }
 
+static void read_unnecessary_data(uint8_t count){
+    for (uint8_t counter = 0; counter < count; counter++)
+    {
+        Wire.read(); //data are not for this type of block, but will be safer to empty the buffer
+    }
+}
 static void i2c_receive_data(int count) {
     if (count < 2){
         return; //not valid command
@@ -63,10 +74,7 @@ static void i2c_receive_data(int count) {
 
     uint8_t block_id = Wire.read();
     if (block_id != I2C_BLOCK_TYPE_ID_BASE && block_id != s_block_type_id){
-        for (uint8_t counter = 0; counter < count - 1; counter++)
-        {
-            Wire.read(); //data are not for this type of block, but will be safer to empty the buffer
-        }
+        read_unnecessary_data(count - 1);
         return;
     }
 
@@ -146,6 +154,12 @@ static void i2c_receive_data(int count) {
             case I2C_COMMAND_GET_MODULE_VERSION:
                 HugoTinyWireFillModuleVersion();
                 break;
+            case I2C_COMMAND_SET_POWER_SAVE:
+                uint8_t level = Wire.read();
+                HugoTinyWirePowerSave(level);
+                break;
+            default:
+                read_unnecessary_data(count - 2); //to old blocks are not bricked due to missaligned data in case there will be added new command with data
         }
     }
 }

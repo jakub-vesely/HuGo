@@ -1,5 +1,8 @@
 /*
-power board management
+Copyright (c) 2022 Jakub Vesely
+This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
+
+ssd1306 display block
 
 BOARD: hugo_adapter + hugo_disp
 Chip: ATtiny412
@@ -70,6 +73,10 @@ void HugoTinyWireFillModuleVersion(){
   s_buffer.data[1] = 0;
   s_buffer.data[2] = 0;
   s_buffer.size = 3;
+}
+
+void HugoTinyWirePowerSave(uint8_t level){
+
 }
 
 void loop() {

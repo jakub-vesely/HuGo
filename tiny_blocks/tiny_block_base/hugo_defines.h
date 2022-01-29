@@ -6,6 +6,7 @@
 
 #define I2C_ADDRESS_NONE 0xFF
 
+#define I2C_COMMAND_SET_POWER_SAVE      0xF6
 #define I2C_COMMAND_GET_MODULE_VERSION  0xF7
 #define I2C_COMMAND_ACTIVATE_EXTENSION  0xF8
 #define I2C_COMMAND_GET_EXT_COUNT       0xF9
@@ -23,13 +24,20 @@
 #define I2C_BLOCK_TYPE_ID_DISPLAY       0x0B
 #define I2C_BLOCK_TYPE_ID_SOUND         0x0C
 #define I2C_BLOCK_TYPE_ID_BUTTON        0x0D
-#define I2C_BLOCK_TYPE_ID_POSITION      0x0E
-#define I2C_BLOCK_TYPE_ID_AMBIENT       0x0F
+#define I2C_BLOCK_TYPE_ID_DISTANCE      0x0E
 
-//#define I2C_BLOCK_TYPE_ID_IR            0x10
+#define I2C_BLOCK_TYPE_ID_POSITION      0x0F
+#define I2C_BLOCK_TYPE_ID_AMBIENT       0x10
+
+//#define I2C_BLOCK_TYPE_ID_IR            0x20
 
 #define I2C_BLOCK_TYPE_ID_BASE          0xFA //different from CHANGE_I2C_ADDRESS command
 #define I2C_BLOCK_TYPE_ID_NONE          0xFF
+
+#define POWER_SAVE_NONE     0
+#define POWER_SAVE_LIGHT    1
+#define POWER_SAVE_DEEP     2
+
 
 typedef struct wire_buffer_t {
     uint8_t data[16]; //not big amount of data is expected 16B should be more than enough

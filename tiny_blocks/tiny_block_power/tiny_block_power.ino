@@ -72,6 +72,10 @@ void HugoTinyWireFillModuleVersion(){
   s_buffer.size = 3;
 }
 
+void HugoTinyWirePowerSave(uint8_t level){
+
+}
+
 void setup(){
   pinMode(CHARGE_STATE_PIN, INPUT);
   pinMode(INA_A0_PIN, OUTPUT);

@@ -9,7 +9,7 @@ Programmer: jtag2updi (megaTinyCore)
 
 #include <Wire.h>
 #include <avr/sleep.h>
-#include <hugo_tiny_block_base_arduino.h>
+#include <hugo_tiny_block_base.h>
 #include "tiny_block_ir_arduino.h"
 #include <IRLremote.h>
 //#include "Arduino-IRremote/src/TinyIRReceiver.cpp.h"

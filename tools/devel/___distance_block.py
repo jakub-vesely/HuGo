@@ -3,36 +3,31 @@
 
 from ___block_types import BlockTypes
 from ___extended_block_base import BlockWithOneExtension
+from ___block_base import PowerSaveLevel
 from ___active_variable import ActiveVariable
 from micropython import const
 from ___vl53l1x import VL53L1X
-
-#_charging_state_command = const(0x01)
 
 class DistanceBlock(BlockWithOneExtension):
 
   def __init__(self, address: int=None, measurement_period: float=1):
     """
     @param address:block address
-    @param mesurement_period: sampling frequency in sec
+    @param measurement_period: sampling frequency in sec
     """
     super().__init__(BlockTypes.distance, address)
     #self.is_usb_connected = ActiveVariable(False, measurement_period, self._get_usb_state)
-    self._vl53 = VL53L1X(self.i2c, 0x29)
     self.distance = ActiveVariable(0, measurement_period, self._get_distance)
 
-    #self._vl53_init()
-
+    #doesn't make sense to initialize extension when the block is not inserted
+    self._vl53l1 = VL53L1X(self.i2c, self.ext_address) if self.is_available() else None
 
   def _get_distance(self):
-    data = self._vl53.read()
-    #print(tof.read())
-    return data
+    if self._vl53l1 and self.power_save_level == PowerSaveLevel.NoPowerSave:
+      return self._vl53l1.read()
+    return 0
 
-  #def _vl53_init(self):
-  #  self._vl53.set_Vcsel_pulse_period(self._vl53.vcsel_period_type[0], 18)
-  #  self._vl53.set_Vcsel_pulse_period(self._vl53.vcsel_period_type[1], 14)
-
-
-
-
+  def power_save(self, level:PowerSaveLevel) -> None:
+    super().power_save(level)
+    if self._vl53l1 and level == PowerSaveLevel.NoPowerSave:
+      self._vl53l1.init()

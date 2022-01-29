@@ -1,9 +1,7 @@
 from logging import Logging
-import logging
-from math import trunc
-import planner as planner
+from planner import Planner
 from logging import Logging
-from rgb_led_block import RgbLedBlock
+from rgb_led_block import RgbLedBlock, RgbLedBlockColor
 from display_block import DisplayBlock
 from button_block import ButtonBlock
 import random
@@ -164,6 +162,8 @@ class Plan:
     self.display = DisplayBlock()
     self.logging = Logging("plan")
     self.button = ButtonBlock()
+    self.rgb = RgbLedBlock()
+    self.led_default()
     self.dim_x, self.dim_y = self.display.get_dimensions()
     self.center_x = int(self.dim_x / 2)
     self.center_y = int(self.dim_y / 2)
@@ -187,6 +187,7 @@ class Plan:
     self.started = True
     self.logging.info("started")
     self.redraw()
+    self.led_default()
 
   def redraw(self):
     speed = int(self.map.current_x / 400) + 1
@@ -223,6 +224,8 @@ class Plan:
         if diamond.is_in_area(self.point.y - self.point.r, self.point.y + self.point.r):
           self.map.remove_diamond(diamond)
           self.score += 1
+          self.rgb.set_color(RgbLedBlockColor.green)
+          Planner.postpone(0.05, self.led_default)
 
     self.map.draw(self.display)
     if self.started:
@@ -232,15 +235,19 @@ class Plan:
     self.display.print_text(0, 0, str(self.score), color=0)
     self.display.showtime()
     if not touch:
-      planner.postpone(0.05, self.redraw)
+      Planner.postpone(0.05, self.redraw)
     else:
       self.started = False
-      planner.postpone(1, self.wait_for_reset_pressed) #wait a while to prevent random press and wait for starting new game
+      self.rgb.set_color(RgbLedBlockColor.red)
+      Planner.postpone(1, self.wait_for_reset_pressed) #wait a while to prevent random press and wait for starting new game
+
+  def led_default(self):
+    self.rgb.set_color(RgbLedBlockColor.aquamarine)
 
   def wait_for_reset_pressed(self):
-    self.button.is_pressed.equal_to_trigger(True, False, self.wait_for_reset_released)
+    self.button.is_pressed.equal_to(True, False, self.wait_for_reset_released)
 
   def wait_for_reset_released(self):
-    self.button.is_pressed.equal_to_trigger(False, False, self.wait_for_start)
+    self.button.is_pressed.equal_to(False, False, self.wait_for_start)
 
 Plan()

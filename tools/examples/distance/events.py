@@ -1,13 +1,13 @@
-from ___logging import Logging
-from ___planner import Planner
-from ___distance_block import DistanceBlock
-from ___display_block import DisplayBlock
-from ___smoothed_variable import SmoothedVariable, SmoothingType
-from ___rgb_led_block import RgbLedBlock, RgbLedBlockColor
+from logging import Logging
+from planner import Planner
+from distance_block import DistanceBlock
+from display_block import DisplayBlock
+from smoothed_variable import SmoothedVariable, SmoothingType
+from rgb_led_block import RgbLedBlock, RgbLedBlockColor
 
 class Plan():
-  short = 300
-  long = 500
+  short = 200
+  long = 400
   def __init__(self) -> None:
     self.logging = Logging("events")
     self.display = DisplayBlock()

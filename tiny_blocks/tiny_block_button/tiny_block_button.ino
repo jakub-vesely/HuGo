@@ -35,6 +35,10 @@ void HugoTinyWireFillModuleVersion(){
   s_buffer.size = 3;
 }
 
+void HugoTinyWirePowerSave(uint8_t level){
+
+}
+
 void setup()
 {
     // initialize digital pin LED_BUILTIN as an output.

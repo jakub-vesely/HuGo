@@ -69,7 +69,7 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
         else if (motor_id == 2){
           motor2.processCommand(command, extra_byte, s_buffer);
         }
-      } 
+      }
     }
 }
 
@@ -80,13 +80,17 @@ void HugoTinyWireFillModuleVersion(){
   s_buffer.size = 3;
 }
 
+void HugoTinyWirePowerSave(uint8_t level){
+
+}
+
 void setup(){
   attachInterrupt(digitalPinToInterrupt(FOTO1), sensor1Interrupt, CHANGE); //must be static fuction (can't be part of the motor class)
   attachInterrupt(digitalPinToInterrupt(FOTO2), sensor2Interrupt, CHANGE);
 
   pinMode(SENSOR_LED, OUTPUT);
   digitalWrite(SENSOR_LED, LOW);
-    
+
   HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_MOTOR_DRIVER, NULL);
 }
 
