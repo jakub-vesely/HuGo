@@ -1,8 +1,7 @@
-from motor_driver_block import MotorDriverBlock, Speed
+from motor_driver_block import MotorDriverBlock
 from logging import Logging
-import main_block
-import planner
-from power_block import PowerBlock
+from planner import Planner
+from ble import Ble
 
 logging = Logging("events")
 
@@ -13,19 +12,22 @@ class Plan():
     self.pwm = 50
 
     self.logging = Logging("plan")
-    main_block.ble.get_keyboard().add_callback("a", self.pressed_a)
-    main_block.ble.get_keyboard().add_callback("d", self.pressed_d)
-    main_block.ble.get_keyboard().add_callback("w", self.pressed_w)
-    main_block.ble.get_keyboard().add_callback("s", self.pressed_s)
-    main_block.ble.get_keyboard().add_callback("z", self.pressed_z)
-    main_block.ble.get_keyboard().add_callback("o", self.pressed_o)
-    main_block.ble.get_keyboard().add_callback("l", self.pressed_l)
+    keyboard = Ble.get_keyboard()
+    keyboard.add_callback("a", self.pwm_down)
+    keyboard.add_callback("d", self.pwm_up)
+    keyboard.add_callback("w", self.speed_up)
+    keyboard.add_callback("s", self.slow_down)
+    keyboard.add_callback("z", self.stop)
+    keyboard.add_callback("o", self.full_speed_up)
+    keyboard.add_callback("l", self.full_speed_down)
 
     self.motor_driver_front = MotorDriverBlock(0x11)
+    #self.motor_driver_front.change_block_address(0x11)
     self.motor_driver_front.turn_clockwise(MotorDriverBlock.motor1_id)
     self.motor_driver_front.turn_opposite(MotorDriverBlock.motor2_id)
 
     self.motor_driver_rear = MotorDriverBlock(0x12)
+    #self.motor_driver_rear.change_block_address(0x11)
     self.motor_driver_rear.turn_clockwise(MotorDriverBlock.motor1_id)
     self.motor_driver_rear.turn_opposite(MotorDriverBlock.motor2_id)
 
@@ -36,7 +38,7 @@ class Plan():
     self.motor_driver_rear.reset_sensor_counter(MotorDriverBlock.motor1_id)
     self.motor_driver_rear.reset_sensor_counter(MotorDriverBlock.motor2_id)
 
-    planner.repeat(1, self.print_counters)
+    Planner.repeat(1, self.print_counters)
 
   def print_counters(self):
     counter11 = self.motor_driver_front.get_sensor_counter(MotorDriverBlock.motor1_id)
@@ -65,31 +67,31 @@ class Plan():
     self.motor_driver_front.set_pwm_period(self.pwm)
     self.motor_driver_rear.set_pwm_period(self.pwm)
 
-  def pressed_o(self):
+  def full_speed_up(self):
     self.fullspeed += 10
     self._adjust_motors()
 
-  def pressed_l(self):
+  def full_speed_down(self):
     self.fullspeed -=10
     self._adjust_motors()
 
-  def pressed_d(self):
+  def pwm_up(self):
     self.pwm += 10
     self._adjust_motors()
 
-  def pressed_a(self):
+  def pwm_down(self):
     self.pwm -= 10
     self._adjust_motors()
 
-  def pressed_w(self):
+  def speed_up(self):
     self.speed += 5
     self._adjust_motors()
 
-  def pressed_s(self):
+  def slow_down(self):
     self.speed -= 5
     self._adjust_motors()
 
-  def pressed_z(self):
+  def stop(self):
     self.motor_driver_front.stop(MotorDriverBlock.motor1_id)
     self.motor_driver_front.stop(MotorDriverBlock.motor2_id)
     self.motor_driver_rear.stop(MotorDriverBlock.motor1_id)

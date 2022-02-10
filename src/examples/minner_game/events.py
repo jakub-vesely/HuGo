@@ -180,7 +180,7 @@ class Plan:
     self.point = Point(self.center_y)
     self.map = Map(self.dim_x, self.dim_y)
     self.display.invert(True)
-    self.button.is_pressed.changed(False, self.start_button)
+    self.button.value.changed(False, self.start_button)
     gc.collect() #force garbage collection before game starts
 
   def start_button(self):
@@ -202,7 +202,7 @@ class Plan:
     self.display.clean()
     self.point.draw(self.display)
     if self.started:
-      if self.button.is_pressed.get_value():
+      if self.button.value.get_value():
         self.point.y -= 2
       else:
         self.point.y += 2
@@ -245,9 +245,9 @@ class Plan:
     self.rgb.set_color(RgbLedBlockColor.aquamarine)
 
   def wait_for_reset_pressed(self):
-    self.button.is_pressed.equal_to(True, False, self.wait_for_reset_released)
+    self.button.value.equal_to(True, False, self.wait_for_reset_released)
 
   def wait_for_reset_released(self):
-    self.button.is_pressed.equal_to(False, False, self.wait_for_start)
+    self.button.value.equal_to(False, False, self.wait_for_start)
 
 Plan()
