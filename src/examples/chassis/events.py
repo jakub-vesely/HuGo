@@ -1,4 +1,5 @@
 from chassis import Chassis, Speed, Manoeuver, Direction
+from virtual_keyboard import VirtualKeyboard
 from logging import Logging
 from planner import Planner
 from ble import Ble
@@ -8,19 +9,18 @@ class Plan():
     self.logging = Logging("events")
     self.chassis = Chassis(0x11, 0x12, None)
 
-    keyboard = Ble.get_keyboard()
-    keyboard.add_callback("a", self.turn_left)
-    keyboard.add_callback("d", self.turn_right)
-    keyboard.add_callback("w", self.speed_up)
-    keyboard.add_callback("s", self.slow_down)
-    keyboard.add_callback("z", self.stop)
-    keyboard.add_callback("x", self.reverse)
+    VirtualKeyboard.add_callback("a", self.turn_left)
+    VirtualKeyboard.add_callback("d", self.turn_right)
+    VirtualKeyboard.add_callback("w", self.speed_up)
+    VirtualKeyboard.add_callback("s", self.slow_down)
+    VirtualKeyboard.add_callback("z", self.stop)
+    VirtualKeyboard.add_callback("x", self.reverse)
 
     Planner.repeat(1, self.print_power_info)
 
   def print_power_info(self):
-    voltage = self.chassis.power.battery_voltage_V.get_value()
-    current = self.chassis.power.battery_current_mA.get_value()
+    voltage = self.chassis.power.battery_voltage_V.get()
+    current = self.chassis.power.battery_current_mA.get()
     self.logging.info("battery voltage: {0}, current: {1}".format(voltage, current))
 
   def slow_down(self):

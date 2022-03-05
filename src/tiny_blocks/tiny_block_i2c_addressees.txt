@@ -1,0 +1,23 @@
+Allowed address range
+0x08 - 0x77
+
+tiny-block base addresses:
+ID_POWER         0x08
+ID_RGB           0x09
+ID_MOTOR_DRIVER  0x0A
+ID_DISPLAY       0x0B
+ID_SOUND         0x0C
+ID_BUTTON        0x0D
+ID_DISTANCE      0x0E
+ID_POSITION      0x0F
+ID_IR            0x10
+ID_AMBIENT       0x11
+
+chassis motor rivers: 0x20 0x21
+
+tiny_block_extensions:
+distance        0x29 - can be changed to any? predefined 0x26, 0x27, 0x28
+display         0x3c, 0x3d
+power           0x40, 0x41, 0x44, 0x45
+position        0x76, 0x77 (BMP280), 0x68, 0x69 (MPU9250)
+

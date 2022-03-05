@@ -11,6 +11,7 @@ from colorlog import ColoredFormatter
 import hashlib
 import os
 import keyboard
+import subprocess
 #import toga
 
 class Commands:
@@ -22,6 +23,7 @@ class Commands:
   SHELL_HANDLE_FILE           = 0x85
   SHELL_GET_FILE_CHECKSUM     = 0x86
   SHELL_APPEND                = 0x87
+  SHELL_MK_DIR                = 0x88
 
 class Ble():
   ble_message_max_size = 512
@@ -56,7 +58,7 @@ class Ble():
     payload += data
 
     self.notification_data = None
-    answer = await self.client.write_gatt_char(self.command_uuid, payload, not wait_for_answer)
+    _answer = await self.client.write_gatt_char(self.command_uuid, payload, not wait_for_answer)
     if wait_for_answer:
       while not self.notification_data:
         await asyncio.sleep(0.01)
@@ -65,7 +67,7 @@ class Ble():
 
   def command(self, command_id, data, wait_for_answer=True):
     if len(data) > self.ble_message_max_size:
-      logging.error("try to send too long data %s for command: %", data.hex(), command_id)
+      logging.error("try to send too long data %s for command: %d", data.hex(), command_id)
       return None
     else:
       return self.loop.run_until_complete(self._command(command_id, data, wait_for_answer))
@@ -80,13 +82,13 @@ class Ble():
   def _log_callback(self, _sender: int, data: bytearray):
     is_first = not self.log_msg
     if is_first:
-      self.level = data[0]
+      level = data[0]
 
     is_last = data[-1] != '\f'.encode("utf-8")[0]
     self.log_msg += data[(1 if is_first else 0) : (len(data) if is_last else -1)].decode("utf-8") # skip level and \f
 
     if is_last:
-      logging.log(self.level, self.log_msg)
+      logging.log(level, self.log_msg)
       self.log_msg = ""
 
   def _detection_callback(self, device, _advertisement_data):
@@ -144,7 +146,7 @@ class Ble():
           logging.warning("logging start_notify failed %s", error)
         return True
       except Exception as e:
-        logging.warning("connection error: %s", e)
+        logging.debug("connection error: %s", e)
         logging.debug("device was not connected via BLE")
     return False
 
@@ -260,6 +262,7 @@ class Terminal():
 
   def _get_remote_files(self):
     remote_files = {}
+    logging.debug("getting remote files...")
     while True:
       self.ble.notification_data = None
       file_info = self.ble.command(Commands.SHELL_GET_NEXT_FILE_INFO, b"")
@@ -267,76 +270,109 @@ class Terminal():
       if file_info == b"\0":
         break
       remote_files[file_info[20:].decode("utf-8")] = file_info[:20].hex()
+    logging.debug("getting remote files Done")
     return remote_files
 
   def _get_local_files(self, directory):
+    logging.debug("getting local files...")
     local_files = {}
     dir_content = os.listdir(directory)
     for file_name in dir_content:
-      if os.path.isdir(directory + "/" + file_name):
-        continue
-
-      with open(directory + "/" + file_name, "rb") as f:
-        data = f.read()
-        local_files[file_name] = hashlib.sha1(data).digest().hex();
+      file_path = directory + "/" + file_name
+      if os.path.isdir(file_path):
+        local_files.update(self._get_local_files(file_path))
+      else:
+        with open(file_path, "rb") as f:
+          data = f.read()
+          local_files[file_path[len(self.output_dir):]] = hashlib.sha1(data).digest().hex()
+    logging.debug("getting local files Done")
     return local_files
 
   def _remove_unnecessary_files(self, remote_files, local_files):
+    logging.debug("removing unnecessary files ...")
     removed = False
-    for file_name in remote_files:
+    for file_path in remote_files:
       self.ble.notification_data = None
-      if file_name not in local_files:
-        logging.info("removing file %s", file_name)
-        self.ble.command(Commands.SHELL_REMOVE_FILE, file_name.encode("utf-8"))
+      if file_path not in local_files:
+        logging.info("removing file %s", file_path)
+        self.ble.command(Commands.SHELL_REMOVE_FILE, file_path.encode("utf-8"))
         removed = True
+    logging.debug("removing unnecessary files Done")
     return removed
 
   def _import_files(self, remote_files, local_files):
+    logging.debug("importing files ...")
     imported = False
-    for file_name in local_files:
+    for file_path in local_files:
       self.ble.notification_data = None
-      if file_name not in remote_files or remote_files[file_name] != local_files[file_name]:
+      if file_path not in remote_files or remote_files[file_path] != local_files[file_path]:
         imported = True
-        logging.info(f"uploading file {file_name}")
-        with open(self.flashing_folder + "/" + self.output_dir + "/" + file_name, "rb") as f:
+        logging.info("uploading file %s", file_path)
+
+        path_elements = file_path[1:].split("/") #file  path start by /
+        if len(path_elements) > 1:
+          path_elements = path_elements[:-1]
+          path = ""
+          for element in path_elements:
+            path += "/" + element
+            self.ble.command(Commands.SHELL_MK_DIR, path.encode("utf-8"))
+
+        with open(self.output_dir + "/" + file_path, "rb") as f:
           data = f.read()
           self.ble.notification_data = None
-          self.ble.command(Commands.SHELL_HANDLE_FILE, file_name.encode("utf-8"))
+          self.ble.command(Commands.SHELL_HANDLE_FILE, file_path.encode("utf-8"))
           step = self.ble.ble_message_max_size - 1 # - command header
           for i in range(0, len(data), step):
             self.ble.command(Commands.SHELL_APPEND, data[i: i + step])
         stored_file_checksum = self.ble.command(Commands.SHELL_GET_FILE_CHECKSUM, b"")
-        if stored_file_checksum.hex() != local_files[file_name]:
-          logging.error("file %s has not been stored properly: %s", file_name, str((stored_file_checksum.hex(), local_files[file_name])))
+        if stored_file_checksum.hex() != local_files[file_path]:
+          logging.error("file %s has not been stored properly: %s", file_path, str((stored_file_checksum.hex(), local_files[file_path])))
+    logging.debug("importing files Done")
     return imported
 
   def _remove_dir_content(self, dir_path):
     dir_content = os.listdir(dir_path)
     for file_name in dir_content:
-      os.remove(dir_path + "/" + file_name)
-
-  def _build_local_files(self, directory):
-    out_dir_path = directory + "/" + self.output_dir
-    if os.path.exists(out_dir_path):
-      self._remove_dir_content(out_dir_path)
-    else:
-      os.mkdir(out_dir_path)
-
-    dir_content = os.listdir(directory)
-    for file_name in dir_content:
-      file_path = directory + "/" + file_name
+      file_path = dir_path + "/" + file_name
       if os.path.isdir(file_path):
-        continue
-      if file_name == "boot.py":
-        os.system(f"cp {directory + '/' + file_name} { directory + '/' + self.output_dir}")
+        self._remove_dir_content(file_path)
+        os.rmdir(file_path)
       else:
-        new_file_path = out_dir_path + "/" + file_name.split(".")[0] + ".mpy"
-        os.system(f"mpy-cross {file_path} -o {new_file_path}")
+        os.remove(file_path)
+
+  def _build_local_dir(self, in_path, out_path):
+    if os.path.exists(out_path):
+      self._remove_dir_content(out_path)
+    else:
+      os.mkdir(out_path)
+
+    dir_content = os.listdir(in_path)
+    for file_name in dir_content:
+      file_path = in_path + "/" + file_name
+      if os.path.isdir(file_path):
+        if file_name != "__pycache__":
+          self._build_local_dir(file_path, out_path + "/" + file_name)
+        continue
+
+
+      if file_name == "boot.py" or not file_name.endswith(".py"):
+        os.system(f"cp {in_path + '/' + file_name} { self.output_dir}")
+      else:
+        new_file_path = out_path + "/" + file_name.split(".")[0] + ".mpy"
+        try:
+          subprocess.run(f"mpy-cross {file_path} -o {new_file_path}", check=True, shell=True, stderr=subprocess.PIPE)
+        except subprocess.CalledProcessError as error:
+          logging.warning("build of '%s' unsuccessful: %s", str(file_name), error.stderr.decode("utf-8"))
+
 
   def _process_files(self):
     remote_files = self._get_remote_files()
-    self._build_local_files(self.flashing_folder)
-    local_files = self._get_local_files(self.flashing_folder + "/" + self.output_dir)
+
+    logging.debug("building local files...")
+    self._build_local_dir(self.flashing_folder, self.output_dir)
+    logging.debug("building local files Done")
+
+    local_files = self._get_local_files(self.output_dir)
     changed = self._remove_unnecessary_files(remote_files, local_files)
     changed |= self._import_files(remote_files, local_files)
     return changed
@@ -382,15 +418,15 @@ def process_cmd_arguments():
 #     print("hello")
 
 
-def build(app):
-    box = toga.Box()
+# def build(app):
+#   box = toga.Box()
 
-    # button = toga.Button('Hello world', on_press=button_handler)
-    # button.style.padding = 50
-    # button.style.flex = 1
-    # box.add(button)
+  # button = toga.Button('Hello world', on_press=button_handler)
+  # button.style.padding = 50
+  # button.style.flex = 1
+  # box.add(button)
 
-    return box
+  return box
 
 def main():
   args = process_cmd_arguments()

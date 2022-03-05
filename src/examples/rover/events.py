@@ -8,11 +8,17 @@ from chassis import Chassis, Speed, Manoeuver, Direction
 from smoothed_variable import SmoothedVariable, SmoothingType
 from distance_block import DistanceBlock
 from button_block import ButtonBlock
+from virtual_keyboard import VirtualKeyboard
+from ir_block import IrBlock, RemoteKey
+from black_ir_rc import BlackIrRc
+from white_ir_rc import WhiteIrRc
 
 class Plan():
   near_barrier = 300
   far_barrier = 600
   open_space = 900
+
+
   def __init__(self) -> None:
     self.logging = Logging("events")
     self.chassis = Chassis(0x11, 0x12, None, 0.3)
@@ -20,6 +26,8 @@ class Plan():
     self.display = DisplayBlock()
     self.distance = DistanceBlock(measurement_period=0.1)
     self.button = ButtonBlock(measurement_period=0.1)
+    self.ir = IrBlock()
+    self.ir.predefine_addresses([BlackIrRc.address, WhiteIrRc.address])
 
     self.button.value.equal_to(True, True, self.change_patrol)
 
@@ -30,14 +38,22 @@ class Plan():
     self.patrol = False
 
     self.display.contrast(0)
-    keyboard = Ble.get_keyboard()
-    keyboard.add_callback("a", self.turn_left)
-    keyboard.add_callback("d", self.turn_right)
-    keyboard.add_callback("w", self.speed_up)
-    keyboard.add_callback("s", self.slow_down)
-    keyboard.add_callback("z", self.stop)
-    keyboard.add_callback("x", self.reverse)
-    keyboard.add_callback("p", self.change_patrol)
+    VirtualKeyboard = Ble.get_keyboard()
+    VirtualKeyboard.add_callback("a", self.turn_left)
+    VirtualKeyboard.add_callback("d", self.turn_right)
+    VirtualKeyboard.add_callback("w", self.speed_up)
+    VirtualKeyboard.add_callback("s", self.slow_down)
+    VirtualKeyboard.add_callback("z", self.stop)
+    VirtualKeyboard.add_callback("x", self.reverse)
+    VirtualKeyboard.add_callback("p", self.change_patrol)
+
+    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_left), True, self.turn_left)
+    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_right), True, self.turn_right)
+    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_up), True, self.speed_up)
+    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_down), True, self.slow_down)
+    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_ok), True, self.stop)
+    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_hash), True, self.reverse)
+    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_star), True, self.change_patrol)
 
     self.counter = 0
     Planner.repeat(0.5, self.print_power_info)
@@ -100,8 +116,8 @@ class Plan():
 
 
   def print_power_info(self):
-    voltage = self.chassis.power.battery_voltage_V.get_value()
-    current = self.chassis.power.battery_current_mA.get_value()
+    voltage = self.chassis.power.battery_voltage_V.get()
+    current = self.chassis.power.battery_current_mA.get()
 
     self.display.clean()
     self.heart_beat = not self.heart_beat
@@ -109,8 +125,8 @@ class Plan():
       self.display.print_text(55, 0, "*")
     self.display.print_text(0, 9, "%2.3f V" % voltage)
 
-    self.display.print_text(0, 18, "%3.2f mA" % self.current_smoother.get_value())
-    self.display.print_text(0, 36, str(self.distance.value.get_value()))
+    self.display.print_text(0, 18, "%3.2f mA" % self.current_smoother.get())
+    self.display.print_text(0, 36, str(self.distance.value.get()))
     self.counter += 1
     self.display.showtime()
 

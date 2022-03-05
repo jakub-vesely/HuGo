@@ -11,7 +11,7 @@ class Plan:
       self.button.value.changed(True, self._button_state_changed)
 
   def _button_state_changed(self):
-    if self.button.value.get_value():
+    if self.button.value.get():
       self.led.set_on()
       self.logging.info("button pressed")
     else:

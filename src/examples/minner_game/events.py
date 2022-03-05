@@ -202,7 +202,7 @@ class Plan:
     self.display.clean()
     self.point.draw(self.display)
     if self.started:
-      if self.button.value.get_value():
+      if self.button.value.get():
         self.point.y -= 2
       else:
         self.point.y += 2

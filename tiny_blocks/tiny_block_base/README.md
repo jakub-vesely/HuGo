@@ -1,1 +1,0 @@
-This directory must be uploaded among Arduino libraries (Documents\Arduino\libraries) to be hugo_tiny_block_base_arduino.h visible for rest of tiny_block projects.

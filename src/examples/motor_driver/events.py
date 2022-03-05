@@ -1,4 +1,5 @@
 from motor_driver_block import MotorDriverBlock
+from virtual_keyboard import VirtualKeyboard
 from logging import Logging
 from planner import Planner
 from ble import Ble
@@ -12,14 +13,13 @@ class Plan():
     self.pwm = 50
 
     self.logging = Logging("plan")
-    keyboard = Ble.get_keyboard()
-    keyboard.add_callback("a", self.pwm_down)
-    keyboard.add_callback("d", self.pwm_up)
-    keyboard.add_callback("w", self.speed_up)
-    keyboard.add_callback("s", self.slow_down)
-    keyboard.add_callback("z", self.stop)
-    keyboard.add_callback("o", self.full_speed_up)
-    keyboard.add_callback("l", self.full_speed_down)
+    VirtualKeyboard.add_callback("a", self.pwm_down)
+    VirtualKeyboard.add_callback("d", self.pwm_up)
+    VirtualKeyboard.add_callback("w", self.speed_up)
+    VirtualKeyboard.add_callback("s", self.slow_down)
+    VirtualKeyboard.add_callback("z", self.stop)
+    VirtualKeyboard.add_callback("o", self.full_speed_up)
+    VirtualKeyboard.add_callback("l", self.full_speed_down)
 
     self.motor_driver_front = MotorDriverBlock(0x11)
     #self.motor_driver_front.change_block_address(0x11)

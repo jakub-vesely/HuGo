@@ -1,40 +1,36 @@
 from ___logging import Logging
-from ___planner import Planner
-from ___distance_block import DistanceBlock
-from ___display_block import DisplayBlock
-from ___smoothed_variable import SmoothedVariable, SmoothingType
-from ___rgb_led_block import RgbLedBlock, RgbLedBlockColor
+from ___ir_block import IrBlock
+from remote_control.___ir_numeric_remote import IrNumericRemote
+from remote_control.___remote_key import RemoteKey
+from ___rgb_led_block import RgbLedBlock
+from ___ble import Ble
 
 class Plan():
-  border_distance = 200
   def __init__(self) -> None:
     self.logging = Logging("events")
-    self.display = DisplayBlock()
     self.rgb = RgbLedBlock()
-    self.rgb.set_on()
 
-    self.distance_block = DistanceBlock(measurement_period=0.05)
-    self.smooth_distance = SmoothedVariable(3, SmoothingType.progressive, self.distance_block.value)
-    self.short_distance_event = self.smooth_distance.less_than(self.border_distance, True, self.short_distance)
-    self.smooth_distance.more_than(self.border_distance, False, self.long_distance)
-    self.power_save_state = 0
+    self.ir_block = IrBlock()
+    self.ir_block.add_remote(IrNumericRemote())
 
-    Planner.repeat(0.5, self.get_distance)
+    #to demonstrate equal to
+    self.ir_block.value.equal_to(RemoteKey("0"), True, self.light_off)
+    Ble.value_remote.equal_to(RemoteKey("0"), True, self.light_off)
+    #to demonstrate changed
+    self.ir_block.value.updated(True, self.changed, self.ir_block.value)
+    Ble.value_remote.updated(True, self.changed, Ble.value_remote)
 
-  def short_distance(self):
-    self.logging.info("short_distance")
-    self.rgb.set_color(RgbLedBlockColor.red)
-    self.smooth_distance.remove_trigger(self.short_distance_event)
+  def changed(self, active_value):
+    value = active_value.get()
+    self.logging.info(value.name)
+    if value and value.name.isdigit():
+      key_number = int(value.name)
+      if key_number > 0 and key_number < 10:
+        self.rgb.set_color_by_id(key_number)
+        self.logging.info("set color with id:%d", key_number)
 
+  def light_off(self):
+    self.rgb.set_off()
+    self.logging.info("light turned off")
 
-  def long_distance(self):
-    self.logging.info("long_distance")
-    self.rgb.set_color(RgbLedBlockColor.green)
-
-  def get_distance(self):
-    raw_distance = self.distance_block.value.get_value(False)
-    self.display.clean()
-    self.display.print_text(0, 0, str(raw_distance))
-    self.display.print_text(0, 9, str(int(self.smooth_distance.get_value())))
-    self.display.showtime()
 Plan()

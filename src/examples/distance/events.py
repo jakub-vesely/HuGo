@@ -30,9 +30,9 @@ class Plan():
     self.rgb.set_color(RgbLedBlockColor.green)
 
   def get_distance(self):
-    raw_distance = self.distance_block.value.get_value(False)
+    raw_distance = self.distance_block.value.get(False)
     self.display.clean()
     self.display.print_text(0, 0, str(raw_distance))
-    self.display.print_text(0, 9, str(int(self.smooth_distance.get_value())))
+    self.display.print_text(0, 9, str(int(self.smooth_distance.get())))
     self.display.showtime()
 Plan()
