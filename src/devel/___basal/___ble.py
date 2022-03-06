@@ -7,11 +7,11 @@ from micropython import const
 import bluetooth
 import sys
 import struct
-from ___logging import Logging, LoggerBase
-from ___planner import Planner
-from ___power_mgmt import PowerMgmt, PowerPlan
-from ___active_variable import ActiveVariable
-from remote_control.___remote_key import RemoteKey
+from ___basal.___logging import Logging, LoggerBase
+from ___basal.___planner import Planner
+from ___basal.___power_mgmt import PowerMgmt, PowerPlan
+from ___basal.___active_variable import ActiveVariable
+from ___remote_control.___remote_key import RemoteKey
 
 _ADV_TYPE_FLAGS = const(0x01)
 _ADV_TYPE_NAME = const(0x09)
@@ -90,7 +90,7 @@ class Ble():
     Planner.plan(cls._check_time_to_power_save, True)
 
     Logging.add_logger(BleLogger())
-    cls._start_ble() #to be allocated big blocks in the beginning it should prevent memory fragmentation
+    cls._start_ble() #to be allocated big ___blocks in the beginning it should prevent memory fragmentation
     cls.value_remote = ActiveVariable(RemoteKey.get_default())
 
 
@@ -161,7 +161,7 @@ class Ble():
   @classmethod
   def get_shell(cls):
     if not cls._shell:
-      from ___shell import Shell
+      from ___basal.___shell import Shell
       cls._shell = Shell()
     return cls._shell
 
@@ -209,7 +209,7 @@ class Ble():
       if value_handle == cls._keyboard_handle:
         print("_keyboard_handle")
         if not cls._keyboard:
-          from remote_control.___virtual_keyboard import VirtualKeyboard
+          from ___remote_control.___virtual_keyboard import VirtualKeyboard
           cls._keyboard = VirtualKeyboard()
 
         scan_code = int.from_bytes(value[0:2], "big", True)

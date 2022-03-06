@@ -1,13 +1,14 @@
 #  Copyright (c) 2022 Jakub Vesely
 #  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
 
-from ___block_types import BlockTypes
-from ___block_base import BlockBase
-from ___active_variable import ActiveVariable
-from remote_control.___remote_key import RemoteKey
-from remote_control.___remote_keyboard_base import RemoteKeyboardBase
 # pylint: disable=no-name-in-module
 from micropython import const
+from ___basal.___active_variable import ActiveVariable
+from ___blocks.___block_types import BlockTypes
+from ___blocks.___block_base import BlockBase
+from ___remote_control.___remote_key import RemoteKey
+from ___remote_control.___remote_keyboard_base import RemoteKeyboardBase
+
 
 _ir_data_ready_command = const(0x01)
 _ir_data_command = const(0x02)
@@ -34,8 +35,8 @@ class IrBlock(BlockBase):
         return RemoteKey(remote.find_name_by_scan_code(scan_code), scan_code, remote.get_address())
     return self._no_data_ready #None is reserved for the case that block do not answer
 
-  def add_remote(self, remote_control:RemoteKeyboardBase):
-    self._remotes.append(remote_control)
+  def add_remote(self, ___remote_control:RemoteKeyboardBase):
+    self._remotes.append(___remote_control)
 
   def _get_near_remote(self, received) -> RemoteKeyboardBase:
     for remote in self._remotes:

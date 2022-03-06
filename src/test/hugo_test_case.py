@@ -24,7 +24,7 @@ class TestCase(unittest.TestCase):
 
       return micropython()
 
-    if ("___") in name :
+    if ("___") in name:
       print(f"hugo_test {name} redirected to devel.{name}")
       return cls.orig_import("devel." + name, *args)
 

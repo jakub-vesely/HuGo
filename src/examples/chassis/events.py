@@ -1,20 +1,23 @@
-from chassis import Chassis, Speed, Manoeuver, Direction
-from virtual_keyboard import VirtualKeyboard
-from logging import Logging
-from planner import Planner
-from ble import Ble
+#  Copyright (c) 2022 Jakub Vesely
+#  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
+
+from basal.ble import Ble
+from basal.logging import Logging
+from basal.planner import Planner
+from compilations.chassis import Chassis, Speed, Manoeuver, Direction
+from remote_control.remote_key import RemoteKey
 
 class Plan():
   def __init__(self) -> None:
     self.logging = Logging("events")
-    self.chassis = Chassis(0x11, 0x12, None)
+    self.chassis = Chassis(0x20, 0x21)
 
-    VirtualKeyboard.add_callback("a", self.turn_left)
-    VirtualKeyboard.add_callback("d", self.turn_right)
-    VirtualKeyboard.add_callback("w", self.speed_up)
-    VirtualKeyboard.add_callback("s", self.slow_down)
-    VirtualKeyboard.add_callback("z", self.stop)
-    VirtualKeyboard.add_callback("x", self.reverse)
+    Ble.value_remote.equal_to(RemoteKey("a"), True, self.turn_left)
+    Ble.value_remote.equal_to(RemoteKey("d"), True, self.turn_right)
+    Ble.value_remote.equal_to(RemoteKey("w"), True, self.speed_up)
+    Ble.value_remote.equal_to(RemoteKey("s"), True, self.slow_down)
+    Ble.value_remote.equal_to(RemoteKey("z"), True, self.stop)
+    Ble.value_remote.equal_to(RemoteKey("x"), True, self.reverse)
 
     Planner.repeat(1, self.print_power_info)
 

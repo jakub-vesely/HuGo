@@ -1,4 +1,4 @@
-from ___logging import LoggerBase
+from ___basal.___logging import LoggerBase
 
 class SerialLogger(LoggerBase):
   critical_str = "C"

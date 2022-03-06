@@ -1,9 +1,9 @@
 #  Copyright (c) 2022 Jakub Vesely
 #  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
 
-from remote_control.___remote_keyboard_base import RemoteKeyboardBase
-from remote_control.___special_keys import SpecialKeys
-from remote_control.___remote_key import RemoteKey
+from ___remote_control.___remote_keyboard_base import RemoteKeyboardBase
+from ___remote_control.___special_keys import SpecialKeys
+from ___remote_control.___remote_key import RemoteKey
 
 class IrNumericRemote(RemoteKeyboardBase):
   """

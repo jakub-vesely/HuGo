@@ -1,8 +1,11 @@
+#  Copyright (c) 2022 Jakub Vesely
+#  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
+
 from unittest.mock import MagicMock
 from hugo_test_case import TestCase #must be called before another imports from devel or micropython - redefine import
-from ___ir_block import IrBlock
-from remote_control.___remote_key import RemoteKey
-from remote_control.___remote_keyboard_base import RemoteKeyboardBase
+from ___blocks.___ir_block import IrBlock
+from ___remote_control.___remote_key import RemoteKey
+from ___remote_control.___remote_keyboard_base import RemoteKeyboardBase
 
 class TestingRemote(RemoteKeyboardBase):
   def get_address(self):

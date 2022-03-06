@@ -1,6 +1,9 @@
+#  Copyright (c) 2022 Jakub Vesely
+#  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
+
 from unittest.mock import MagicMock
 from hugo_test_case import TestCase #must be called before another imports from devel or micropython - redefine import
-from ___active_variable import ActiveVariable
+from ___basal.___active_variable import ActiveVariable
 
 class TestActiveVariable(TestCase):
   def setUp(self):

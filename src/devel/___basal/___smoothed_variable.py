@@ -1,7 +1,7 @@
 #  Copyright (c) 2022 Jakub Vesely
 #  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
 
-from ___active_variable import ActiveVariable
+from ___basal.___active_variable import ActiveVariable
 
 class SmoothingType:
   average=0 #will be calculated average value from stored values

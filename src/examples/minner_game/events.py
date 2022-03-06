@@ -1,11 +1,13 @@
-from logging import Logging
-from planner import Planner
-from logging import Logging
-from rgb_led_block import RgbLedBlock, RgbLedBlockColor
-from display_block import DisplayBlock
-from button_block import ButtonBlock
+#  Copyright (c) 2022 Jakub Vesely
+#  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
+
 import random
 import gc
+from basal.logging import Logging
+from basal.planner import Planner
+from blocks.rgb_led_block import RgbLedBlock, RgbLedBlockColor
+from blocks.display_block import DisplayBlock
+from blocks.button_block import ButtonBlock
 
 class Diamond:
   base_dim = 8 #dimension

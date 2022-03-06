@@ -1,10 +1,10 @@
 #  Copyright (c) 2022 Jakub Vesely
 #  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
 
-from ___motor_driver_block import MotorDriverBlock
-from ___logging import Logging
-from ___power_block import PowerBlock
-from ___block_base import PowerSaveLevel
+from ___blocks.___motor_driver_block import MotorDriverBlock
+from ___basal.___logging import Logging
+from ___blocks.___power_block import PowerBlock
+from ___blocks.___block_base import PowerSaveLevel
 
 class State:
   def __init__(self, left, right, pwm) -> None:
@@ -33,7 +33,7 @@ class Manoeuver:
 
 class Chassis:
   state = {}
-  def __init__(self, address_driver_front=20, address_driver_rear=21, addr_power=None, power_measurement_period=1):
+  def __init__(self, address_driver_front=0x20, address_driver_rear=0x21, addr_power=None, power_measurement_period=1):
     self.speed = Speed.stop
     self.manoeuver = Manoeuver.straight
     self.direction = Direction.forward

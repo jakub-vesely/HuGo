@@ -1,9 +1,9 @@
-from ___logging import Logging
-from ___ir_block import IrBlock
-from remote_control.___ir_numeric_remote import IrNumericRemote
-from remote_control.___remote_key import RemoteKey
-from ___rgb_led_block import RgbLedBlock
-from ___ble import Ble
+from ___basal.___logging import Logging
+from ___blocks.___ir_block import IrBlock
+from ___remote_control.___ir_numeric_remote import IrNumericRemote
+from ___remote_control.___remote_key import RemoteKey
+from ___blocks.___rgb_led_block import RgbLedBlock
+from ___basal.___ble import Ble
 
 class Plan():
   def __init__(self) -> None:

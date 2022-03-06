@@ -1,10 +1,10 @@
 #  Copyright (c) 2022 Jakub Vesely
 #  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
 
-from ___block_types import BlockTypes
-from ___extended_block_base import BlockWithOneExtension
-from ___active_variable import ActiveVariable
 from micropython import const
+from ___blocks.___block_types import BlockTypes
+from ___blocks.___extended_block_base import BlockWithOneExtension
+from ___basal.___active_variable import ActiveVariable
 
 _charging_state_command = const(0x01)
 

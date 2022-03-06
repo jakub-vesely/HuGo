@@ -1,17 +1,17 @@
-from logging import Logging
-from planner import Planner
-from display_block import DisplayBlock
-from power_mgmt import PowerMgmt, PowerPlan
-from rgb_led_block import RgbLedBlock, RgbLedBlockColor
-from ble import Ble
-from chassis import Chassis, Speed, Manoeuver, Direction
-from smoothed_variable import SmoothedVariable, SmoothingType
-from distance_block import DistanceBlock
-from button_block import ButtonBlock
-from virtual_keyboard import VirtualKeyboard
-from ir_block import IrBlock, RemoteKey
-from black_ir_rc import BlackIrRc
-from white_ir_rc import WhiteIrRc
+from basal.ble import Ble
+from basal.logging import Logging
+from basal.planner import Planner
+from basal.power_mgmt import PowerMgmt, PowerPlan
+from basal.smoothed_variable import SmoothedVariable, SmoothingType
+from blocks.display_block import DisplayBlock
+from blocks.rgb_led_block import RgbLedBlock, RgbLedBlockColor
+from blocks.distance_block import DistanceBlock
+from blocks.button_block import ButtonBlock
+from compilations.chassis import Chassis, Speed, Manoeuver, Direction
+from blocks.ir_block import IrBlock
+from remote_control.ir_numeric_remote import IrNumericRemote
+from remote_control.remote_key import RemoteKey
+#from white_ir_rc import WhiteIrRc
 
 class Plan():
   near_barrier = 300
@@ -21,13 +21,13 @@ class Plan():
 
   def __init__(self) -> None:
     self.logging = Logging("events")
-    self.chassis = Chassis(0x11, 0x12, None, 0.3)
+    self.chassis = Chassis(power_measurement_period=0.3)
     self.rgb = RgbLedBlock()
     self.display = DisplayBlock()
     self.distance = DistanceBlock(measurement_period=0.1)
     self.button = ButtonBlock(measurement_period=0.1)
-    self.ir = IrBlock()
-    self.ir.predefine_addresses([BlackIrRc.address, WhiteIrRc.address])
+    self.ir_block = IrBlock()
+    self.ir_block.add_remote(IrNumericRemote())
 
     self.button.value.equal_to(True, True, self.change_patrol)
 
@@ -38,22 +38,21 @@ class Plan():
     self.patrol = False
 
     self.display.contrast(0)
-    VirtualKeyboard = Ble.get_keyboard()
-    VirtualKeyboard.add_callback("a", self.turn_left)
-    VirtualKeyboard.add_callback("d", self.turn_right)
-    VirtualKeyboard.add_callback("w", self.speed_up)
-    VirtualKeyboard.add_callback("s", self.slow_down)
-    VirtualKeyboard.add_callback("z", self.stop)
-    VirtualKeyboard.add_callback("x", self.reverse)
-    VirtualKeyboard.add_callback("p", self.change_patrol)
+    Ble.value_remote.equal_to(RemoteKey("a"), True, self.turn_left)
+    Ble.value_remote.equal_to(RemoteKey("d"), True, self.turn_right)
+    Ble.value_remote.equal_to(RemoteKey("w"), True, self.speed_up)
+    Ble.value_remote.equal_to(RemoteKey("s"), True, self.slow_down)
+    Ble.value_remote.equal_to(RemoteKey("z"), True, self.stop)
+    Ble.value_remote.equal_to(RemoteKey("x"), True, self.reverse)
+    Ble.value_remote.equal_to(RemoteKey("p"), True, self.change_patrol)
 
-    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_left), True, self.turn_left)
-    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_right), True, self.turn_right)
-    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_up), True, self.speed_up)
-    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_down), True, self.slow_down)
-    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_ok), True, self.stop)
-    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_hash), True, self.reverse)
-    self.ir.value.equal_to(BlackIrRc.get_key_data(BlackIrRc.key_star), True, self.change_patrol)
+    self.ir_block.value.equal_to(IrNumericRemote.key_left, True, self.turn_left)
+    self.ir_block.value.equal_to(IrNumericRemote.key_right, True, self.turn_right)
+    self.ir_block.value.equal_to(IrNumericRemote.key_top, True, self.speed_up)
+    self.ir_block.value.equal_to(IrNumericRemote.key_bottom, True, self.slow_down)
+    self.ir_block.value.equal_to(IrNumericRemote.key_ok, True, self.stop)
+    self.ir_block.value.equal_to(IrNumericRemote.key_hash, True, self.reverse)
+    self.ir_block.value.equal_to(IrNumericRemote.key_star, True, self.change_patrol)
 
     self.counter = 0
     Planner.repeat(0.5, self.print_power_info)
@@ -117,7 +116,6 @@ class Plan():
 
   def print_power_info(self):
     voltage = self.chassis.power.battery_voltage_V.get()
-    current = self.chassis.power.battery_current_mA.get()
 
     self.display.clean()
     self.heart_beat = not self.heart_beat

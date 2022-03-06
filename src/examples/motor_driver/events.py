@@ -1,33 +1,35 @@
-from motor_driver_block import MotorDriverBlock
-from virtual_keyboard import VirtualKeyboard
-from logging import Logging
-from planner import Planner
-from ble import Ble
+#  Copyright (c) 2022 Jakub Vesely
+#  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
 
-logging = Logging("events")
+from basal.ble import Ble
+from basal.logging import Logging
+from basal.planner import Planner
+from blocks.motor_driver_block import MotorDriverBlock
+from remote_control.remote_key import RemoteKey
 
 class Plan():
-  fullspeed =  100
+  fullspeed = 100
+  logging = Logging("events")
+
   def __init__(self) -> None:
     self.speed = 0
     self.pwm = 50
 
-    self.logging = Logging("plan")
-    VirtualKeyboard.add_callback("a", self.pwm_down)
-    VirtualKeyboard.add_callback("d", self.pwm_up)
-    VirtualKeyboard.add_callback("w", self.speed_up)
-    VirtualKeyboard.add_callback("s", self.slow_down)
-    VirtualKeyboard.add_callback("z", self.stop)
-    VirtualKeyboard.add_callback("o", self.full_speed_up)
-    VirtualKeyboard.add_callback("l", self.full_speed_down)
+    Ble.value_remote.equal_to(RemoteKey("a"), True, self.pwm_down)
+    Ble.value_remote.equal_to(RemoteKey("d"), True, self.pwm_up)
+    Ble.value_remote.equal_to(RemoteKey("w"), True, self.speed_up)
+    Ble.value_remote.equal_to(RemoteKey("s"), True, self.slow_down)
+    Ble.value_remote.equal_to(RemoteKey("z"), True, self.stop)
+    Ble.value_remote.equal_to(RemoteKey("o"), True, self.full_speed_up)
+    Ble.value_remote.equal_to(RemoteKey("l"), True, self.full_speed_down)
 
-    self.motor_driver_front = MotorDriverBlock(0x11)
-    #self.motor_driver_front.change_block_address(0x11)
+    self.motor_driver_front = MotorDriverBlock(0x20)
+    #self.motor_driver_front.change_block_address(0x20)
     self.motor_driver_front.turn_clockwise(MotorDriverBlock.motor1_id)
     self.motor_driver_front.turn_opposite(MotorDriverBlock.motor2_id)
 
-    self.motor_driver_rear = MotorDriverBlock(0x12)
-    #self.motor_driver_rear.change_block_address(0x11)
+    self.motor_driver_rear = MotorDriverBlock(0x21)
+    #self.motor_driver_rear.change_block_address(0x21)
     self.motor_driver_rear.turn_clockwise(MotorDriverBlock.motor1_id)
     self.motor_driver_rear.turn_opposite(MotorDriverBlock.motor2_id)
 

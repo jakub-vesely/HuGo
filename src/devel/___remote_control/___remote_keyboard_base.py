@@ -4,7 +4,7 @@
 class RemoteKeyboardBase:
   """
   this class is a base class for remote keyboards/controls (IR or the BLE one)
-  example of usage can be found in examples/remote_control
+  example of usage can be found in examples/___remote_control
   """
 
   def __init__(self, address_bit_tolerance=2) -> None:

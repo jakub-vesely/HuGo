@@ -1,9 +1,9 @@
 #  Copyright (c) 2022 Jakub Vesely
 #  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
 
-from ___block_types import BlockTypes
-from ___block_base import BlockBase
-from ___active_variable import ActiveVariable
+from ___blocks.___block_types import BlockTypes
+from ___blocks.___block_base import BlockBase
+from ___basal.___active_variable import ActiveVariable
 
 class Speed:
   speed_0 = 0

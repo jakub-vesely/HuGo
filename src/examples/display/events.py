@@ -1,5 +1,8 @@
-from display_block import DisplayBlock
-from logging import Logging
+#  Copyright (c) 2022 Jakub Vesely
+#  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
+
+from blocks.display_block import DisplayBlock
+from basal.logging import Logging
 
 def plan():
   logging = Logging()

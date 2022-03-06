@@ -1,12 +1,20 @@
 #!/usr/bin/env python
 
+#  Copyright (c) 2022 Jakub Vesely
+#  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
+
 import os
+import shutil
 
 class ExportDevel:
   devel_prefix = "___"
   devel_folder_path = "devel"
   firmware_folder_path = "../micropython/ports/esp32/boards/HUGO/modules"
-  devel_only_file_names = ("boot.py", "events.py", "__pycache__")
+  devel_only_file_names = ("boot.py", "events.py", "__pycache__", "__init__.py")
+
+  def _remove_original_files(self):
+    shutil.rmtree(self.firmware_folder_path)
+    os.mkdir(self.firmware_folder_path)
 
   def _export_dir(self, path):
     file_names = os.listdir(path)
@@ -20,6 +28,7 @@ class ExportDevel:
         continue
 
       firmware_folder = self.firmware_folder_path + path[len(self.devel_folder_path):]
+      firmware_folder = firmware_folder.replace(self.devel_prefix, "")
       if not os.path.exists(firmware_folder):
         os.mkdir(firmware_folder)
 
@@ -32,7 +41,13 @@ class ExportDevel:
         with open(firmware_file_path, "w") as firmware_file:
           firmware_file.writelines(firmware_lines)
 
+  def _create_main_py(self):
+    with open(self.firmware_folder_path + "\main.py", "w") as main_file:
+      main_file.write("print ('main.py loaded') \nfrom blocks.main_block import MainBlock\n\nMainBlock.run()")
+
   def __init__(self):
-    self._export_dir(self.devel_folder_path)
+    self._remove_original_files() # remove all original files...
+    self._export_dir(self.devel_folder_path) #... to be replaced by new ones
+    self._create_main_py()
 
 ExportDevel()
