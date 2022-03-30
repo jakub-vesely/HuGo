@@ -274,7 +274,6 @@ class Terminal():
     return remote_files
 
   def _get_local_files(self, directory):
-    logging.debug("getting local files...")
     local_files = {}
     dir_content = os.listdir(directory)
     for file_name in dir_content:
@@ -282,10 +281,9 @@ class Terminal():
       if os.path.isdir(file_path):
         local_files.update(self._get_local_files(file_path))
       else:
-        with open(file_path, "rb") as f:
-          data = f.read()
+        with open(file_path, "rb") as file:
+          data = file.read()
           local_files[file_path[len(self.output_dir):]] = hashlib.sha1(data).digest().hex()
-    logging.debug("getting local files Done")
     return local_files
 
   def _remove_unnecessary_files(self, remote_files, local_files):
@@ -330,40 +328,51 @@ class Terminal():
     logging.debug("importing files Done")
     return imported
 
-  def _remove_dir_content(self, dir_path):
-    dir_content = os.listdir(dir_path)
-    for file_name in dir_content:
-      file_path = dir_path + "/" + file_name
-      if os.path.isdir(file_path):
-        self._remove_dir_content(file_path)
-        os.rmdir(file_path)
-      else:
-        os.remove(file_path)
+  def _remove_old_dir_content(self, in_dir_content, out_dir_path):
+    dir_content = os.listdir(out_dir_path)
+    for out_file_name in dir_content:
+      unbuild_name = out_file_name.replace(".mpy", ".py")
+      if unbuild_name not in in_dir_content:
+        out_file_path = out_dir_path + "/" + out_file_name
+        if os.path.isdir(out_file_path):
+          self._remove_old_dir_content([], out_file_path)
+          os.rmdir(out_file_path)
+        else:
+          os.remove(out_file_path)
+
+  def _update_required(self, in_path, out_path):
+    if not os.path.exists(out_path):
+      return True
+    return os.path.getmtime(in_path) > os.path.getmtime(out_path)
 
   def _build_local_dir(self, in_path, out_path):
-    if os.path.exists(out_path):
-      self._remove_dir_content(out_path)
-    else:
-      os.mkdir(out_path)
+    in_dir_content = os.listdir(in_path)
 
-    dir_content = os.listdir(in_path)
-    for file_name in dir_content:
-      file_path = in_path + "/" + file_name
-      if os.path.isdir(file_path):
-        if file_name != "__pycache__":
-          self._build_local_dir(file_path, out_path + "/" + file_name)
+    if not os.path.exists(out_path):
+      os.mkdir(out_path)
+    else:
+      self._remove_old_dir_content(in_dir_content, out_path)
+
+    for file_name in in_dir_content:
+      if file_name in ("__init__.py"):
         continue
 
+      in_file_path = in_path + "/" + file_name
+      if os.path.isdir(in_file_path):
+        if file_name != "__pycache__":
+          self._build_local_dir(in_file_path, out_path + "/" + file_name)
+        continue
 
       if file_name == "boot.py" or not file_name.endswith(".py"):
-        os.system(f"cp {in_path + '/' + file_name} { self.output_dir}")
+        if self._update_required(in_file_path, self.output_dir + "/" + file_name):
+          os.system(f"cp {in_file_path} { self.output_dir}")
       else:
-        new_file_path = out_path + "/" + file_name.split(".")[0] + ".mpy"
-        try:
-          subprocess.run(f"mpy-cross {file_path} -o {new_file_path}", check=True, shell=True, stderr=subprocess.PIPE)
-        except subprocess.CalledProcessError as error:
-          logging.warning("build of '%s' unsuccessful: %s", str(file_name), error.stderr.decode("utf-8"))
-
+        out_file_path = out_path + "/" + file_name.split(".")[0] + ".mpy"
+        if self._update_required(in_file_path, out_file_path):
+          try:
+            subprocess.run(f"mpy-cross {in_file_path} -o {out_file_path}", check=True, shell=True, stderr=subprocess.PIPE)
+          except subprocess.CalledProcessError as error:
+            logging.warning("build of '%s' unsuccessful: %s", str(in_file_path), error.stderr.decode("utf-8"))
 
   def _process_files(self):
     remote_files = self._get_remote_files()
@@ -468,6 +477,7 @@ def main():
     terminal.monitor()
 
   terminal.disconnect()
+  return True
 
 if not main():
   sys.exit(1)
