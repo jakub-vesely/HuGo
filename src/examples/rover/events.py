@@ -48,8 +48,8 @@ class Plan():
 
     self.ir_block.value.equal_to(IrNumericRemote.key_left, True, self.turn_left)
     self.ir_block.value.equal_to(IrNumericRemote.key_right, True, self.turn_right)
-    self.ir_block.value.equal_to(IrNumericRemote.key_top, True, self.speed_up)
-    self.ir_block.value.equal_to(IrNumericRemote.key_bottom, True, self.slow_down)
+    self.ir_block.value.equal_to(IrNumericRemote.key_up, True, self.speed_up)
+    self.ir_block.value.equal_to(IrNumericRemote.key_down, True, self.slow_down)
     self.ir_block.value.equal_to(IrNumericRemote.key_ok, True, self.stop)
     self.ir_block.value.equal_to(IrNumericRemote.key_hash, True, self.reverse)
     self.ir_block.value.equal_to(IrNumericRemote.key_star, True, self.change_patrol)
