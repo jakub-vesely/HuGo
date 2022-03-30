@@ -41,4 +41,4 @@
 typedef struct wire_buffer_t {
     uint8_t data[16]; //not big amount of data is expected 16B should be more than enough
     uint8_t size;
-};
+} wire_buffer_t;

@@ -142,8 +142,7 @@ static void i2c_receive_data(int count) {
                 HugoTinyWireFillModuleVersion();
                 break;
             case I2C_COMMAND_SET_POWER_SAVE:
-                uint8_t level = Wire.read();
-                HugoTinyWirePowerSave(level);
+                HugoTinyWirePowerSave(Wire.read());
                 break;
             default:
                 read_unnecessary_data(count - 2); //to old blocks are not bricked due to missaligned data in case there will be added new command with data
