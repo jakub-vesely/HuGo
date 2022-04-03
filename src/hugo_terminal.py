@@ -189,9 +189,10 @@ class Ble():
       self.terminating = True
 
 class Terminal():
-  output_dir = ".build"
+  output_dir_prefix = ".build"
   def __init__(self, hook_keyboard, mac_address, verbose, source_dir):
     self.flashing_folder = source_dir
+    self.output_dir = self.output_dir_prefix + "_" + source_dir.replace("/", "_").replace("\\", "_")
     self._init_logger(logging.DEBUG if verbose else logging.INFO)
     self.ble = Ble(hook_keyboard, mac_address)
 

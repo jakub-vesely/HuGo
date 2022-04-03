@@ -12,4 +12,4 @@ sdkconfig.old
 *.pro
 *.pyc
 pcb/datasheets/local
-.build
+.build*
