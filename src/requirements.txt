@@ -1,0 +1,6 @@
+#this file contains libraries necessary for running hugo_terminal.py
+#libraries can be istalled by calling 'pip install -r requirements.txt'
+
+bleak
+colorlog
+keyboard

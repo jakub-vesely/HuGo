@@ -371,7 +371,7 @@ class Terminal():
         out_file_path = out_path + "/" + file_name.split(".")[0] + ".mpy"
         if self._update_required(in_file_path, out_file_path):
           try:
-            subprocess.run(f"mpy-cross {in_file_path} -o {out_file_path}", check=True, shell=True, stderr=subprocess.PIPE)
+            subprocess.run(f"../micropython/mpy-cross/mpy-cross {in_file_path} -o {out_file_path}", check=True, shell=True, stderr=subprocess.PIPE)
           except subprocess.CalledProcessError as error:
             logging.warning("build of '%s' unsuccessful: %s", str(in_file_path), error.stderr.decode("utf-8"))
 
