@@ -8,6 +8,9 @@ from basal.planner import Planner
 from blocks.rgb_led_block import RgbLedBlock, RgbLedBlockColor
 from blocks.display_block import DisplayBlock
 from blocks.button_block import ButtonBlock
+from blocks.sound_block import SoundBlock
+
+import machine
 
 class Diamond:
   base_dim = 8 #dimension
@@ -102,17 +105,18 @@ class Map:
     for _index in range(count):
       top_min = 8
       bottom_min = 0
+      map_height = self.dim_y - 20 #20 is the border line height
       last_top = self.map_layers[-1].top
       last_bottom = self.map_layers[-1].bottom
       change_top = int(random.random() * 3) - 1
       change_bottom = int(random.random() * 3) - 1
       top_pos =  last_top - change_top if last_top - change_top > top_min else top_min
       bottom_pos =  last_bottom - change_bottom if last_bottom - change_bottom > bottom_min else bottom_min
-      if top_pos + bottom_pos > self.dim_y - 20:
+      if top_pos + bottom_pos > map_height:
         if top_pos - top_min > bottom_pos:
-          top_pos -= top_pos + bottom_pos - (self.dim_y - 20)
+          top_pos -= top_pos + bottom_pos - map_height
         else:
-          bottom_pos -= top_pos + bottom_pos - (self.dim_y - 20)
+          bottom_pos -= top_pos + bottom_pos - map_height
 
       diamond = None
       if self.current_x + _index > 10 and (self.current_x + _index) % (Diamond.max_dim * 2) == 0 and int(random.random() * 10) > 5:
@@ -158,13 +162,22 @@ class Point:
   def draw(self, display:DisplayBlock):
     for r in range(self.r):
       display.draw_ellipse(self.x, self.y, r, r)
+
 class Plan:
+  sound_folder = "miner"
+  sound_start = "start"
+  sound_pick = "pick"
+  sound_crash = "crash"
+
   def __init__(self):
     self.started = False
     self.display = DisplayBlock()
     self.logging = Logging("plan")
     self.button = ButtonBlock()
     self.rgb = RgbLedBlock()
+    self.sound = SoundBlock()
+    self.sound.set_volume(5)
+    #self.sound.play_by_folder_name(self.sound_folder, self.sound_start)
     self.led_default()
     self.dim_x, self.dim_y = self.display.get_dimensions()
     self.center_x = int(self.dim_x / 2)
@@ -174,25 +187,28 @@ class Plan:
     self.score = 0
 
     self.wait_for_start()
-    self.redraw()
 
   def wait_for_start(self):
+    #self.logging.info("wait_for_start")
     self.started = False
     self.score = 0
     self.point = Point(self.center_y)
     self.map = Map(self.dim_x, self.dim_y)
     self.display.invert(True)
-    self.button.value.changed(False, self.start_button)
+    self.sound.play_by_folder_name(self.sound_folder, self.sound_start)
+    self.button.value.equal_to(True, False, self.start_button)
     gc.collect() #force garbage collection before game starts
+    self.logging.info("mem %s", str(gc.mem_free()))
+    self.redraw()
 
   def start_button(self):
     self.started = True
-    self.logging.info("started")
-    self.redraw()
+    #self.logging.info("started")
     self.led_default()
+    Planner.plan(self.redraw)
 
   def redraw(self):
-    speed = int(self.map.current_x / 400) + 1
+    speed = int(self.map.current_x / 400) + 2
     if speed > 10:
       speed = 10
 
@@ -204,7 +220,7 @@ class Plan:
     self.display.clean()
     self.point.draw(self.display)
     if self.started:
-      if self.button.value.get():
+      if self.button.value.get(True): #no listener is active
         self.point.y -= 2
       else:
         self.point.y += 2
@@ -226,7 +242,7 @@ class Plan:
         if diamond.is_in_area(self.point.y - self.point.r, self.point.y + self.point.r):
           self.map.remove_diamond(diamond)
           self.score += 1
-          self.rgb.set_color(RgbLedBlockColor.green)
+          self._pick_effect()
           Planner.postpone(0.05, self.led_default)
 
     self.map.draw(self.display)
@@ -236,20 +252,32 @@ class Plan:
     #score = int(self.map.current_x / 10)
     self.display.print_text(0, 0, str(self.score), color=0)
     self.display.showtime()
-    if not touch:
-      Planner.postpone(0.05, self.redraw)
-    else:
-      self.started = False
-      self.rgb.set_color(RgbLedBlockColor.red)
-      Planner.postpone(1, self.wait_for_reset_pressed) #wait a while to prevent random press and wait for starting new game
+    if self.started:
+      if  not touch:
+        Planner.postpone(0.05, self.redraw)
+      else:
+        self.started = False
+        self._crash_effect()
+        Planner.postpone(0.5, self.wait_for_reset_pressed) #wait a while to prevent random press and wait for starting new game
+
+  def _pick_effect(self):
+    self.rgb.set_color(RgbLedBlockColor.green)
+    self.sound.play_by_folder_name(self.sound_folder, self.sound_pick)
+
+  def _crash_effect(self):
+    self.rgb.set_color(RgbLedBlockColor.red)
+    self.sound.play_by_folder_name(self.sound_folder, self.sound_crash)
+    #self.logging.info("crash")
 
   def led_default(self):
     self.rgb.set_color(RgbLedBlockColor.aquamarine)
 
   def wait_for_reset_pressed(self):
+    #self.logging.info("wait_for_reset_pressed")
     self.button.value.equal_to(True, False, self.wait_for_reset_released)
 
   def wait_for_reset_released(self):
+    #self.logging.info("wait_for_reset_released")
     self.button.value.equal_to(False, False, self.wait_for_start)
 
 Plan()

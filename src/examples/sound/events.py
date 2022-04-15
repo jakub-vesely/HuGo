@@ -1,12 +1,15 @@
-from ___basal.___ble import Ble
-from ___basal.___logging import Logging
-from ___basal.___planner import Planner
-from ___blocks.___sound_block import SoundBlock, Status, PlayMode, EqMode
-from ___blocks.___display_block import DisplayBlock
-from ___blocks.___ir_block import IrBlock
-from ___remote_control.___remote_key import RemoteKey
-from ___remote_control.___special_keys import SpecialKeys
-from ___remote_control.___ir_numeric_remote import IrNumericRemote
+#  Copyright (c) 2022 Jakub Vesely
+#  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
+
+from basal.ble import Ble
+from basal.logging import Logging
+from basal.planner import Planner
+from blocks.sound_block import SoundBlock, Status, PlayMode, EqMode
+from blocks.display_block import DisplayBlock
+from blocks.ir_block import IrBlock
+from remote_control.remote_key import RemoteKey
+from remote_control.special_keys import SpecialKeys
+from remote_control.ir_numeric_remote import IrNumericRemote
 
 class Plan():
   volume_step = 4
@@ -60,18 +63,13 @@ class Plan():
     if eq_mode == EqMode.rock:
       return "rock"
 
-  # def _get_track_order(self):
-  #   return self.dir_index + "/" + self.dir_count
-
   def fill_display(self):
     self.display.clean()
     self.display.print_text(0, 0, self.sound.get_track_name())
-    #self.display.print_text(0, 8, self._get_track_order())
-    self.display.print_text(0, 16, self._get_status())
-    self.display.print_text(0, 24, self._get_play_mode())
-    self.display.print_text(0, 32, self._get_eq_mode())
-    self.display.print_text(0, 40, str(self.sound.get_volume()))
-
+    self.display.print_text(0, 8, self._get_status())
+    self.display.print_text(0, 16, self._get_play_mode())
+    self.display.print_text(0, 24, self._get_eq_mode())
+    self.display.print_text(0, 32, str(self.sound.get_volume()))
     self.display.showtime()
 
   def process_remote(self, active_value):

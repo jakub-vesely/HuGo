@@ -42,7 +42,7 @@ class ExportDevel:
           firmware_file.writelines(firmware_lines)
 
   def _create_main_py(self):
-    with open(self.firmware_folder_path + "\main.py", "w") as main_file:
+    with open(self.firmware_folder_path + "/main.py", "w") as main_file:
       main_file.write("print ('main.py loaded') \nfrom blocks.main_block import MainBlock\n\nMainBlock.run()")
 
   def __init__(self):
