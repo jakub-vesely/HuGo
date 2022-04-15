@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import sys
 import argparse
 import time
@@ -82,13 +81,13 @@ class Ble():
   def _log_callback(self, _sender: int, data: bytearray):
     is_first = not self.log_msg
     if is_first:
-      level = data[0]
+      self.log_level = data[0]
 
     is_last = data[-1] != '\f'.encode("utf-8")[0]
     self.log_msg += data[(1 if is_first else 0) : (len(data) if is_last else -1)].decode("utf-8") # skip level and \f
 
     if is_last:
-      logging.log(level, self.log_msg)
+      logging.log(self.log_level, self.log_msg)
       self.log_msg = ""
 
   def _detection_callback(self, device, _advertisement_data):
@@ -374,6 +373,8 @@ class Terminal():
             subprocess.run(f"../micropython/mpy-cross/mpy-cross {in_file_path} -o {out_file_path}", check=True, shell=True, stderr=subprocess.PIPE)
           except subprocess.CalledProcessError as error:
             logging.warning("build of '%s' unsuccessful: %s", str(in_file_path), error.stderr.decode("utf-8"))
+            raise SyntaxError
+
 
   def _process_files(self):
     remote_files = self._get_remote_files()
@@ -390,7 +391,11 @@ class Terminal():
   def flash_files(self):
     logging.info("Uploading...")
     timestamp = time.time()
-    flashed = self._process_files()
+    try:
+      flashed = self._process_files()
+    except SyntaxError:
+      return False
+
     if flashed:
       logging.info("uploading time: %d s", time.time() - timestamp)
 
