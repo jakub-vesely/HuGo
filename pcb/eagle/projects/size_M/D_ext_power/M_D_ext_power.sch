@@ -11166,15 +11166,14 @@ Source: AVX .. aphvc.pdf</description>
 <text x="-2.1336" y="1.1684" size="1.27" layer="25" ratio="10">&gt;NAME</text>
 <text x="-2.1336" y="-2.3114" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
 </package>
-<package name="SHOTKY">
-<smd name="A" x="-2" y="0" dx="2.5" dy="1.7" layer="1"/>
-<smd name="K" x="2" y="0" dx="2.5" dy="1.7" layer="1"/>
-<text x="-2.4" y="1.6" size="1.016" layer="25">&gt;NAME</text>
-<wire x1="-2.3" y1="0" x2="-2.3" y2="1.4" width="0.1524" layer="51"/>
-<wire x1="-2.3" y1="1.4" x2="2.3" y2="1.4" width="0.1524" layer="51"/>
-<wire x1="2.3" y1="1.4" x2="2.3" y2="-1.4" width="0.1524" layer="51"/>
-<wire x1="2.3" y1="-1.4" x2="-2.3" y2="-1.4" width="0.1524" layer="51"/>
-<wire x1="-2.3" y1="-1.4" x2="-2.3" y2="0" width="0.1524" layer="51"/>
+<package name="SHOTKY_2.8">
+<smd name="A" x="-1.4" y="0" dx="1.2" dy="1.2" layer="1"/>
+<smd name="K" x="1.4" y="0" dx="1.2" dy="1.2" layer="1"/>
+<text x="-2.1" y="1.1" size="1.016" layer="25">&gt;NAME</text>
+<wire x1="-1.3" y1="0.8" x2="1.3" y2="0.8" width="0.1524" layer="51"/>
+<wire x1="1.3" y1="0.8" x2="1.3" y2="-0.8" width="0.1524" layer="51"/>
+<wire x1="1.3" y1="-0.8" x2="-1.3" y2="-0.8" width="0.1524" layer="51"/>
+<wire x1="-1.3" y1="-0.8" x2="-1.3" y2="0.8" width="0.1524" layer="51"/>
 </package>
 </packages>
 <symbols>
@@ -11331,12 +11330,12 @@ Source: AVX .. aphvc.pdf</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="SHOTKY">
+<deviceset name="SHOTKY_2.8">
 <gates>
 <gate name="G$1" symbol="SHOTKY" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="SHOTKY">
+<device name="" package="SHOTKY_2.8">
 <connects>
 <connect gate="G$1" pin="A" pad="A"/>
 <connect gate="G$1" pin="C" pad="K"/>
@@ -11608,7 +11607,11 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <part name="P+1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="P+2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="D.C2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="4u7"/>
-<part name="D.D2" library="hugo" deviceset="SHOTKY" device=""/>
+<part name="D.D2" library="hugo" deviceset="SHOTKY_2.8" device=""/>
+<part name="D.T2" library="!stavebnice03" deviceset="P-MOSFET-FDV304P" device="" value="FDV304"/>
+<part name="D.R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="100k"/>
+<part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
+<part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -11731,6 +11734,20 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <instance part="D.D2" gate="G$1" x="20.32" y="213.36" smashed="yes" rot="R270">
 <attribute name="NAME" x="22.225" y="215.646" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="16.891" y="215.646" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="D.T2" gate="G$1" x="-96.52" y="144.78" smashed="yes">
+<attribute name="NAME" x="-105.41" y="149.86" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="-102.87" y="149.86" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="D.R4" gate="G$1" x="-111.76" y="142.24" smashed="yes" rot="R270">
+<attribute name="NAME" x="-110.2614" y="146.05" size="1.778" layer="95" rot="R270"/>
+<attribute name="VALUE" x="-115.062" y="146.05" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="P+3" gate="VCC" x="-111.76" y="154.94" smashed="yes">
+<attribute name="VALUE" x="-114.3" y="152.4" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="GND4" gate="1" x="-111.76" y="132.08" smashed="yes">
+<attribute name="VALUE" x="-114.3" y="129.54" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -11926,6 +11943,11 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <wire x1="22.86" y1="182.88" x2="20.32" y2="182.88" width="0.1524" layer="91"/>
 <junction x="20.32" y="182.88"/>
 </segment>
+<segment>
+<pinref part="D.R4" gate="G$1" pin="2"/>
+<wire x1="-111.76" y1="137.16" x2="-111.76" y2="134.62" width="0.1524" layer="91"/>
+<pinref part="GND4" gate="1" pin="GND"/>
+</segment>
 </net>
 <net name="STAT1" class="0">
 <segment>
@@ -12064,22 +12086,37 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <wire x1="17.78" y1="111.76" x2="0" y2="111.76" width="0.1524" layer="91"/>
 <pinref part="P+2" gate="VCC" pin="VCC"/>
 </segment>
+<segment>
+<pinref part="D.R4" gate="G$1" pin="1"/>
+<pinref part="D.T2" gate="G$1" pin="G"/>
+<wire x1="-111.76" y1="147.32" x2="-104.14" y2="147.32" width="0.1524" layer="91"/>
+<pinref part="P+3" gate="VCC" pin="VCC"/>
+<wire x1="-111.76" y1="152.4" x2="-111.76" y2="147.32" width="0.1524" layer="91"/>
+<junction x="-111.76" y="147.32"/>
+</segment>
 </net>
 <net name="PA3" class="0">
 <segment>
-<pinref part="D.J2" gate="A" pin="5"/>
-<wire x1="-129.54" y1="116.84" x2="-96.52" y2="116.84" width="0.1524" layer="91"/>
-<label x="-124.46" y="116.84" size="1.778" layer="95"/>
 <pinref part="D.D1" gate="G$1" pin="A"/>
 <pinref part="D.R6" gate="G$1" pin="1"/>
 <pinref part="D.R1" gate="G$1" pin="2"/>
 <wire x1="-91.44" y1="200.66" x2="-96.52" y2="200.66" width="0.1524" layer="91"/>
 <junction x="-96.52" y="200.66"/>
-<wire x1="-96.52" y1="200.66" x2="-96.52" y2="116.84" width="0.1524" layer="91"/>
 <wire x1="-104.14" y1="195.58" x2="-104.14" y2="200.66" width="0.1524" layer="91"/>
 <wire x1="-104.14" y1="200.66" x2="-104.14" y2="203.2" width="0.1524" layer="91"/>
 <wire x1="-96.52" y1="200.66" x2="-104.14" y2="200.66" width="0.1524" layer="91"/>
 <junction x="-104.14" y="200.66"/>
+<wire x1="-96.52" y1="200.66" x2="-96.52" y2="152.4" width="0.1524" layer="91"/>
+<pinref part="D.T2" gate="G$1" pin="S"/>
+</segment>
+</net>
+<net name="N$1" class="0">
+<segment>
+<wire x1="-96.52" y1="139.7" x2="-96.52" y2="116.84" width="0.1524" layer="91"/>
+<pinref part="D.J2" gate="A" pin="5"/>
+<wire x1="-129.54" y1="116.84" x2="-96.52" y2="116.84" width="0.1524" layer="91"/>
+<label x="-124.46" y="116.84" size="1.778" layer="95"/>
+<pinref part="D.T2" gate="G$1" pin="D"/>
 </segment>
 </net>
 </nets>
