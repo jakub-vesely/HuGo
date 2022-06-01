@@ -8424,8 +8424,8 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <smd name="6" x="5.8" y="-3.4" dx="1.6" dy="1.3" layer="1"/>
 <smd name="5" x="5.8" y="0.2" dx="1.6" dy="1.3" layer="1"/>
 <smd name="4" x="5.8" y="3" dx="1.6" dy="1.3" layer="1"/>
-<hole x="2.1" y="-2.45" drill="0.9"/>
-<hole x="-2.3" y="-2.45" drill="0.9"/>
+<hole x="2.1" y="1.95" drill="0.9"/>
+<hole x="-2.3" y="1.95" drill="0.9"/>
 <wire x1="-5.1" y1="4.95" x2="-5.1" y2="-5.45" width="0.2" layer="21"/>
 <wire x1="-5.1" y1="-5.45" x2="4.9" y2="-5.45" width="0.2" layer="21"/>
 <wire x1="4.9" y1="-5.45" x2="4.9" y2="4.95" width="0.2" layer="21"/>
