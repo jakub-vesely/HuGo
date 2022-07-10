@@ -6,7 +6,7 @@ class ArgumentProcessor():
   def process_cmd_arguments():
     gui_default = len(sys.argv) == 1
 
-    parser = argparse.ArgumentParser(description='This tool provide a BLE communication interface for HuGo module kit')
+    parser = argparse.ArgumentParser(description='This tool provides a BLE communication interface for HuGo module kit')
 
     parser.add_argument('--flash', '-f', action='store_true', help=f'Uploads content of folder specified by -s argument. When the -s argument is not entered "upload" folder will be used. Deprecated content will be removed.')
     parser.add_argument('--gui', '-gui', default=gui_default,  action='store_true', help='GUI is launched')
@@ -18,8 +18,9 @@ class ArgumentProcessor():
     parser.add_argument('--extra_reboot', '-xr', action='store_true', help='perform an extra reboot after flashing. It is usefull when a core scripts that are already loaded are changed')
 
     args = parser.parse_args()
-    if not args.flash and not args.monitor:
+    if not args.gui and not args.flash and not args.monitor:
         parser.print_help()
         return None
 
+    sys.argv = [sys.argv[0]]
     return args

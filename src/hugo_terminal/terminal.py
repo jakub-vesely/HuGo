@@ -1,11 +1,8 @@
 
 import time
-import logging
-from colorlog import ColoredFormatter
 import hashlib
 import os
 import subprocess
-from terminal_kivy.ble import Ble
 
 class Commands:
   SHELL_VERSION               = 0x80
@@ -20,49 +17,16 @@ class Commands:
 
 class Terminal():
   output_dir_prefix = ".build"
-  def __init__(self, hook_keyboard, mac_address, verbose, source_dir):
+  def __init__(self, ble, verbose, source_dir, logger):
     self.flashing_folder = source_dir
     self.output_dir = self.output_dir_prefix + "_" + source_dir.replace("/", "_").replace("\\", "_")
-    self._init_logger(logging.DEBUG if verbose else logging.INFO)
-    self.ble = Ble(hook_keyboard, mac_address)
-
-  def _init_logger(self, log_level):
-    REMOTE_CRITICAL = 51
-    REMOTE_ERROR    = 41
-    REMOTE_WARNING  = 31
-    REMOTE_INFO     = 21
-    REMOTE_DEBUG    = 11
-
-    logging.addLevelName(REMOTE_CRITICAL, "=CRITICAL")
-    logging.addLevelName(REMOTE_ERROR, "=ERROR")
-    logging.addLevelName(REMOTE_WARNING, "=WARNING")
-    logging.addLevelName(REMOTE_INFO, "=INFO")
-    logging.addLevelName(REMOTE_DEBUG, "=DEBUG")
-
-    stream_handler = logging.StreamHandler()
-    stream_handler.setFormatter(ColoredFormatter(
-        "%(log_color)s%(levelname)-9s%(reset)s%(message)s",
-        log_colors={
-          "CRITICAL": "red,bg_white",
-          "ERROR": "red",
-          "WARNING": "yellow",
-          "INFO": "green",
-          "DEBUG": "white",
-          "=CRITICAL": "bold_red,bg_white",
-          "=ERROR": "bold_red",
-          "=WARNING": "bold_yellow",
-          "=INFO": "bold_green",
-          "=DEBUG": "bold_white"
-        }
-    ))
-    stream_handler.setLevel(log_level)
-    logger = logging.getLogger("")
-    logger.addHandler(stream_handler)
-    logger.setLevel(log_level)
+    #self._init_logger(self.logger.debug if verbose else self.logger.info)
+    self.ble = ble
+    self.logger = logger
 
   def connect(self):
     if not self.ble.connect():
-      logging.error("not connected")
+      self.logger.error("not connected")
       return False
     return True
 
@@ -72,7 +36,7 @@ class Terminal():
       time.sleep(0.1)
 
   def stop_program(self):
-    logging.info("terminating_program...")
+    self.logger.info("terminating_program...")
     self.ble.command(Commands.SHELL_STOP_PROGRAM, b"") #terminate
     try:
       self.ble.disconnect()
@@ -80,20 +44,20 @@ class Terminal():
       pass
     if not self.connect():
       return False
-    logging.info("terminating_program DONE")
+    self.logger.info("terminating_program DONE")
     return True
 
   def start_program(self):
-    logging.info("starting program...")
+    self.logger.info("starting program...")
     ret_val = self.ble.command(Commands.SHELL_START_PROGRAM, b"") #start program
     if ret_val == b"\1":
-      logging.info("starting program DONE")
+      self.logger.info("starting program DONE")
     else:
-      logging.warning("program terminated!")
+      self.logger.warning("program terminated!")
 
   def _get_remote_files(self):
     remote_files = {}
-    logging.debug("getting remote files...")
+    self.logger.debug("getting remote files...")
     while True:
       self.ble.notification_data = None
       file_info = self.ble.command(Commands.SHELL_GET_NEXT_FILE_INFO, b"")
@@ -101,7 +65,7 @@ class Terminal():
       if file_info == b"\0":
         break
       remote_files[file_info[20:].decode("utf-8")] = file_info[:20].hex()
-    logging.debug("getting remote files Done")
+    self.logger.debug("getting remote files Done")
     return remote_files
 
   def _get_local_files(self, directory):
@@ -118,25 +82,25 @@ class Terminal():
     return local_files
 
   def _remove_unnecessary_files(self, remote_files, local_files):
-    logging.debug("removing unnecessary files ...")
+    self.logger.debug("removing unnecessary files ...")
     removed = False
     for file_path in remote_files:
       self.ble.notification_data = None
       if file_path not in local_files:
-        logging.info("removing file %s", file_path)
+        self.logger.info("removing file %s", file_path)
         self.ble.command(Commands.SHELL_REMOVE_FILE, file_path.encode("utf-8"))
         removed = True
-    logging.debug("removing unnecessary files Done")
+    self.logger.debug("removing unnecessary files Done")
     return removed
 
   def _import_files(self, remote_files, local_files):
-    logging.debug("importing files ...")
+    self.logger.debug("importing files ...")
     imported = False
     for file_path in local_files:
       self.ble.notification_data = None
       if file_path not in remote_files or remote_files[file_path] != local_files[file_path]:
         imported = True
-        logging.info("uploading file %s", file_path)
+        self.logger.info("uploading file %s", file_path)
 
         path_elements = file_path[1:].split("/") #file  path start by /
         if len(path_elements) > 1:
@@ -155,8 +119,8 @@ class Terminal():
             self.ble.command(Commands.SHELL_APPEND, data[i: i + step])
         stored_file_checksum = self.ble.command(Commands.SHELL_GET_FILE_CHECKSUM, b"")
         if stored_file_checksum.hex() != local_files[file_path]:
-          logging.error("file %s has not been stored properly: %s", file_path, str((stored_file_checksum.hex(), local_files[file_path])))
-    logging.debug("importing files Done")
+          self.logger.error("file %s has not been stored properly: %s", file_path, str((stored_file_checksum.hex(), local_files[file_path])))
+    self.logger.debug("importing files Done")
     return imported
 
   def _remove_old_dir_content(self, in_dir_content, out_dir_path):
@@ -203,16 +167,16 @@ class Terminal():
           try:
             subprocess.run(f"../micropython/mpy-cross/mpy-cross {in_file_path} -o {out_file_path}", check=True, shell=True, stderr=subprocess.PIPE)
           except subprocess.CalledProcessError as error:
-            logging.warning("build of '%s' unsuccessful: %s", str(in_file_path), error.stderr.decode("utf-8"))
+            self.logger.warning("build of '%s' unsuccessful: %s", str(in_file_path), error.stderr.decode("utf-8"))
             raise SyntaxError
 
 
   def _process_files(self):
     remote_files = self._get_remote_files()
 
-    logging.debug("building local files...")
+    self.logger.debug("building local files...")
     self._build_local_dir(self.flashing_folder, self.output_dir)
-    logging.debug("building local files Done")
+    self.logger.debug("building local files Done")
 
     local_files = self._get_local_files(self.output_dir)
     changed = self._remove_unnecessary_files(remote_files, local_files)
@@ -220,7 +184,7 @@ class Terminal():
     return changed
 
   def flash_files(self):
-    logging.info("Uploading...")
+    self.logger.info("Uploading...")
     timestamp = time.time()
     try:
       flashed = self._process_files()
@@ -228,18 +192,18 @@ class Terminal():
       return False
 
     if flashed:
-      logging.info("uploading time: %d s", time.time() - timestamp)
+      self.logger.info("uploading time: %d s", time.time() - timestamp)
 
     if flashed:
-      logging.info("Uploading DONE")
+      self.logger.info("Uploading DONE")
     else:
-      logging.info("All files are up-to-date")
+      self.logger.info("All files are up-to-date")
     return True
 
   def monitor(self):
-    logging.info("Monitoring...")
+    self.logger.info("Monitoring...")
     self.ble.monitor()
-    logging.info("Monitoring Terminated")
+    self.logger.info("Monitoring Terminated")
 
   def run(self, args):
     if not self.connect():
@@ -263,3 +227,7 @@ class Terminal():
 
     self.disconnect()
     return True
+
+  def key_press(self, key_name):
+    print("key_pressed")
+    self.ble.key_pressed(0,key_name)
