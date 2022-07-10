@@ -59,7 +59,6 @@ class PowerBlock(BlockWithOneExtension):
     state = self._tiny_read(_charging_state_command, None, 1)
     if state is None:
       return 0
-    self.logging.info("_get_usb_state: %s, %d", str(state), state[0] >> 1)
     return state[0] >> 1
 
   def _get_charging_state(self) -> int:
