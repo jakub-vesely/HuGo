@@ -22,7 +22,7 @@ class Plan():
     Planner.repeat(1, self.print_power_info)
 
   def print_power_info(self):
-    voltage = self.chassis.power.battery_voltage_V.get()
+    voltage = self.chassis.power.battery_voltage.get()
     current = self.chassis.power.battery_current_mA.get()
     self.logging.info("battery voltage: {0}, current: {1}".format(voltage, current))
 

@@ -115,13 +115,13 @@ class Plan():
 
 
   def print_power_info(self):
-    voltage = self.chassis.power.battery_voltage_V.get()
+    voltage_str = str(self.chassis.power.battery_voltage)
 
     self.display.clean()
     self.heart_beat = not self.heart_beat
     if self.heart_beat:
       self.display.print_text(55, 0, "*")
-    self.display.print_text(0, 9, "%2.3f V" % voltage)
+    self.display.print_text(0, 9, voltage_str)
 
     self.display.print_text(0, 18, "%3.2f mA" % self.current_smoother.get())
     self.display.print_text(0, 36, str(self.distance.value.get()))
