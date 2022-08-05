@@ -5,7 +5,7 @@ from basal.logging import Logging
 from blocks.power_block import PowerBlock
 from blocks.display_block import DisplayBlock
 
-class PowerMonitor():
+class PowerBlockExample():
   logging = Logging("events")
   def __init__(self) -> None:
     self.power = PowerBlock()
@@ -30,21 +30,19 @@ class PowerMonitor():
   def usb_state_changed(self):
     usb  =  self.power.is_usb_connected.get()
     self.logging.info("new usb state %d", usb)
-    self.display_line(0, 2, "USB: {}".format("Yes" if usb else "No") )
+    self.display_line(0, 2, "USB: {}".format("Yes" if usb else " No") )
 
   def charging_state_changed(self):
     charging  =  self.power.is_charging.get()
     self.logging.info("new charging state %d", charging)
-    self.display_line(0, 13, "char:{}".format("Yes" if charging else "No") )
+    self.display_line(0, 13, "chrg:{}".format("Yes" if charging else " No") )
 
   def voltage_changed(self):
-    voltage = self.power.battery_voltage.get()
-    self.logging.info("voltage changed: %.3f", voltage)
-    self.display_line(0, 24, "{:.3f} V".format(voltage))
+    self.logging.info(str(self.power.battery_voltage))
+    self.display_line(0, 24, self.power.battery_voltage.get_str_to_fit(8))
 
   def current_changed(self):
-    current = self.power.battery_current_mA.get()
-    self.logging.info("current changed: %.1f", current)
-    self.display_line(0, 35, "{:.1f} mA".format(current))
+    self.logging.info(str(self.power.battery_current))
+    self.display_line(0, 35, self.power.battery_current.get_str_to_fit(8))
 
-PowerMonitor()
+PowerBlockExample()
