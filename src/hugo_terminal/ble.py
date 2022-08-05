@@ -35,24 +35,31 @@ class Ble():
   def _command_notyfy_callback(self, _sender: int, data: bytearray):
     self.notification_data = data
 
-  async def _command(self, command_id, data, wait_for_answer):
+  async def _command(self, command_id, data, wait_for_answer, timeout=10):
     payload = bytes([command_id])
     payload += data
 
     self.notification_data = None
     _answer = await self.client.write_gatt_char(self.command_uuid, payload, not wait_for_answer)
+    sleep_delay = 0.01
+    remains = timeout
+
     if wait_for_answer:
-      while not self.notification_data:
-        await asyncio.sleep(0.01)
+      while not self.notification_data and remains > 0:
+        await asyncio.sleep(sleep_delay)
+        remains -= sleep_delay
+
+    if not remains:
+      raise TimeoutError
 
     return self.notification_data
 
-  def command(self, command_id, data, wait_for_answer=True):
+  def command(self, command_id, data, wait_for_answer=True, timeout=10):
     if len(data) > self.ble_message_max_size:
       self.logger.error("try to send too long data %s for command: %d", data.hex(), command_id)
       return None
     else:
-      return self.loop.run_until_complete(self._command(command_id, data, wait_for_answer))
+      return self.loop.run_until_complete(self._command(command_id, data, wait_for_answer, timeout=timeout))
 
   async def _key_pressed(self, scan_code, key_name):
     data = scan_code.to_bytes(2, byteorder='big', signed=True) + key_name.encode("utf-8")

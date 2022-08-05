@@ -37,12 +37,16 @@ class Terminal():
 
   def stop_program(self):
     self.logger.info("terminating_program...")
-    self.ble.command(Commands.SHELL_STOP_PROGRAM, b"") #terminate
+    self.ble.command(Commands.SHELL_STOP_PROGRAM, b"", timeout=2) #terminate (should be waited to the action is performed but answer doesn't have to return due to the program stop)
+    self.logger.debug("SHELL_STOP_PROGRAM command sent")
     try:
       self.ble.disconnect()
+      self.logger.debug("disconnected")
     except Exception:
+      self.logger.debug("disconnect failded")
       pass
     if not self.connect():
+      self.logger.debug("connect failed")
       return False
     self.logger.info("terminating_program DONE")
     return True
