@@ -9,6 +9,9 @@ from terminal import Terminal
 from hugo_logger import HugoLogger
 
 class HugoTerminal():
+  def __init__(self) -> None:
+    self.app = None
+    self.logger = None
 
   async def async_main(self, app, ble):
     try:
@@ -21,17 +24,16 @@ class HugoTerminal():
     if not args:
       return False
 
-    logger = HugoLogger(args.verbose)
-    ble = Ble(args.remote_control, args.mac_addr, logger)
-    terminal = Terminal(ble, args.verbose, args.source_dir, logger)
+    self.logger = HugoLogger(args.verbose)
+    ble = Ble(args.remote_control, args.mac_addr, self.logger)
+    terminal = Terminal(ble, args.verbose, args.source_dir, self.logger)
 
-    app = None
     if args.gui:
       from gui import Gui #arguments must be processed first. Are processed by Kivy otherwise
-      app = Gui(terminal, logger)
-      return asyncio.run(self.async_main(app, ble))
+      self.app = Gui(terminal, self.logger)
+      return asyncio.run(self.async_main(self.app, ble))
     else:
-      logger.add_colorlog()
+      self.logger.add_colorlog()
 
     terminal.run(args)
 

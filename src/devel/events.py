@@ -4,7 +4,7 @@
 from ___basal.___logging import Logging
 from ___blocks.___power_block import PowerBlock
 from ___blocks.___display_block import DisplayBlock
-from ___blocks.___block_list import BlockList
+
 class PowerMonitor():
   logging = Logging("events")
   def __init__(self) -> None:
@@ -20,8 +20,6 @@ class PowerMonitor():
     self.charging_state_changed()
     self.voltage_changed()
     self.current_changed()
-    self.logging.info("used blocks:" + str(BlockList.get_blocks()))
-    self.logging.info("remote variables:" + str(self.power.get_remote_variables()))
 
   def display_line(self, x0, y0, text):
     self.display.fill_rect(x0, y0, self.display.get_dimensions()[0], 8, 0)

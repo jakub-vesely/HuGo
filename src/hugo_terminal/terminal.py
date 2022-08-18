@@ -1,19 +1,11 @@
+#  Copyright (c) 2022 Jakub Vesely
+#  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
 
 import time
 import hashlib
 import os
 import subprocess
-
-class Commands:
-  SHELL_VERSION               = 0x80
-  SHELL_STOP_PROGRAM          = 0x81
-  SHELL_START_PROGRAM         = 0x82
-  SHELL_GET_NEXT_FILE_INFO    = 0x83
-  SHELL_REMOVE_FILE           = 0x84
-  SHELL_HANDLE_FILE           = 0x85
-  SHELL_GET_FILE_CHECKSUM     = 0x86
-  SHELL_APPEND                = 0x87
-  SHELL_MK_DIR                = 0x88
+from hugo_terminal.command_id import CommandId
 
 class Terminal():
   output_dir_prefix = ".build"
@@ -35,16 +27,15 @@ class Terminal():
     while self.ble.connected:
       time.sleep(0.1)
 
-  def stop_program(self):
+  def stop_program(self, disable_program):
     self.logger.info("terminating_program...")
-    self.ble.command(Commands.SHELL_STOP_PROGRAM, b"", timeout=2) #terminate (should be waited to the action is performed but answer doesn't have to return due to the program stop)
+    self.ble.command(CommandId.shell_stop_program, b"\1" if disable_program else b"\0", timeout=5) #terminate (should be waited to the action is performed but answer doesn't have to return due to the program stop)
     self.logger.debug("SHELL_STOP_PROGRAM command sent")
     try:
       self.ble.disconnect()
       self.logger.debug("disconnected")
     except Exception:
       self.logger.debug("disconnect failded")
-      pass
     if not self.connect():
       self.logger.debug("connect failed")
       return False
@@ -53,9 +44,10 @@ class Terminal():
 
   def start_program(self):
     self.logger.info("starting program...")
-    ret_val = self.ble.command(Commands.SHELL_START_PROGRAM, b"") #start program
+    ret_val = self.ble.command(CommandId.shell_start_program, b"") #start program
     if ret_val == b"\1":
       self.logger.info("starting program DONE")
+      #self._properties = Properties(self.ble)
     else:
       self.logger.warning("program terminated!")
 
@@ -64,9 +56,9 @@ class Terminal():
     self.logger.debug("getting remote files...")
     while True:
       self.ble.notification_data = None
-      file_info = self.ble.command(Commands.SHELL_GET_NEXT_FILE_INFO, b"")
+      file_info = self.ble.command(CommandId.shell_get_next_file_info, b"")
 
-      if file_info == b"\0":
+      if not file_info or file_info == b"\0":
         break
       remote_files[file_info[20:].decode("utf-8")] = file_info[:20].hex()
     self.logger.debug("getting remote files Done")
@@ -92,7 +84,7 @@ class Terminal():
       self.ble.notification_data = None
       if file_path not in local_files:
         self.logger.info("removing file %s", file_path)
-        self.ble.command(Commands.SHELL_REMOVE_FILE, file_path.encode("utf-8"))
+        self.ble.command(CommandId.shell_remove_file, file_path.encode("utf-8"))
         removed = True
     self.logger.debug("removing unnecessary files Done")
     return removed
@@ -112,16 +104,16 @@ class Terminal():
           path = ""
           for element in path_elements:
             path += "/" + element
-            self.ble.command(Commands.SHELL_MK_DIR, path.encode("utf-8"))
+            self.ble.command(CommandId.shell_mk_dir, path.encode("utf-8"))
 
         with open(self.output_dir + "/" + file_path, "rb") as f:
           data = f.read()
           self.ble.notification_data = None
-          self.ble.command(Commands.SHELL_HANDLE_FILE, file_path.encode("utf-8"))
+          self.ble.command(CommandId.shell_handle_file, file_path.encode("utf-8"))
           step = self.ble.ble_message_max_size - 1 # - command header
           for i in range(0, len(data), step):
-            self.ble.command(Commands.SHELL_APPEND, data[i: i + step])
-        stored_file_checksum = self.ble.command(Commands.SHELL_GET_FILE_CHECKSUM, b"")
+            self.ble.command(CommandId.shell_append, data[i: i + step])
+        stored_file_checksum = self.ble.command(CommandId.shell_get_file_checksum, b"")
         if stored_file_checksum.hex() != local_files[file_path]:
           self.logger.error("file %s has not been stored properly: %s", file_path, str((stored_file_checksum.hex(), local_files[file_path])))
     self.logger.debug("importing files Done")
@@ -213,18 +205,18 @@ class Terminal():
     if not self.connect():
       return False
 
-    if not self.stop_program():
+    if not self.stop_program(args.flash):
       return False
 
     if args.flash:
       if not self.flash_files():
         return False
 
-      if args.extra_reboot:
-        if not self.stop_program():
-          return False
 
-    self.start_program()
+      if not self.stop_program(False):
+        return False
+
+    #self.start_program()
 
     if args.monitor:
       self.monitor()
@@ -233,5 +225,4 @@ class Terminal():
     return True
 
   def key_press(self, key_name):
-    print("key_pressed")
-    self.ble.key_pressed(0,key_name)
+    self.ble.key_pressed(0, key_name)

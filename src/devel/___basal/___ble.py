@@ -7,6 +7,7 @@ from micropython import const
 import bluetooth
 import sys
 import struct
+import ___basal.___ble_ids as ble_ids
 from ___basal.___logging import Logging, LoggerBase
 from ___basal.___planner import Planner
 from ___basal.___power_mgmt import PowerMgmt, PowerPlan
@@ -24,6 +25,7 @@ _IRQ_GATTS_WRITE = const(3)
 
 _IRQ_GATTS_INDICATE_DONE = const(20)
 _IRQ_MTU_EXCHANGED = const(21)
+_IRQ_SET_SECRET = const(30)
 
 _FLAG_READ = const(0x0002)
 _FLAG_WRITE_NO_RESPONSE = const(0x0004)
@@ -48,11 +50,6 @@ _KEYBOARD_CHAR = (
     _FLAG_WRITE
 )
 
-_PROPERTY_CHAR = (
-    bluetooth.UUID("48754773-0000-1000-8000-00805F9B34FB"),
-    _FLAG_READ | _FLAG_NOTIFY | _FLAG_INDICATE | _FLAG_WRITE | _FLAG_WRITE_NO_RESPONSE,
-)
-
 _HUGO_SERVICE = (
     bluetooth.UUID("4875476F-0000-1000-8000-00805F9B34FB"),
     (_SHELL_COMMAND_CHAR, _LOG_CHAR, _KEYBOARD_CHAR),
@@ -62,20 +59,25 @@ _HUGO_SERVICE = (
 _ADV_APPEARANCE_GENERIC_THERMOMETER = const(768)
 
 class BleLogger(LoggerBase):
+  message_id = 0 #messages are counted because it seems that notify send one message twice
   def __init__(self):
     super().__init__()
 
-  def _log_to_ble(self, message):
+  @classmethod
+  def _log_to_ble(cls, message):
     Ble.notify_log(message)
 
-  def log(self, level, message):
-    Planner.plan(self._log_to_ble, bytes([level]) + message)
+  @classmethod
+  def log(cls, level, message):
+    Planner.plan(cls._log_to_ble, cls.message_id.to_bytes(1, "big") +  bytes([level]) + message)
+    cls.message_id += 1;
 
 class Ble():
   _ble = None
   _shell = None
+  _remote_value = None
   _keyboard = None
-  _shell_command_handle = None
+  _command_handle = None
   _log_handle = None
   _keyboard_handle = None
   _initial_time_up = None
@@ -90,8 +92,9 @@ class Ble():
     cls._set_power_save_timeouts(PowerMgmt.get_plan()) # to be set defaults
     Planner.plan(cls._check_time_to_power_save, True)
 
-    Logging.add_logger(BleLogger())
+    Logging.add_logger(BleLogger)
     cls._start_ble() #to be allocated big ___blocks in the beginning it should prevent memory fragmentation
+    cls.just_initialized = True
 
   @classmethod
   def _set_power_save_timeouts(cls, power_plan:PowerPlan):
@@ -110,7 +113,10 @@ class Ble():
         PowerMgmt.block_power_save()
         if not cls._time_to_power_save: #can be reset from constructor
           cls._time_to_power_save = cls._running_time_up
-        cls._start_ble()
+        if cls.just_initialized:
+          cls.just_initialized = False
+        else:
+          cls._start_ble()
         #cls._advertise() #just for sure it is turned on
 
         print("BLE power-save blocked")
@@ -144,7 +150,7 @@ class Ble():
     cls._ble.irq(cls._irq)
 
     #cls._ble.config(mtu=_BMS_MTU)
-    ((cls._shell_command_handle, cls._log_handle, cls._keyboard_handle), ) = cls._ble.gatts_register_services((_HUGO_SERVICE,))
+    ((cls._command_handle, cls._log_handle, cls._keyboard_handle), ) = cls._ble.gatts_register_services((_HUGO_SERVICE,))
     cls._connections = set()
     cls._payload = cls.advertising_payload(
         name="HuGo", services=[_HUGO_SERVICE], appearance=_ADV_APPEARANCE_GENERIC_THERMOMETER
@@ -158,11 +164,38 @@ class Ble():
     cls._ble.active(False)
 
   @classmethod
-  def get_shell(cls):
+  def get_shell(cls): #saving RAM shell and remote_values are ussually not loaded together
     if not cls._shell:
       from ___basal.___shell import Shell
-      cls._shell = Shell()
+      cls._shell = Shell
     return cls._shell
+
+  @classmethod
+  def get_remote_value(cls):
+    if not cls._remote_value:
+      from ___basal.___remote_value import RemoteValue
+      cls._remote_value = RemoteValue
+    return cls._remote_value
+
+  @classmethod
+  def process_remote_key(cls, scan_code, key_name):
+    if not cls._keyboard:
+      from ___remote_control.___virtual_keyboard import VirtualKeyboard
+      cls._keyboard = VirtualKeyboard()
+
+    cls.value_remote.set(RemoteKey(key_name, scan_code, cls._keyboard.get_address()))
+
+  @classmethod
+  def process_command(cls, conn_handle, value_handle, command, data):
+    if command < ble_ids.cmd_shell_last:
+        command_solver = cls.get_shell()
+    else:
+      command_solver = cls.get_remote_value()
+
+    ret_data = command_solver.command_request(command, data)
+    if ret_data is not None:
+      cls._ble.gatts_notify(conn_handle, value_handle, ret_data)
+
 
   @classmethod
   def _irq(cls, event, data):
@@ -174,7 +207,7 @@ class Ble():
       for _ in range(3): #sometimes attempts to exchange mtu fails
         try:
           cls._ble.gattc_exchange_mtu(conn_handle)
-          connected =True
+          connected = True
           cls._time_to_power_save = 0 # disable power save while a connection is active
           break
         except Exception:
@@ -186,6 +219,7 @@ class Ble():
         cls._ble.gap_disconnect(conn_handle)
 
     elif event == _IRQ_CENTRAL_DISCONNECT:
+      print("disconnect")
       conn_handle, _, _ = data
       cls._connections.remove(conn_handle)
       if not cls._connections:
@@ -199,24 +233,24 @@ class Ble():
     elif event == _IRQ_GATTS_WRITE:
       conn_handle, value_handle = data
       value = cls._ble.gatts_read(value_handle)
-      if value_handle == cls._shell_command_handle:
-        shell = cls.get_shell()
-        ret_data = shell.command_request(value)
-        if ret_data is not None:
-          cls._ble.gatts_notify(conn_handle, value_handle, ret_data)
+      if value_handle == cls._command_handle and value and len(value) > 0:
+        command = value[0]
+        data = value[1:]
+
+        Planner.plan(cls.process_command, conn_handle, value_handle, command, data)
 
       if value_handle == cls._keyboard_handle:
-        print("_keyboard_handle")
-        if not cls._keyboard:
-          from ___remote_control.___virtual_keyboard import VirtualKeyboard
-          cls._keyboard = VirtualKeyboard()
-
         scan_code = int.from_bytes(value[0:2], "big", True)
         key_name = value[2:].decode("utf-8")
-        print("scan_code: %s, key_name: %s", str(scan_code), str(key_name))
-        cls.value_remote.set(RemoteKey(key_name, scan_code, cls._keyboard.get_address()))
+        print("scan_code: {}, key_name: {}".format(str(scan_code), str(key_name)))
+        Planner.plan(cls.process_remote_key, scan_code, key_name)
+
     elif event == _IRQ_MTU_EXCHANGED:
-      pass
+      _conn_handle, mtu = data
+      print("_IRQ_MTU_EXCHANGED mtu:", mtu)
+    elif event == _IRQ_SET_SECRET:
+      sec_type, key, value = data
+      print("_IRQ_SET_SECRET sec_type:", sec_type, " key:", key, "value", value)
     else:
       print("unhandled event: " + str(event))
 
@@ -256,5 +290,8 @@ class Ble():
 
   @classmethod
   def notify_log(cls, message):
-    for connection in cls._connections:
-      cls._ble.gatts_notify(connection, cls._log_handle, message)
+    try:
+      for connection in cls._connections:
+        cls._ble.gatts_notify(connection, cls._log_handle, message)
+    except Exception as error:
+      print("notify_log error: ", error)
