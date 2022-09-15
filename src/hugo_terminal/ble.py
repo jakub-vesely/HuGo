@@ -5,7 +5,6 @@ import time
 from  queue import Queue
 from bleak import BleakClient, BleakScanner
 from hugo_terminal.command_id import CommandId
-#import keyboard
 
 class Ble():
   ble_message_max_size = 512
@@ -39,7 +38,7 @@ class Ble():
     self.notification_data = data
 
   async def _command(self, command_id, data, wait_for_answer, timeout=10):
-    self.logger.debug("sending command %s", hex(command_id))
+    #self.logger.debug("sending command %s", hex(command_id))
     payload = bytes([command_id])
     payload += data
 
