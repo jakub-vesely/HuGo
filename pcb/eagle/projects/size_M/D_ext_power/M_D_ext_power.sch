@@ -11647,7 +11647,7 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <part name="P+2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="D.C2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="4u7"/>
 <part name="D.D2" library="hugo" deviceset="SHOTKY_2.8" device=""/>
-<part name="D.T2" library="hugo" deviceset="N-MOSFET" device="" value="FDV304"/>
+<part name="D.T2" library="hugo" deviceset="N-MOSFET" device="" value="NX3008"/>
 <part name="D.R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="100k"/>
 <part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
@@ -11772,8 +11772,8 @@ Source: &lt;a href="http://componentsearchengine.com/Datasheets/1/MCP73833-AMI_U
 <attribute name="VALUE" x="16.891" y="215.646" size="1.778" layer="96" rot="R270"/>
 </instance>
 <instance part="D.T2" gate="G$1" x="-96.52" y="149.86" smashed="yes" rot="MR180">
-<attribute name="NAME" x="-105.41" y="144.78" size="1.778" layer="95" rot="MR270"/>
-<attribute name="VALUE" x="-102.87" y="144.78" size="1.778" layer="96" rot="MR270"/>
+<attribute name="NAME" x="-90.17" y="149.86" size="1.778" layer="95" rot="MR270"/>
+<attribute name="VALUE" x="-92.71" y="152.4" size="1.778" layer="96" rot="MR270"/>
 </instance>
 <instance part="D.R4" gate="G$1" x="-109.22" y="142.24" smashed="yes" rot="R270">
 <attribute name="NAME" x="-107.7214" y="146.05" size="1.778" layer="95" rot="R270"/>
