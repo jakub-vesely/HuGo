@@ -9516,13 +9516,13 @@ internal calibrated oscillator&lt;p&gt;
 <part name="+3V2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="B.U11" library="atmel" deviceset="ATTINY*14" device="-SSN" technology="4" value="AT414"/>
-<part name="B.R11" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="alternative RX 0R"/>
-<part name="B.R12" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="alternative TX 0R"/>
+<part name="B.R11" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="alt RX 0R"/>
+<part name="B.R12" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="alt TX 0R"/>
 <part name="B.T11" library="hugo" deviceset="N-MOSFET" device="" value="NX3008"/>
 <part name="B.R13" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="100k"/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="B.R14" library="hugo" deviceset="FUSE" device="" value="alternativ fuse or 0R"/>
+<part name="B.R14" library="hugo" deviceset="FUSE" device="" value="alt fuse or 0R"/>
 </parts>
 <sheets>
 <sheet>
@@ -9785,6 +9785,18 @@ internal calibrated oscillator&lt;p&gt;
 <pinref part="B.R14" gate="G$1" pin="1"/>
 <wire x1="215.9" y1="2.54" x2="226.06" y2="2.54" width="0.1524" layer="91"/>
 <wire x1="226.06" y1="2.54" x2="226.06" y2="8.89" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="VUSB" class="0">
+<segment>
+<pinref part="B.J11" gate="A" pin="1"/>
+<wire x1="223.52" y1="-2.54" x2="218.44" y2="-2.54" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="VBAT" class="0">
+<segment>
+<pinref part="B.J11" gate="A" pin="2"/>
+<wire x1="223.52" y1="-5.08" x2="218.44" y2="-5.08" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
