@@ -5,6 +5,7 @@ import time
 import hashlib
 import os
 import subprocess
+import sys
 from hugo_terminal.command_id import CommandId
 
 class Terminal():
@@ -28,7 +29,11 @@ class Terminal():
       time.sleep(0.1)
 
   def stop_program(self, disable_program):
-    self.logger.info("terminating_program...")
+    if disable_program:
+      self.logger.info("terminating program...")
+    else:
+      self.logger.info("restarting program...")
+
     self.ble.command(CommandId.shell_stop_program, b"\1" if disable_program else b"\0", timeout=5) #terminate (should be waited to the action is performed but answer doesn't have to return due to the program stop)
     self.logger.debug("SHELL_STOP_PROGRAM command sent")
     try:
@@ -39,7 +44,10 @@ class Terminal():
     if not self.connect():
       self.logger.debug("connect failed")
       return False
-    self.logger.info("terminating_program DONE")
+    if disable_program:
+      self.logger.info("terminating program DONE")
+    else:
+      self.logger.info("restarting program DONE")
     return True
 
   def start_program(self):
@@ -136,7 +144,7 @@ class Terminal():
       return True
     return os.path.getmtime(in_path) > os.path.getmtime(out_path)
 
-  def _build_local_dir(self, in_path, out_path):
+  def _build_local_dir(self, in_path, files_to_import, out_path):
     in_dir_content = os.listdir(in_path)
 
     if not os.path.exists(out_path):
@@ -149,9 +157,10 @@ class Terminal():
         continue
 
       in_file_path = in_path + "/" + file_name
+
       if os.path.isdir(in_file_path):
         if file_name != "__pycache__":
-          self._build_local_dir(in_file_path, out_path + "/" + file_name)
+          self._build_local_dir(in_file_path, files_to_import, out_path + "/" + file_name)
         continue
 
       if file_name == "boot.py" or not file_name.endswith(".py"):
@@ -159,6 +168,12 @@ class Terminal():
           os.system(f"cp {in_file_path} { self.output_dir}")
       else:
         out_file_path = out_path + "/" + file_name.split(".")[0] + ".mpy"
+
+        if in_file_path not in files_to_import:
+          #FIXME: will not work correctly if file is renamed
+          if os.path.exists(out_file_path):
+            os.remove(out_file_path)
+          continue
         if self._update_required(in_file_path, out_file_path):
           try:
             subprocess.run(f"../micropython/mpy-cross/mpy-cross {in_file_path} -o {out_file_path}", check=True, shell=True, stderr=subprocess.PIPE)
@@ -167,11 +182,52 @@ class Terminal():
             raise SyntaxError
 
 
+  def find_include_files(self, root_path, file_path):
+    include_paths = list()
+    with open(file_path, "r") as file:
+      lines = file.readlines()
+      for line in lines:
+        hash_pos = line.find("#")
+        if hash_pos != -1:
+          line = line[:hash_pos]
+        from_pos = line.find("from ")
+        import_pos = line.find("import ")
+
+        new_path = None
+        if from_pos != -1 and import_pos != -1:
+          new_path = line[from_pos + len("from "): import_pos]
+        elif import_pos != -1:
+          as_pos = line.find(" as ")
+          if as_pos != -1:
+            new_path = line[import_pos + len("import ") : as_pos]
+          else:
+            new_path = line[import_pos + len("import "): ]
+        if new_path:
+          new_path = new_path.strip()
+          if new_path and (new_path.startswith("___") or new_path in ("events", )):
+            new_path = new_path.replace(".", "/") + ".py"
+            include_paths.append(root_path + "/" + new_path)
+
+    return include_paths
+
+  def find_local_files(self, root_path, first_files):
+    files = [root_path + "/" + first_files]
+    index = 0;
+    while index < len(files):
+      include_files = self.find_include_files(root_path, files[index])
+      for include_file in include_files:
+        if not include_file in files:
+          files += include_files
+      index += 1;
+    return files
+
   def _process_files(self):
     remote_files = self._get_remote_files()
 
+    original_local_files = self.find_local_files(self.flashing_folder, "boot.py")
+
     self.logger.debug("building local files...")
-    self._build_local_dir(self.flashing_folder, self.output_dir)
+    self._build_local_dir(self.flashing_folder, original_local_files, self.output_dir)
     self.logger.debug("building local files Done")
 
     local_files = self._get_local_files(self.output_dir)
@@ -211,7 +267,6 @@ class Terminal():
     if args.flash:
       if not self.flash_files():
         return False
-
 
       if not self.stop_program(False):
         return False

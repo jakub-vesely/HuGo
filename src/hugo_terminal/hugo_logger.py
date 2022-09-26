@@ -19,7 +19,7 @@ class HugoLogger(logging.Handler):
   def __init__(self, verbose):
     logging.Handler.__init__(self)
     self.gui = None
-    self.logger.setLevel(logging.DEBUG)
+    self.logger.setLevel(logging.DEBUG if verbose else logging.INFO)
     self.setFormatter(logging.Formatter("%(levelname)-8s%(message)s"))
     self.setLevel(logging.DEBUG if verbose else logging.INFO)
     self.logger.addHandler(self)
