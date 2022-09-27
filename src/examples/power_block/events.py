@@ -12,10 +12,10 @@ class PowerMonitor():
     self.power = PowerBlock(measurement_period=5)
     self.display = DisplayBlock()
 
-    self.power.is_usb_connected.changed(True, self.usb_state_changed)
-    self.power.is_charging.changed(True, self.charging_state_changed)
-    self.power.battery_voltage.changed(True, self.voltage_changed)
-    self.power.battery_current.changed(True, self.current_changed)
+    self.power.is_usb_connected.changed(self.usb_state_changed)
+    self.power.is_charging.changed(self.charging_state_changed)
+    self.power.battery_voltage.changed(self.voltage_changed)
+    self.power.battery_current.changed(self.current_changed)
 
     RemoteValue.add("power_test.is_usb_connected", self.power.is_usb_connected)
     RemoteValue.add("power_test.battery.is_charging", self.power.is_charging)

@@ -24,8 +24,8 @@ class Plan():
 
     self.ir_block = IrBlock()
     self.ir_block.add_remote(IrNumericRemote())
-    self.ir_block.value.updated(True, self.process_remote, self.ir_block.value)
-    Ble.value_remote.updated(True, self.process_remote, Ble.value_remote)
+    self.ir_block.value.updated(self.process_remote, self.ir_block.value)
+    Ble.value_remote.updated(self.process_remote, Ble.value_remote)
     self.sound.play_by_folder_name("test", "04Znouze")
 
   def _get_status(self):

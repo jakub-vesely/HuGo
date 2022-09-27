@@ -15,13 +15,13 @@ class Plan():
     self.speed = 0
     self.pwm = 50
 
-    Ble.value_remote.equal_to(RemoteKey("a"), True, self.pwm_down)
-    Ble.value_remote.equal_to(RemoteKey("d"), True, self.pwm_up)
-    Ble.value_remote.equal_to(RemoteKey("w"), True, self.speed_up)
-    Ble.value_remote.equal_to(RemoteKey("s"), True, self.slow_down)
-    Ble.value_remote.equal_to(RemoteKey("z"), True, self.stop)
-    Ble.value_remote.equal_to(RemoteKey("o"), True, self.full_speed_up)
-    Ble.value_remote.equal_to(RemoteKey("l"), True, self.full_speed_down)
+    Ble.value_remote.equal_to(RemoteKey("a"), self.pwm_down)
+    Ble.value_remote.equal_to(RemoteKey("d"), self.pwm_up)
+    Ble.value_remote.equal_to(RemoteKey("w"), self.speed_up)
+    Ble.value_remote.equal_to(RemoteKey("s"), self.slow_down)
+    Ble.value_remote.equal_to(RemoteKey("z"), self.stop)
+    Ble.value_remote.equal_to(RemoteKey("o"), self.full_speed_up)
+    Ble.value_remote.equal_to(RemoteKey("l"), self.full_speed_down)
 
     self.motor_driver_front = MotorDriverBlock(0x20)
     #self.motor_driver_front.change_block_address(0x20)

@@ -8,7 +8,7 @@ class FiweWaySwitch():
   logging = Logging("events")
   def __init__(self) -> None:
     self.block = FiveWayButtonBlock()
-    self.block.value.updated(True, self.updated)
+    self.block.value.updated(self.updated)
 
   def updated(self):
     self.logging.info(self.block.value.get())

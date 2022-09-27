@@ -196,7 +196,7 @@ class Plan:
     self.map = Map(self.dim_x, self.dim_y)
     self.display.invert(True)
     self.sound.play_by_folder_name(self.sound_folder, self.sound_start)
-    self.button.value.equal_to(True, False, self.start_button)
+    self.button.value.equal_to_once(True, self.start_button)
     gc.collect() #force garbage collection before game starts
     self.logging.info("mem %s", str(gc.mem_free()))
     self.redraw()
@@ -274,10 +274,10 @@ class Plan:
 
   def wait_for_reset_pressed(self):
     #self.logging.info("wait_for_reset_pressed")
-    self.button.value.equal_to(True, False, self.wait_for_reset_released)
+    self.button.value.equal_to_once(True, self.wait_for_reset_released)
 
   def wait_for_reset_released(self):
     #self.logging.info("wait_for_reset_released")
-    self.button.value.equal_to(False, False, self.wait_for_start)
+    self.button.value.equal_to_once(False, self.wait_for_start)
 
 Plan()

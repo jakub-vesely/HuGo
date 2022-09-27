@@ -29,7 +29,7 @@ class Plan():
     self.ir_block = IrBlock()
     self.ir_block.add_remote(IrNumericRemote())
 
-    self.button.value.equal_to(True, True, self.change_patrol)
+    self.button.value.equal_to(True, self.change_patrol)
 
     self.near_barrier_event = None
     self.far_bariier_event = None
@@ -38,35 +38,35 @@ class Plan():
     self.patrol = False
 
     self.display.contrast(0)
-    Ble.value_remote.equal_to(RemoteKey("a"), True, self.turn_left)
-    Ble.value_remote.equal_to(RemoteKey("d"), True, self.turn_right)
-    Ble.value_remote.equal_to(RemoteKey("w"), True, self.speed_up)
-    Ble.value_remote.equal_to(RemoteKey("s"), True, self.slow_down)
-    Ble.value_remote.equal_to(RemoteKey("z"), True, self.stop)
-    Ble.value_remote.equal_to(RemoteKey("x"), True, self.reverse)
-    Ble.value_remote.equal_to(RemoteKey("p"), True, self.change_patrol)
+    Ble.value_remote.equal_to(RemoteKey("a"), self.turn_left)
+    Ble.value_remote.equal_to(RemoteKey("d"), self.turn_right)
+    Ble.value_remote.equal_to(RemoteKey("w"), self.speed_up)
+    Ble.value_remote.equal_to(RemoteKey("s"), self.slow_down)
+    Ble.value_remote.equal_to(RemoteKey("z"), self.stop)
+    Ble.value_remote.equal_to(RemoteKey("x"), self.reverse)
+    Ble.value_remote.equal_to(RemoteKey("p"), self.change_patrol)
 
-    self.ir_block.value.equal_to(IrNumericRemote.key_left, True, self.turn_left)
-    self.ir_block.value.equal_to(IrNumericRemote.key_right, True, self.turn_right)
-    self.ir_block.value.equal_to(IrNumericRemote.key_up, True, self.speed_up)
-    self.ir_block.value.equal_to(IrNumericRemote.key_down, True, self.slow_down)
-    self.ir_block.value.equal_to(IrNumericRemote.key_ok, True, self.stop)
-    self.ir_block.value.equal_to(IrNumericRemote.key_hash, True, self.reverse)
-    self.ir_block.value.equal_to(IrNumericRemote.key_star, True, self.change_patrol)
+    self.ir_block.value.equal_to(IrNumericRemote.key_left, self.turn_left)
+    self.ir_block.value.equal_to(IrNumericRemote.key_right, self.turn_right)
+    self.ir_block.value.equal_to(IrNumericRemote.key_up, self.speed_up)
+    self.ir_block.value.equal_to(IrNumericRemote.key_down, self.slow_down)
+    self.ir_block.value.equal_to(IrNumericRemote.key_ok, self.stop)
+    self.ir_block.value.equal_to(IrNumericRemote.key_hash, self.reverse)
+    self.ir_block.value.equal_to(IrNumericRemote.key_star, self.change_patrol)
 
     self.counter = 0
     Planner.repeat(0.5, self.print_power_info)
     PowerMgmt.set_plan(PowerPlan.get_max_performance_plan())
 
     self.current_smoother = SmoothedVariable(3, SmoothingType.average, self.chassis.power.battery_current_mA)
-    self.current_smoother.more_than(600, True, self.stop_for_a_while, 1)
+    self.current_smoother.more_than(600, self.stop_for_a_while, 1)
     self.heart_beat = False
 
   def define_patrol_events(self):
-    self.near_barrier_event = self.distance.value.less_than(self.near_barrier, True, self.near_barrier_detected)
-    self.far_bariier_event = self.distance.value.in_range(self.near_barrier, self.far_barrier, True, self.far_barrier_detected)
-    self.enough_space_event = self.distance.value.in_range(self.far_barrier, self.open_space, True, self.enough_space_detected)
-    self.open_space_event = self.distance.value.more_than(self.open_space - 1, True, self.open_space_detected)
+    self.near_barrier_event = self.distance.value.less_than(self.near_barrier, self.near_barrier_detected)
+    self.far_bariier_event = self.distance.value.in_range(self.near_barrier, self.far_barrier, self.far_barrier_detected)
+    self.enough_space_event = self.distance.value.in_range(self.far_barrier, self.open_space, self.enough_space_detected)
+    self.open_space_event = self.distance.value.more_than(self.open_space - 1, self.open_space_detected)
 
   def cancel_patrol_events(self):
     self.distance.value.remove_trigger(self.near_barrier_event)

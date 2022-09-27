@@ -12,12 +12,12 @@ class Plan():
     self.logging = Logging("events")
     self.chassis = Chassis(0x20, 0x21)
 
-    Ble.value_remote.equal_to(RemoteKey("a"), True, self.turn_left)
-    Ble.value_remote.equal_to(RemoteKey("d"), True, self.turn_right)
-    Ble.value_remote.equal_to(RemoteKey("w"), True, self.speed_up)
-    Ble.value_remote.equal_to(RemoteKey("s"), True, self.slow_down)
-    Ble.value_remote.equal_to(RemoteKey("z"), True, self.stop)
-    Ble.value_remote.equal_to(RemoteKey("x"), True, self.reverse)
+    Ble.value_remote.equal_to(RemoteKey("a"), self.turn_left)
+    Ble.value_remote.equal_to(RemoteKey("d"), self.turn_right)
+    Ble.value_remote.equal_to(RemoteKey("w"), self.speed_up)
+    Ble.value_remote.equal_to(RemoteKey("s"), self.slow_down)
+    Ble.value_remote.equal_to(RemoteKey("z"), self.stop)
+    Ble.value_remote.equal_to(RemoteKey("x"), self.reverse)
 
     Planner.repeat(1, self.print_power_info)
 

@@ -14,11 +14,11 @@ class Plan():
     self.ir_block.add_remote(IrNumericRemote())
 
     #to demonstrate equal to
-    self.ir_block.value.equal_to(RemoteKey("0"), True, self.light_off)
-    Ble.value_remote.equal_to(RemoteKey("0"), True, self.light_off)
+    self.ir_block.value.equal_to(RemoteKey("0"), self.light_off)
+    Ble.value_remote.equal_to(RemoteKey("0"), self.light_off)
     #to demonstrate changed
-    self.ir_block.value.updated(True, self.changed, self.ir_block.value)
-    Ble.value_remote.updated(True, self.changed, Ble.value_remote)
+    self.ir_block.value.updated(self.changed, self.ir_block.value)
+    Ble.value_remote.updated(self.changed, Ble.value_remote)
 
   def changed(self, active_value):
     value = active_value.get()

@@ -11,7 +11,7 @@ class Plan:
     self.button = ButtonBlock(measurement_period=0.1)
     self.led = RgbLedBlock()
     self.logging = Logging()
-    self.button.value.changed(True, self._button_state_changed)
+    self.button.value.changed(self._button_state_changed)
 
   def _button_state_changed(self):
     if self.button.value.get():

@@ -1,6 +1,5 @@
 #  Copyright (c) 2022 Jakub Vesely
 #  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
-
 from basal.logging import Logging
 from basal.planner import Planner
 from basal.smoothed_variable import SmoothedVariable, SmoothingType
@@ -18,8 +17,8 @@ class Plan():
 
     self.distance_block = DistanceBlock(measurement_period=0.05)
     self.smooth_distance = SmoothedVariable(3, SmoothingType.progressive, self.distance_block.value)
-    self.short_distance_event = self.smooth_distance.less_than(self.border_distance, True, self.short_distance)
-    self.smooth_distance.more_than(self.border_distance, True, self.long_distance)
+    self.short_distance_event = self.smooth_distance.less_than(self.border_distance, self.short_distance)
+    self.smooth_distance.more_than(self.border_distance, self.long_distance)
     self.power_save_state = 0
 
     Planner.repeat(0.5, self.get_distance)
