@@ -17,16 +17,19 @@ class Conditions():
 
 class ActiveVariable():
   logging = Logging("act_var")
-  def __init__(self, initial_value=None, renew_period:float=0, renew_func=None):
+  def __init__(self, initial_value=None, renew_period:float=0, renew_func=None, ignore_same=True):
     """
     @param initial_value: if is set Active variable will be preset to this value
     @param renew_period: renew_func will be called with this period if this value > 0
     @param renew_func: this method will be called periodically if renew_period is > 0 or if get is called with the parameter "force"
+    @param ignore_same: does not call listener function when value does not change although the condition is met". Value updated listener is executed anyway.
+
     """
     self._old_value = initial_value
     self._value = initial_value
     self._renew_period = renew_period
     self._renew_func = renew_func
+    self._ignore_same = ignore_same
     self._renew_handle = None
     self._listeners = list()
     self._handle_count = 0
@@ -42,65 +45,75 @@ class ActiveVariable():
   def set(self, value):
     if value is None:
       return #nothing to compare
+
+    same = False
+    if self._ignore_same:
+      if isinstance(self._value, float) and isinstance(value, float):
+        if math.isclose(self._value, value):
+          same = True
+      else:
+        if self._value == value:
+          same = True
+
     self._old_value = self._value
     self._value = value
+
     for listener in self._listeners:
       _type = listener[1]
       repeat = listener[2]
-
-      if _type == Conditions.equal_to:
-        if isinstance(value, float) or isinstance(listener[3], float):
-          if (self._old_value is None or not math.isclose(self._old_value, listener[3])) and math.isclose(value, listener[3]):
-            if  not repeat:
-              self._remove_listener(listener) #TODO: maybe it can be returned to the end of this method it should not be important for the called methd that it will be removed later - events are synchronous
-            listener[4](*listener[5], **listener[6])
-        else:
-          if (self._old_value is None or self._old_value != listener[3]) and value == listener[3]:
-            if  not repeat:
-              self._remove_listener(listener)
-            listener[4](*listener[5], **listener[6])
-      elif _type == Conditions.not_equal_to:
-        if isinstance(value, float) or isinstance(listener[3], float):
-          if (self._old_value is None or math.isclose(self._old_value, listener[3])) and not math.isclose(value, listener[3]):
-            if  not repeat:
-              self._remove_listener(listener)
-            listener[4](*listener[5], **listener[6])
-        else:
-          if (self._old_value is None or self._old_value == listener[3]) and value != listener[3]:
-            if  not repeat:
-              self._remove_listener(listener)
-            listener[4](*listener[5], **listener[6])
-      elif _type == Conditions.less_than:
-        if (self._old_value is None or self._old_value >= listener[3]) and value < listener[3]:
-          if  not repeat:
-            self._remove_listener(listener)
-          listener[4](*listener[5], **listener[6])
-      elif _type == Conditions.more_than:
-        if (self._old_value is None or self._old_value <= listener[3]) and value > listener[3]:
-          if  not repeat:
-            self._remove_listener(listener)
-          listener[4](*listener[5], **listener[6])
-      elif _type == Conditions.in_range:
-        if (self._old_value is None or self._old_value < listener[3] or self._old_value >= listener[4]) and  value >= listener[3] and value < listener[4]:
-          if  not repeat:
-            self._remove_listener(listener)
-          listener[5](*listener[6], **listener[7])
-      elif _type == Conditions.out_of_range:
-        if (self._old_value is None or self._old_value >= listener[3] and self._old_value < listener[4]) and (value < listener[3] or value >= listener[4]):
-          if  not repeat:
-            self._remove_listener(listener)
-          listener[5](*listener[6], **listener[7])
-      elif _type == Conditions.value_changed:
-        if value != self._old_value:
-          if  not repeat:
-            self._remove_listener(listener)
-          listener[3](*listener[4], **listener[5])
-      elif _type == Conditions.value_updated:
+      if _type == Conditions.value_updated:
         if  not repeat:
           self._remove_listener(listener)
         listener[3](*listener[4], **listener[5])
-      else:
-        self.logging.error("unknown listener type %s" % str(listener[1]))
+      elif not same:
+        if _type == Conditions.equal_to:
+          if isinstance(value, float) or isinstance(listener[3], float):
+            if math.isclose(value, listener[3]):
+              if  not repeat:
+                self._remove_listener(listener) #TODO: maybe it can be returned to the end of this method it should not be important for the called methd that it will be removed later - events are synchronous
+              listener[4](*listener[5], **listener[6])
+          else:
+            if value == listener[3]:
+              if  not repeat:
+                self._remove_listener(listener)
+              listener[4](*listener[5], **listener[6])
+        elif _type == Conditions.not_equal_to:
+          if isinstance(value, float) or isinstance(listener[3], float):
+            if not math.isclose(value, listener[3]):
+              if  not repeat:
+                self._remove_listener(listener)
+              listener[4](*listener[5], **listener[6])
+          else:
+            if value != listener[3]:
+              if  not repeat:
+                self._remove_listener(listener)
+              listener[4](*listener[5], **listener[6])
+        elif _type == Conditions.less_than:
+          if value < listener[3]:
+            if  not repeat:
+              self._remove_listener(listener)
+            listener[4](*listener[5], **listener[6])
+        elif _type == Conditions.more_than:
+          if value > listener[3]:
+            if  not repeat:
+              self._remove_listener(listener)
+            listener[4](*listener[5], **listener[6])
+        elif _type == Conditions.in_range:
+          if value >= listener[3] and value < listener[4]:
+            if  not repeat:
+              self._remove_listener(listener)
+            listener[5](*listener[6], **listener[7])
+        elif _type == Conditions.out_of_range:
+          if value < listener[3] or value >= listener[4]:
+            if  not repeat:
+              self._remove_listener(listener)
+            listener[5](*listener[6], **listener[7])
+        elif _type == Conditions.value_changed:
+          if  not repeat:
+            self._remove_listener(listener)
+          listener[3](*listener[4], **listener[5])
+        else:
+          self.logging.error("unknown listener type %s" % str(listener[1]))
 
   def get(self, force=False):
     if force:
@@ -137,14 +150,16 @@ class ActiveVariable():
   def equal_to(self, expected, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is newly equal to expected value
+    measured value is equal to the expected value
+    provided function will be called repeatedly until returned listener is not removed
     """
     return self._add_listener((self._handle_count, Conditions.equal_to, True, expected, function, args, kwargs))
 
   def equal_to_once(self, expected, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is newly equal to expected value
+    measured value is equal to the expected value
+    provided function will be called only once
     """
     return self._add_listener((self._handle_count, Conditions.equal_to, False, expected, function, args, kwargs))
 
@@ -152,14 +167,16 @@ class ActiveVariable():
   def not_equal_to(self, expected, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is newly not equal to expected value
+    measured value is not equal to the expected value
+    provided function will be called repeatedly until returned listener is not removed
     """
     return self._add_listener((self._handle_count, Conditions.not_equal_to, True, expected, function, args, kwargs))
 
   def not_equal_to_once(self, expected, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is newly not equal to expected value
+    measured value is not equal to the expected value
+    provided function will be called only once
     """
     return self._add_listener((self._handle_count, Conditions.not_equal_to, False, expected, function, args, kwargs))
 
@@ -167,14 +184,16 @@ class ActiveVariable():
   def less_than(self, expected, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is newly smaller than expected value
+    measured value is smaller than the expected value
+    provided function will be called only repeatedly until returned listener is not removed
     """
     return self._add_listener((self._handle_count, Conditions.less_than, True, expected, function, args, kwargs))
 
   def less_than_once(self, expected, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is newly smaller than expected value
+    measured value is smaller than the expected value
+    provided function will be called only once
     """
     return self._add_listener((self._handle_count, Conditions.less_than, False, expected, function, args, kwargs))
 
@@ -182,58 +201,66 @@ class ActiveVariable():
   def more_than(self, expected, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is newly bigger than expected value
+    measured value is bigger than the expected value
+    provided function will be called only repeatedly until returned listener is not removed
     """
     return self._add_listener((self._handle_count, Conditions.more_than, True, expected, function, args, kwargs))
 
-  def more_than_once(self, expected, repetitive:bool, function: callable, *args, **kwargs):
+  def more_than_once(self, expected, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is newly bigger than expected value
+    measured value is bigger than the expected value
+    provided function will be called only once
     """
     return self._add_listener((self._handle_count, Conditions.more_than, False, expected, function, args, kwargs))
 
 
-  def in_range(self, expected_min, expected_max, function: callable, *args, **kwargs):
+  def in_range(self, expected_begin, expected_end, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is newly bigger or equal to expected_min value and smaller that expected_max value
+    measured value is bigger or equal to the expected_begin value and smaller that the expected_end value
+    provided function will be called only repeatedly until returned listener is not removed
     """
-    return self._add_listener((self._handle_count, Conditions.in_range, True, expected_min, expected_max, function, args, kwargs))
+    return self._add_listener((self._handle_count, Conditions.in_range, True, expected_begin, expected_end, function, args, kwargs))
 
-  def in_range_once(self, expected_min, expected_max, function: callable, *args, **kwargs):
+  def in_range_once(self, expected_begin, expected_end, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is newly bigger or equal to expected_min value and smaller that expected_max value
+    measured value is bigger or equal to the expected_begin value and smaller that the expected_end value
+    provided function will be called only once
     """
-    return self._add_listener((self._handle_count, Conditions.in_range, False, expected_min, expected_max, function, args, kwargs))
+    return self._add_listener((self._handle_count, Conditions.in_range, False, expected_begin, expected_end, function, args, kwargs))
 
 
-  def out_of_range(self, expected_min, expected_max, function: callable, *args, **kwargs):
+  def out_of_range(self, expected_begin, expected_end, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is newly smaller than expected_min value or bigger or equal to expected_max value
+    measured value is smaller than the expected_begin value or bigger or equal to the expected_end value
+    provided function will be called only repeatedly until returned listener is not removed
     """
-    return self._add_listener((self._handle_count, Conditions.out_of_range, True, expected_min, expected_max, function, args, kwargs))
+    return self._add_listener((self._handle_count, Conditions.out_of_range, True, expected_begin, expected_end, function, args, kwargs))
 
-  def out_of_range_once(self, expected_min, expected_max, function: callable, *args, **kwargs):
+  def out_of_range_once(self, expected_begin, expected_end, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is newly smaller than expected_min value or bigger or equal to expected_max value
+    measured value is smaller than the expected_begin value or bigger or equal to the expected_end value
+    provided function will be called only once
     """
-    return self._add_listener((self._handle_count, Conditions.out_of_range, False, expected_min, expected_max, function, args, kwargs))
+    return self._add_listener((self._handle_count, Conditions.out_of_range, False, expected_begin, expected_end, function, args, kwargs))
 
   def changed(self, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is different that last time measured value
+    measured value is different than last time measured value
+    provided function will be called only repeatedly until returned listener is not removed
     """
     return self._add_listener((self._handle_count, Conditions.value_changed, True, function, args, kwargs))
 
-  def changed_once(self,  function: callable, *args, **kwargs):
+  def changed_once(self, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called when
-    measured value is different that last time measured value
+    measured value is different than last time measured value
+    provided function will be called only once
     """
     return self._add_listener((self._handle_count, Conditions.value_changed, False, function, args, kwargs))
 
@@ -241,14 +268,16 @@ class ActiveVariable():
   def updated(self, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called always when
-    a value is measured
+    a value is updated (when it is measured)
+    provided function will be called only repeatedly until returned listener is not removed
     """
     return self._add_listener((self._handle_count, Conditions.value_updated, True, function, args, kwargs))
 
   def updated_once(self, function: callable, *args, **kwargs):
     """
     provided function with arguments will be called always when
-    a value is measured
+    a value is updated (when it is measured)
+    provided function will be called only once
     """
     return self._add_listener((self._handle_count, Conditions.value_updated, False, function, args, kwargs))
 

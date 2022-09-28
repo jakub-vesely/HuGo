@@ -1,8 +1,9 @@
 #  Copyright (c) 2022 Jakub Vesely
 #  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
 
+import sys
 from unittest.mock import MagicMock
-from hugo_test_case import TestCase #must be called before another imports from devel or micropython - redefine import
+from test.hugo_test_case import TestCase #must be called before another imports from devel or micropython - redefine import
 from ___basal.___active_variable import ActiveVariable
 
 class TestActiveVariable(TestCase):
@@ -73,10 +74,11 @@ class TestActiveVariable(TestCase):
     self.var.in_range_once(self.next_value - 1, self.next_value, self.called_func)
     self._test_not_called()
 
-  def test_out_of_range__true(self):
+  def test_out_of_range__snaller_begin_true(self):
     self.var.out_of_range_once(self.next_value + 1, self.next_value + 2, self.called_func)
     self._test_called_once()
 
+  def test_out_of_range__equal_end_true(self):
     self.var.out_of_range_once(self.next_value - 1, self.next_value, self.called_func)
     self._test_called_once()
 
@@ -88,7 +90,7 @@ class TestActiveVariable(TestCase):
     self.var.changed_once(self.called_func)
     self._test_called_once()
 
-    #call set with the same value should not be added another call
+    #call set with the same value should cause another call
     self.var.changed_once(self.called_func)
     self._test_called_once()
 
