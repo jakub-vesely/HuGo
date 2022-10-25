@@ -2,12 +2,12 @@
 #  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
 
 from ___basal.___logging import Logging
-from ___blocks.___five_way_button_block import FiveWayButtonBlock
+from ___blocks.___five_way_switch_block import FiveWaySwitchBlock
 
 class FiweWaySwitch():
   logging = Logging("events")
   def __init__(self) -> None:
-    self.block = FiveWayButtonBlock()
+    self.block = FiveWaySwitchBlock()
     self.block.value.updated(self.updated)
 
   def updated(self):

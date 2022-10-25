@@ -90,7 +90,7 @@ class Terminal():
     removed = False
     for file_path in remote_files:
       self.ble.notification_data = None
-      if file_path not in local_files:
+      if file_path not in local_files and not file_path.startswith("/.") :
         self.logger.info("removing file %s", file_path)
         self.ble.command(CommandId.shell_remove_file, file_path.encode("utf-8"))
         removed = True
@@ -192,21 +192,30 @@ class Terminal():
           line = line[:hash_pos]
         from_pos = line.find("from ")
         import_pos = line.find("import ")
+        as_pos = line.find(" as ")
+        if as_pos != -1:
+          line = line[:as_pos] #everything starting with as is definitely not important for
 
         new_path = None
         if from_pos != -1 and import_pos != -1:
           new_path = line[from_pos + len("from "): import_pos]
         elif import_pos != -1:
-          as_pos = line.find(" as ")
-          if as_pos != -1:
-            new_path = line[import_pos + len("import ") : as_pos]
-          else:
             new_path = line[import_pos + len("import "): ]
         if new_path:
           new_path = new_path.strip()
           if new_path and (new_path.startswith("___") or new_path in ("events", )):
-            new_path = new_path.replace(".", "/") + ".py"
-            include_paths.append(root_path + "/" + new_path)
+            new_path = new_path.replace(".", "/")
+            new_path_with_extension = new_path + ".py"
+            full_path = root_path + "/" + new_path_with_extension
+            if not (os.path.exists(full_path)) and from_pos != -1:
+              new_path_with_extension = new_path + "/" + line[import_pos + len("import "):].strip() + ".py"
+              new_full_path = root_path + "/" + new_path_with_extension
+              if not (os.path.exists(new_full_path)):
+                self.logger.error(f"{full_path} neither {new_full_path} do not exist")
+                continue
+              else:
+                full_path = new_full_path
+            include_paths.append(full_path)
 
     return include_paths
 

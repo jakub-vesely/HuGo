@@ -10,7 +10,7 @@ from ___basal.___logging import Logging
 _i2c_command_button_id = const(1)
 _i2c_command_button_value = const(2)
 
-class FiveWayButtonBlock(BlockBase):
+class FiveWaySwitchBlock(BlockBase):
   states = (
       "none",
       "left",

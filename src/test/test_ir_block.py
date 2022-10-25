@@ -2,7 +2,7 @@
 #  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
 
 from unittest.mock import MagicMock
-from hugo_test_case import TestCase #must be called before another imports from devel or micropython - redefine import
+from test.hugo_test_case import TestCase #must be called before another imports from devel or micropython - redefines import
 from ___blocks.___ir_block import IrBlock
 from ___remote_control.___remote_key import RemoteKey
 from ___remote_control.___remote_keyboard_base import RemoteKeyboardBase

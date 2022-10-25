@@ -7,7 +7,7 @@ class micropython:
     return number
 
 class TestCase(unittest.TestCase):
-  orig_import = __import__
+  orig_import = builtins.__import__
   module_mock = MagicMock()
 
   @classmethod
@@ -26,6 +26,8 @@ class TestCase(unittest.TestCase):
 
     if ("___") in name:
       print(f"hugo_test {name} redirected to devel.{name}")
+
+      # TODO: it works for "from import" but not for direct "import"
       return cls.orig_import("devel." + name, *args)
 
     return cls.orig_import(name, *args)

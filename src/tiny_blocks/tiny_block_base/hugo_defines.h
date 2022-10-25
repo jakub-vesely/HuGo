@@ -18,17 +18,18 @@
 #define I2C_COMMAND_NONE                0xFF
 
 //block Id is also used as a default i2c address
-#define I2C_BLOCK_TYPE_ID_POWER         0x08
-#define I2C_BLOCK_TYPE_ID_RGB           0x09
-#define I2C_BLOCK_TYPE_ID_MOTOR_DRIVER  0x0A
-#define I2C_BLOCK_TYPE_ID_DISPLAY       0x0B
-#define I2C_BLOCK_TYPE_ID_SOUND         0x0C
-#define I2C_BLOCK_TYPE_ID_BUTTON        0x0D
-#define I2C_BLOCK_TYPE_ID_DISTANCE      0x0E
+#define I2C_BLOCK_TYPE_ID_POWER             0x08
+#define I2C_BLOCK_TYPE_ID_RGB               0x09
+#define I2C_BLOCK_TYPE_ID_MOTOR_DRIVER      0x0A
+#define I2C_BLOCK_TYPE_ID_DISPLAY           0x0B
+#define I2C_BLOCK_TYPE_ID_SOUND             0x0C
+#define I2C_BLOCK_TYPE_ID_BUTTON            0x0D
+#define I2C_BLOCK_TYPE_ID_DISTANCE          0x0E
+#define I2C_BLOCK_TYPE_ID_MOTION_TRACKING   0x0F
+#define I2C_BLOCK_TYPE_ID_IR                0x10
 
-#define I2C_BLOCK_TYPE_ID_POSITION      0x0F
-#define I2C_BLOCK_TYPE_ID_IR            0x10
-#define I2C_BLOCK_TYPE_ID_AMBIENT       0x11
+#define I2C_BLOCK_TYPE_ID_AMBIENT           0x11
+
 
 #define I2C_BLOCK_TYPE_ID_BASE          0xFA //different from CHANGE_I2C_ADDRESS command
 #define I2C_BLOCK_TYPE_ID_NONE          0xFF

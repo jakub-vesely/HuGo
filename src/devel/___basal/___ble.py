@@ -7,7 +7,8 @@ from micropython import const
 import bluetooth
 import sys
 import struct
-import ___basal.___ble_ids as ble_ids
+
+from ___basal import ___ble_ids as ble_ids
 from ___basal.___logging import Logging, LoggerBase
 from ___basal.___planner import Planner
 from ___basal.___power_mgmt import PowerMgmt, PowerPlan

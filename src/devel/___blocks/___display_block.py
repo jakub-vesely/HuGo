@@ -3,7 +3,7 @@
 
 import math
 from micropython import const
-import ___blocks.___ssd1306 as ssd1306
+import ssd1306 as ssd1306
 from ___blocks.___block_types import BlockTypes
 from ___blocks.___extended_block_base import BlockWithOneExtension
 
@@ -42,6 +42,9 @@ class DisplayBlock(BlockWithOneExtension):
     """
     dimensions_data = self._tiny_read(_get_dimmensions_command, None, 2)
     return (dimensions_data[0], dimensions_data[1]) if dimensions_data and len(dimensions_data) == 2 else (0, 0)
+
+  def get_text_height(self):
+    return 8
 
   def power_on(self, power_on:bool):
     if not self._display:

@@ -3,7 +3,7 @@
 
 import sys
 from unittest.mock import MagicMock
-from test.hugo_test_case import TestCase #must be called before another imports from devel or micropython - redefine import
+from test.hugo_test_case import TestCase #must be called before another imports from devel or micropython - redefines import
 from ___basal.___active_variable import ActiveVariable
 
 class TestActiveVariable(TestCase):
@@ -93,6 +93,70 @@ class TestActiveVariable(TestCase):
     #call set with the same value should cause another call
     self.var.changed_once(self.called_func)
     self._test_called_once()
+
+  def test_value_changed_threshold(self):
+    var = ActiveVariable(renew_func=self._get_value, change_threshold=2, initial_value=None)
+    var.changed(self.called_func)
+
+    self.next_value = 2
+    var.get(True)
+    self.called_func.assert_not_called()
+
+    self.next_value = 3
+    var.get(True)
+    self.called_func.assert_not_called()
+
+    self.next_value = 4
+    var.get(True)
+    self.called_func.assert_called_once()
+
+    self.next_value = 3
+    var.get(True)
+    self.called_func.assert_called_once()
+
+    self.next_value = 2
+    var.get(True)
+    self.assertEqual(self.called_func.call_count, 2)
+
+  def test_value_changed_threshold_tuple(self):
+    var = ActiveVariable(renew_func=self._get_value, change_threshold=2, initial_value=None)
+    var.changed_once(self.called_func)
+
+    self.next_value = (0, 0, 2)
+    var.get(True)
+    self.called_func.assert_not_called()
+
+    self.next_value = (0, 0, 3)
+    var.get(True)
+    self.called_func.assert_not_called()
+
+    self.next_value = (0, 0, 4)
+    var.get(True)
+    self.called_func.assert_called_once()
+
+    self.next_value = (0, 0, 2)
+    var.get(True)
+    self.called_func.assert_called_once() #changed_once
+
+  def test_value_changed_threshold_dict(self):
+    var = ActiveVariable(renew_func=self._get_value, change_threshold=2, initial_value=None)
+    var.changed(self.called_func)
+
+    self.next_value = {"a": 0, "b": 2}
+    var.get(True)
+    self.called_func.assert_not_called()
+
+    self.next_value = {"a": 0, "b": 3}
+    var.get(True)
+    self.called_func.assert_not_called()
+
+    self.next_value = {"a": 0, "b": 4}
+    var.get(True)
+    self.called_func.assert_called_once()
+
+    self.next_value = {"c": 0, "b": 4}
+    var.get(True)
+    self.assertEqual(self.called_func.call_count, 2)
 
   def test_value_updated(self):
     self.var.updated_once(self.called_func)
