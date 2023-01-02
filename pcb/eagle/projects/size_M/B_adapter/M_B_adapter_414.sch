@@ -9527,6 +9527,11 @@ internal calibrated oscillator&lt;p&gt;
 <sheets>
 <sheet>
 <plain>
+<text x="193.04" y="33.02" size="1.778" layer="97">* br14 is used if the transistor is not used. 
+* it can be replaced by a fuse as well
+* b15 is not used when the trasistor is not used</text>
+<text x="101.6" y="55.88" size="1.778" layer="97" rot="R180">* R11(R12) are used when TX(RX) are asked. 
+* PA6 and PA7 are in the high impedance state in this case. </text>
 </plain>
 <instances>
 <instance part="B.J12" gate="A" x="33.02" y="5.08" smashed="yes" rot="R180">
@@ -9805,6 +9810,10 @@ internal calibrated oscillator&lt;p&gt;
 </schematic>
 </drawing>
 <compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
 <note version="8.2" severity="warning">
 Since Version 8.2, EAGLE supports online libraries. The ids
 of those online libraries will not be understood (or retained)
