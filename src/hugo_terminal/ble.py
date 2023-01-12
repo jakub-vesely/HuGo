@@ -3,7 +3,7 @@ import logging
 import uuid
 import time
 from  queue import Queue
-from bleak import BleakClient, BleakScanner
+from bleak import BleakClient, BleakScanner, BleakError
 from hugo_terminal.command_id import CommandId
 
 class Ble():
@@ -107,7 +107,11 @@ class Ble():
     countdown = int(90 / waiting) #~1.5 min
     self.server = None
     while countdown:
-      await scanner.start()
+      try:
+           await scanner.start()
+      except BleakError as error:
+            self.logger.error("BLE has not been found")
+            return False
       await asyncio.sleep(waiting)
       await scanner.stop()
 

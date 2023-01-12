@@ -19,6 +19,7 @@ class HugoLogger(logging.Handler):
   def __init__(self, verbose):
     logging.Handler.__init__(self)
     self.gui = None
+    self.dashboard = None
     self.logger.setLevel(logging.DEBUG if verbose else logging.INFO)
     self.setFormatter(logging.Formatter("%(levelname)-8s%(message)s"))
     self.setLevel(logging.DEBUG if verbose else logging.INFO)
@@ -44,6 +45,9 @@ class HugoLogger(logging.Handler):
 
   def set_gui(self, gui):
     self.gui = gui
+
+  def set_dashboard(self, dashboard):
+    self.dashboard = dashboard
 
   def add_colorlog(self):
     from colorlog import ColoredFormatter
@@ -74,3 +78,6 @@ class HugoLogger(logging.Handler):
   def emit(self, record):
     if self.gui:
       self.gui.add_log(self.format(record))
+
+    if self.dashboard:
+      self.dashboard.add_log(self.format(record))

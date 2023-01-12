@@ -5,7 +5,6 @@ import time
 import hashlib
 import os
 import subprocess
-import sys
 from hugo_terminal.command_id import CommandId
 
 class Terminal():

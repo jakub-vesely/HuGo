@@ -16,6 +16,7 @@ class ArgumentProcessor():
     parser.add_argument('--verbose', '-v', action='store_true', help='debug messages are printed')
     parser.add_argument('--source_dir', '-s', default="upload", help='defines path to directory containing events.py which will be uploaded. If the source dir is not defined, the"upload" folder will be used.')
     parser.add_argument('--extra_reboot', '-xr', action='store_true', help='perform an extra reboot after flashing. It is usefull when a core scripts that are already loaded are changed')
+    parser.add_argument('--dashboard_config', '-dc', help='defines path to file with a hugo-board configuration. connection will be established')
 
     args = parser.parse_args()
     if not args.gui and not args.flash and not args.monitor:

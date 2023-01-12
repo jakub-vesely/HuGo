@@ -28,6 +28,11 @@ class HugoTerminal():
     ble = Ble(args.remote_control, args.mac_addr, self.logger)
     terminal = Terminal(ble, args.verbose, args.source_dir, self.logger)
 
+    if args.dashboard_config:
+      from hugo_dash_board import HugoDashBoard
+      self.logger.info("Values will be send to hugo-board.")
+      self.dash_board = HugoDashBoard(args.dashboard_config, self.logger)
+
     if args.gui:
       from gui import Gui #arguments must be processed first. Are processed by Kivy otherwise
       self.app = Gui(terminal, self.logger)

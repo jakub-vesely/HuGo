@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 import os
 sys.path.append(os.getcwd() +  '/hugo_terminal')
