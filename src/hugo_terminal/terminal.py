@@ -183,6 +183,9 @@ class Terminal():
 
   def find_include_files(self, root_path, file_path):
     include_paths = list()
+    if not os.path.exists(file_path):
+      return include_paths
+
     with open(file_path, "r") as file:
       lines = file.readlines()
       for line in lines:
@@ -232,7 +235,13 @@ class Terminal():
   def _process_files(self):
     remote_files = self._get_remote_files()
 
-    original_local_files = self.find_local_files(self.flashing_folder, "boot.py")
+    if os.path.exists("boot.py"):
+      #for devel
+      original_local_files = self.find_local_files(self.flashing_folder, "boot.py") #for devel
+    else:
+      #for examples
+      original_local_files = self.find_local_files(self.flashing_folder, "events.py")
+
 
     self.logger.debug("building local files...")
     self._build_local_dir(self.flashing_folder, original_local_files, self.output_dir)
