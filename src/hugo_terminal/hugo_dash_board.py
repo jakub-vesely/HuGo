@@ -23,8 +23,14 @@ class HugoDashBoard:
             hierarchy_items = hierarchy.split(".")
             variable = parts[-1].strip()
             variable_items = variable.split(" ")
-            if len(hierarchy_items) == 3 and len(variable_items) == 2:
-                self.send(hierarchy_items[0], hierarchy_items[1], hierarchy_items[2], variable_items[0], variable_items[1])
+
+            if len(hierarchy_items) == 3 and len(variable_items) >  0:
+                self.send(
+                    hierarchy_items[0],
+                    hierarchy_items[1],
+                    hierarchy_items[2],
+                    variable_items[0],
+                    variable_items[1] if len(variable_items) > 1 else "")
             #self.send( (message[:separator], message[separator + 1:])
 
     def send(self, project_name, device_name, variable_name, value, unit):
@@ -41,6 +47,6 @@ class HugoDashBoard:
             "measured": date_time
         };
         response = requests.post(self.url, data = data);
-        if response.status != 200:
+        if response.status_code != 200:
             self.logger.info("dashboard request not delivered")
 
