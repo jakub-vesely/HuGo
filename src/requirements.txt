@@ -4,3 +4,4 @@
 bleak
 colorlog
 keyboard
+kivy
