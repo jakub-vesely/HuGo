@@ -12820,11 +12820,11 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 </net>
 <net name="N$14" class="0">
 <segment>
-<pinref part="C.U1" gate="G$1" pin="IO18"/>
-<wire x1="119.38" y1="96.52" x2="129.54" y2="96.52" width="0.1524" layer="91"/>
-<wire x1="129.54" y1="96.52" x2="129.54" y2="48.26" width="0.1524" layer="91"/>
 <pinref part="C.J2" gate="A" pin="3"/>
+<wire x1="129.54" y1="93.98" x2="129.54" y2="48.26" width="0.1524" layer="91"/>
 <wire x1="129.54" y1="48.26" x2="10.16" y2="48.26" width="0.1524" layer="91"/>
+<pinref part="C.U1" gate="G$1" pin="IO5"/>
+<wire x1="119.38" y1="93.98" x2="129.54" y2="93.98" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
