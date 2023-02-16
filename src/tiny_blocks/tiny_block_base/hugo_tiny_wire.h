@@ -29,8 +29,8 @@ void HugoTinyWireFillModuleVersion();
 
 #include <stdint.h>
 #include <EEPROM.h>
-#include <Wire.h>
 #include <avr/wdt.h>
+#include <Wire.h>
 #include "hugo_defines.h"
 
 uint8_t s_block_type_id = I2C_BLOCK_TYPE_ID_NONE;
@@ -39,6 +39,11 @@ static wire_buffer_t s_buffer;
 #if defined(HUGO_TINY_EXTENSIONS) || defined (HUGO_TINY_ONE_EXTENSION)
     static uint8_t** s_ext_addresses = NULL;
     static uint8_t* s_active_extension = NULL;
+#endif
+
+#if defined(__AVR_ATtiny414__)
+    #define POWER_SAVE_PIN PIN_PB1 //FIXME
+    bool deepSleepOn = false;
 #endif
 
 static void i2c_request_event() {
@@ -142,8 +147,27 @@ static void i2c_receive_data(int count) {
                 HugoTinyWireFillModuleVersion();
                 break;
             case I2C_COMMAND_SET_POWER_SAVE:
-                HugoTinyWirePowerSave(Wire.read());
-                break;
+            {
+                uint8_t level = Wire.read();
+                #if defined(__AVR_ATtiny414__)
+                    if (level == POWER_SAVE_DEEP){
+                        digitalWrite(POWER_SAVE_PIN, 0);
+                        deepSleepOn = true;
+                    }
+                    else{
+                        if (level == POWER_SAVE_NONE and deepSleepOn){
+                            digitalWrite(POWER_SAVE_PIN, 1);
+                            deepSleepOn = false;
+                        }
+                        else{
+                            HugoTinyWirePowerSave(level);
+                        }
+                    }
+                #else
+                    HugoTinyWirePowerSave(level);
+                #endif
+            }
+            break;
             default:
                 read_unnecessary_data(count - 2); //to old blocks are not bricked due to missaligned data in case there will be added new command with data
         }
@@ -162,9 +186,17 @@ void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t** ext_addresses){
         address =  block_type_id; //block type IDs are chosen to be possible to use them as default I2c address
     }
 
-    Wire.begin(address);
-    Wire.onReceive(i2c_receive_data);
-    Wire.onRequest(i2c_request_event);
+#if defined(__AVR_ATtiny414__)
+    pinMode(POWER_SAVE_PIN, OUTPUT);
+    digitalWrite(POWER_SAVE_PIN, 1);
+
+
+    PORTMUX.CTRLB |= PORTMUX_TWI0_ALTERNATE_gc; //_ATtiny414 uses alternative ports for i2c because of conflict with the POWER_SAVE_PIN
+#endif
+
+     Wire.begin(address);
+     Wire.onReceive(i2c_receive_data);
+     Wire.onRequest(i2c_request_event);
 }
 
 uint8_t HugoTinyWireRead() {
