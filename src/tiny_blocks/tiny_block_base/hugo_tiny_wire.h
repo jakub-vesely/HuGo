@@ -41,7 +41,7 @@ static wire_buffer_t s_buffer;
     static uint8_t* s_active_extension = NULL;
 #endif
 
-#if defined(__AVR_ATtiny414__)
+#if defined(__AVR_ATtiny414__) || defined(__AVR_ATtiny1614__)
     #define POWER_SAVE_PIN PIN_PB1 //FIXME
     bool deepSleepOn = false;
 #endif
@@ -149,7 +149,7 @@ static void i2c_receive_data(int count) {
             case I2C_COMMAND_SET_POWER_SAVE:
             {
                 uint8_t level = Wire.read();
-                #if defined(__AVR_ATtiny414__)
+                #if defined(__AVR_ATtiny414__) || defined(__AVR_ATtiny1614__)
                     if (level == POWER_SAVE_DEEP){
                         digitalWrite(POWER_SAVE_PIN, 0);
                         deepSleepOn = true;
@@ -186,7 +186,7 @@ void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t** ext_addresses){
         address =  block_type_id; //block type IDs are chosen to be possible to use them as default I2c address
     }
 
-#if defined(__AVR_ATtiny414__)
+#if defined(__AVR_ATtiny414__) || defined(__AVR_ATtiny1614__)
     pinMode(POWER_SAVE_PIN, OUTPUT);
     digitalWrite(POWER_SAVE_PIN, 1);
 

@@ -33,7 +33,7 @@ void HugoTinyWireFillModuleVersion();
 #define USB_TRESHOLD (int)(1024.0 / 3.3 * 2) //2V
 
 #define I2C_COMMAND_POWER_GET_STATE      0x01
-static uint8_t s_ina_a; //two lowest bites only are valid (a0 lowest, a1, second lowest)
+//static uint8_t s_ina_a; //two lowest bites only are valid (a0 lowest, a1, second lowest)
 static bool s_is_usb = false;
 static bool s_is_charging = false;
 
