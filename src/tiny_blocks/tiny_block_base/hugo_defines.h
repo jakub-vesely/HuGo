@@ -28,6 +28,7 @@
 #define I2C_BLOCK_TYPE_ID_MOTION_TRACKING   0x0F
 #define I2C_BLOCK_TYPE_ID_IR                0x10
 #define I2C_BLOCK_TYPE_ID_METEO             0x11
+#define I2C_BLOCK_TYPE_ID_BLE               0x12
 
 
 #define I2C_BLOCK_TYPE_ID_BASE          0xFA //different from CHANGE_I2C_ADDRESS command
@@ -37,8 +38,10 @@
 #define POWER_SAVE_LIGHT    1
 #define POWER_SAVE_DEEP     2
 
+#include <stdint.h>
 
+#define WIRE_BUFFER_SIZE 18 //biggest data is ble mesh: size + mesh sender + 16B of mesh data
 typedef struct wire_buffer_t {
-    uint8_t data[16]; //not big amount of data is expected 16B should be more than enough
+    uint8_t data[WIRE_BUFFER_SIZE];
     uint8_t size;
 } wire_buffer_t;

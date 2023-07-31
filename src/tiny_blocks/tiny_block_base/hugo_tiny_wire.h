@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 //this function ask setting of power save level
 // one of three values is expected for parameter "level":
 // no_power_save = 0, light_power_save = 1, deep_power_save = 2
@@ -15,7 +17,7 @@ uint8_t HugoTinyWireGetExtAddress();
 void HugoTinyWireChangeExtAddress(uint8_t address);
 // defines listening and sending callback functions and starts I2C
 // ext_addresses is list tof extension which are list of possible addresses. addresslists are terminated by 0x00
-void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t** ext_addresses);
+void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t** ext_addresses, bool used_serial=false);
 
 uint8_t HugoTinyWireRead();
 
@@ -48,9 +50,9 @@ static wire_buffer_t s_buffer;
 
 static void i2c_request_event() {
     if (s_buffer.size > 0){
-    Wire.write(s_buffer.data, s_buffer.size);
-    s_buffer.size = 0;
-  }
+        Wire.write(s_buffer.data, s_buffer.size);
+        s_buffer.size = 0;
+    }
 }
 
 static void read_unnecessary_data(uint8_t count){
@@ -136,7 +138,7 @@ static void i2c_receive_data(int count) {
                     EEPROM.write(EEPROM_I2C_ADDRESS_POS, new_address);
 
                     // workaround standard wire do not allow to change i2c address
-                    // it seems avr do not have an instruction for soft reset reset van be done via watchdog
+                    // it seems avr do not have an instruction for soft reset. Reset can be done via watchdog
                     // minimal WTD timeout is 15 milisec
                     wdt_enable(WDTO_15MS);
                     while(1){};
@@ -174,7 +176,7 @@ static void i2c_receive_data(int count) {
     }
 }
 
-void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t** ext_addresses){
+void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t** ext_addresses, bool used_serial){
     s_block_type_id = block_type_id;
     s_buffer.size = 0;
 #if defined(HUGO_TINY_EXTENSIONS) || defined (HUGO_TINY_ONE_EXTENSION)
@@ -192,6 +194,11 @@ void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t** ext_addresses){
 
 
     PORTMUX.CTRLB |= PORTMUX_TWI0_ALTERNATE_gc; //_ATtiny414 uses alternative ports for i2c because of conflict with the POWER_SAVE_PIN
+
+    if (used_serial){
+        pinMode(PIN_PA6, INPUT); //to be used PB3 and PB2 instead
+        pinMode(PIN_PA7, INPUT);
+    }
 #endif
 
      Wire.begin(address);
