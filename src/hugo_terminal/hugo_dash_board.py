@@ -33,14 +33,14 @@ class HugoDashBoard:
                     variable_items[1] if len(variable_items) > 1 else "")
             #self.send( (message[:separator], message[separator + 1:])
 
-    def send(self, project_name, device_name, variable_name, value, unit):
+    def send(self, device_name, component_name, variable_name, value, unit):
         date_time = datetime.fromtimestamp(datetime.now().timestamp())
         data = {
             "command": "add_value",
             "username": self.username,
             "password": self.password,
-            "project_name": project_name,
             "device_name": device_name,
+            "component_name": component_name,
             "variable_name": variable_name,
             "value": value,
             "unit": unit,
