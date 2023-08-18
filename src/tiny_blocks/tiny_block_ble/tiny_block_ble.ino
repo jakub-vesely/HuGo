@@ -1,20 +1,17 @@
 /*
-BOARD: hugo_adapter + hugo_rgb
-Chip: ATtiny1614
+BOARD: hugo_adapter + hugo_ble jdy-25
+Chip: ATtiny412
 Clock Speed: 10MHz
 Programmer: jtag2updi (megaTinyCore)
 */
 
 #include <stdint.h>
+
 void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
 void HugoTinyWireFillModuleVersion();
 
-#include <Arduino.h>
-
 #include <hugo_tiny_wire.h>
 #include <avr/sleep.h>
-#include <Watchdog.h>
-#include <avr/wdt.h>
 
 #define PCB_VERSION 0
 #define ADJUSTMENT_VERSION 0
@@ -22,7 +19,7 @@ void HugoTinyWireFillModuleVersion();
 #define MESH_HEADER_LENGHT 7
 #define COMMAND_RESPONSE_SIZE 16
 #define MESH_DATA_SIZE 16 // max size of mesh data
-#define READ_BUFFER_SIZE (MESH_HEADER_LENGHT + MESH_DATA_SIZE) //mesh header + mesh_data 
+#define READ_BUFFER_SIZE (MESH_HEADER_LENGHT + MESH_DATA_SIZE) //mesh header + mesh_data
 
 #define I2C_AT_COMMAND_REQ   0x01
 #define I2C_AT_COMMAND_RESP  0x02
@@ -49,17 +46,17 @@ typedef struct mesh_message_t {
 
 static read_buffer_t s_read_buffer;
 static command_response__t s_command_response_buffer;
-static mesh_message_t s_mesh_message;
+static mesh_message_t tiny_main_ble_mesh_message;
 
-typedef struct flags_t { 
+typedef struct flags_t {
   bool wake_jdy : 1;
   bool sleep_jdy: 1;
   bool sleep_me : 1;
-  bool new_line_expected : 1;
-  unsigned expected_resp_count : 4;
+  unsigned expected_resp_count : 2; //maximal number is 2 currently
 } flags_t;
 
-static flags_t s_flags = { false, false, false, false, 0};
+static uint8_t s_expected_message_length = 0;
+static flags_t s_flags = { false, false, false, 0};
 
 static uint16_t s_exp_resp_timeout_ms = 0;
 static unsigned long s_exp_resp_timeout_start = 0;
@@ -74,10 +71,10 @@ void wakeup(){
 
 void process_complete_buffer(){
   if (s_read_buffer.size >= MESH_HEADER_LENGHT && s_read_buffer.data[0] == 0xf1){
-    if (s_mesh_message.size == 0){
-      s_mesh_message.size = s_read_buffer.size - MESH_HEADER_LENGHT;
-      memcpy(s_mesh_message.data, s_read_buffer.data + MESH_HEADER_LENGHT, s_mesh_message.size);
-      s_mesh_message.sender_id = s_read_buffer.data[4];
+    if (tiny_main_ble_mesh_message.size == 0){
+      tiny_main_ble_mesh_message.size = s_read_buffer.size - MESH_HEADER_LENGHT;
+      memcpy(tiny_main_ble_mesh_message.data, s_read_buffer.data + MESH_HEADER_LENGHT, tiny_main_ble_mesh_message.size);
+      tiny_main_ble_mesh_message.sender_id = s_read_buffer.data[4];
       s_read_buffer.size = 0;
       s_read_buffer.complete  = false;
     }
@@ -100,7 +97,7 @@ void process_complete_buffer(){
   }
 }
 
-// read line from JDY to ble_buffer and process it 
+// read line from JDY to ble_buffer and process it
 void readJdy(){
   while (true){
     //previous data not processed yet
@@ -114,19 +111,23 @@ void readJdy(){
 
     uint8_t byte = Serial.read();
 
-    //will not be stored waiting for \n
-    if (byte == '\r'){
-      s_flags.new_line_expected = true; // to prevent case when \n (10) is present in mesh as the message size
-      continue;
+    //mesh message contains length as a last byte of header
+    //to be possible to transfer binary data, checking \r \n must be avoidid unti end of expected data
+    if (s_read_buffer.data[0] == 0xf1 && s_read_buffer.size == MESH_HEADER_LENGHT - 1){
+      s_expected_message_length = byte;
     }
+    if (s_expected_message_length-- == 0){
+      //will not be stored waiting for \n
+      if (byte == '\r'){ //empty mesh message is not expected
+        continue;
+      }
 
-    //line complete
-    if (s_flags.new_line_expected && byte == '\n'){
-      s_read_buffer.complete = true;
-      s_flags.new_line_expected = false;
-      continue;
+      //line complete
+      if (byte == '\n'){
+        s_read_buffer.complete = true;
+        continue;
+      }
     }
-
     // too long line to be stored but it is necessary to finish reading to
     // to doesn't be stored rest of the line as a new message
     if (s_read_buffer.size == READ_BUFFER_SIZE){
@@ -144,7 +145,8 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
       for (uint8_t index = 0; index < payload_size; index++){
         Serial.write(HugoTinyWireRead());
       }
-      Serial.write("\r\n");
+      Serial.write('\r');
+      Serial.write('\n');
       break;
 
     case I2C_AT_COMMAND_RESP:
@@ -160,12 +162,12 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
       }
       break;
     case I2C_MESH_DATA:
-      if (s_mesh_message.size){
-        s_buffer.data[0] = s_mesh_message.size + 1; //sender_id + message
-        s_buffer.data[1] = s_mesh_message.sender_id; 
-        memcpy(s_buffer.data + 2, s_mesh_message.data, s_mesh_message.size);
-        s_buffer.size = s_mesh_message.size + 2;
-        s_mesh_message.size = 0;
+      if (tiny_main_ble_mesh_message.size){
+        s_buffer.data[0] = tiny_main_ble_mesh_message.size + 1; //sender_id + message
+        s_buffer.data[1] = tiny_main_ble_mesh_message.sender_id;
+        memcpy(s_buffer.data + 2, tiny_main_ble_mesh_message.data, tiny_main_ble_mesh_message.size);
+        s_buffer.size = tiny_main_ble_mesh_message.size + 2;
+        tiny_main_ble_mesh_message.size = 0;
       }
       else{
         s_buffer.data[0] = 0;
@@ -190,7 +192,7 @@ void HugoTinyWirePowerSave(uint8_t level){
 
  if (level >= POWER_SAVE_LIGHT){
    s_flags.sleep_jdy = true;
- } 
+ }
  if (level == POWER_SAVE_DEEP){
    s_flags.sleep_me = true;
  }
@@ -205,18 +207,13 @@ void setup()
   s_read_buffer.size = 0;
   s_read_buffer.complete = false;
   s_command_response_buffer.size = 0;
-  s_mesh_message.size = 0;
+  tiny_main_ble_mesh_message.size = 0;
 
   pinMode(WAKEUP_PIN, OUTPUT);
   digitalWrite(WAKEUP_PIN, HIGH); //high is non-active
 
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
   sleep_enable();
-  //pinMode(PIN_PA6, INPUT); //to be used PB3 and PB2 instead
-  //pinMode(PIN_PA7, INPUT);
-
-  //watchdog.enable(Watchdog::TIMEOUT_120MS);
-  //_PROTECTED_WRITE(WDT.CTRLA,0);
 }
 
 // the loop function runs over and over again forever
@@ -228,7 +225,7 @@ void set_expected_resp_count(uint8_t count, uint16_t timeout_ms){
 void loop()
 {
   readJdy();
-  
+
   if (s_flags.expected_resp_count > 0 && millis() > s_exp_resp_timeout_start + s_exp_resp_timeout_ms){
     s_flags.expected_resp_count = 0;
   }
@@ -237,8 +234,8 @@ void loop()
   if (s_flags.expected_resp_count > 0 && s_command_response_buffer.size > 0){
     s_command_response_buffer.size = 0; //data are not verified, not clear what to do if are unexpected
     s_flags.expected_resp_count--;
-  } 
-  
+  }
+
   if (s_flags.sleep_jdy){
     set_expected_resp_count(2, 200); //OK + +SLLEP
     Serial.write("AT+SLEEP2");
@@ -256,7 +253,4 @@ void loop()
     sleep_mode();
     s_flags.sleep_me = false;
   }
-  
-  //wdt_disable();  // disable watchdog when running
-  //watchdog.reset();
 }
