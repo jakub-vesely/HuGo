@@ -13,3 +13,5 @@ sdkconfig.old
 *.pyc
 pcb/datasheets/local
 .build*
+.*.json
+.*.py

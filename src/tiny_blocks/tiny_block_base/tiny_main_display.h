@@ -12,7 +12,6 @@ Adafruit_SSD1306 display(OLED_RESET);
 
 void tiny_main_display_init(){
     uint8_t ssd_address = tiny_main_base_get_ext_module_address(I2C_BLOCK_TYPE_ID_DISPLAY);
-    delay(10);//it is necessary to wait a while to the dispay is started
     display.begin(SSD1306_SWITCHCAPVCC, ssd_address, false);
     display.clearDisplay();
 }

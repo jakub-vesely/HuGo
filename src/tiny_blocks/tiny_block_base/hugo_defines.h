@@ -40,7 +40,11 @@
 
 #include <stdint.h>
 
-#define WIRE_BUFFER_SIZE 18 //biggest data is ble mesh: size + mesh sender + 16B of mesh data
+//ble command resp up to 13 (1B size + 12B answer_data)
+//mesh_response up to 15 (1B size) + (2B sender + 12B mesh_data)
+//~~mesh_command up to 24 (AT+MESH + 1B CMD + 2B target + 12B mesh data + \r\n)~~ mesh command is never filled to the buffer
+#define WIRE_BUFFER_SIZE 16
+
 typedef struct wire_buffer_t {
     uint8_t data[WIRE_BUFFER_SIZE];
     uint8_t size;

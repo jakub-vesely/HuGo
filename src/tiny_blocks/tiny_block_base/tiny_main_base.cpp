@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <Wire.h>
-#include <tiny_main_base.h>
+#include "tiny_main_base.h"
 #include <hugo_defines.h>
 
 #if defined(__AVR_ATtiny414__) || defined(__AVR_ATtiny1614__)
@@ -18,6 +18,7 @@ void tiny_main_base_init(){
   PORTMUX.CTRLB |= PORTMUX_TWI0_ALTERNATE_gc; //_ATtiny414 uses alternative ports for i2c because of conflict with the POWER_SAVE_PIN
 #endif
   Wire.begin();
+  delay(100);
 }
 
 #if defined(__AVR_ATtiny414__) || defined(__AVR_ATtiny1614__)
@@ -35,29 +36,47 @@ bool tiny_main_base_send_i2c_command(uint8_t address, uint8_t block_type_id, uin
     Wire.write(block_type_id);
     Wire.write(command);
   }
-  if (s_common_buffer.size != 0){
-    Wire.write(s_common_buffer.data, s_common_buffer.size);
-  }
-  uint8_t error = Wire.endTransmission();     // finish transmission
 
-  if (error != 0){
+  for (uint8_t index = 0; index < s_common_buffer.size; index++){
+    //workaround: it seems size of I2C buffer is 16 bytes and this buffer is used when writing bytes one by one
+    //it seems the problem could be on the receiver side which has 16B buffer only because RAM is < 256
+    //TODO: should be 32 for attiny412 as well in base of the documentation
+    if ((index + 1) % 16 == 0){
+      if (Wire.endTransmission(true) != 0){
+        return false;
+      }
+      Wire.beginTransmission(address);
+      if (command != 0){
+        Wire.write(block_type_id);
+        Wire.write(command);
+      }
+    }
+    Wire.write(s_common_buffer.data[index]);
+  }
+
+  if (Wire.endTransmission(true) != 0){
     return false;
   }
 
+  s_common_buffer.size = 0; //for sure also for case no response size is set
   if (expected_response_size != 0){
     uint8_t read_size = Wire.requestFrom(address, expected_response_size);
-    s_common_buffer.size = 0;
+
     if (expected_response_size != 0xff && read_size != expected_response_size){
       return false;
     }
-    for (uint8_t index = 0; index < read_size; index++){
-      uint8_t byte = Wire.read();
-      //first byte is not important in this implementation because we have number of read bytes
-      if (expected_response_size != 0xff || index != 0){
-          s_common_buffer.data[s_common_buffer.size++] = byte;
-      }
+
+    uint8_t count = read_size;
+    if (expected_response_size == 0xff && read_size > 0){
+      count = Wire.read();
+      read_size--;
+    }
+
+    for (uint8_t index = 0; index < count; index++){
+      s_common_buffer.data[s_common_buffer.size++] = Wire.read();
     }
   }
+  delay(200);
   return true;
 }
 

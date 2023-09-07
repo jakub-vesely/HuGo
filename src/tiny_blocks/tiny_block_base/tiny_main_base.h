@@ -3,8 +3,9 @@
 
 #define GET_EXT_ADDRESS_COMMAND 0xfa
 
+#define COMMON_BUFFER_SIZE 30 // biggest is a mesh message (up to 28)
 typedef struct tiny_common_buffer_t{
-  uint8_t data[30]; //biggest is sended mesh message
+  uint8_t data[COMMON_BUFFER_SIZE];
   uint8_t size;
 } tiny_common_buffer_t;
 

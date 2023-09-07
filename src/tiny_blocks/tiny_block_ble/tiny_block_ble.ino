@@ -16,10 +16,10 @@ void HugoTinyWireFillModuleVersion();
 #define PCB_VERSION 0
 #define ADJUSTMENT_VERSION 0
 
-#define MESH_HEADER_LENGHT 7
-#define COMMAND_RESPONSE_SIZE 16
-#define MESH_DATA_SIZE 16 // max size of mesh data
-#define READ_BUFFER_SIZE (MESH_HEADER_LENGHT + MESH_DATA_SIZE) //mesh header + mesh_data
+#define COMMAND_RESPONSE_SIZE 16 //largest 13 (+JDY-25-START)
+#define MESH_HEADER_LENGTH 7 //0xF1 0xDD 1B_size 2B_sender 2B_receiver (max size is 16)
+#define MESH_DATA_SIZE 12 // max size of mesh data (16 including 2B_sender 2B_receiver)
+#define READ_BUFFER_SIZE (MESH_HEADER_LENGTH + MESH_DATA_SIZE) //mesh header + mesh_data
 
 #define I2C_AT_COMMAND_REQ   0x01
 #define I2C_AT_COMMAND_RESP  0x02
@@ -29,8 +29,8 @@ void HugoTinyWireFillModuleVersion();
 
 typedef struct read_buffer_t {
   uint8_t data[READ_BUFFER_SIZE];
-  uint8_t size;
-  bool complete;
+  uint8_t size :7 ;
+  bool complete : 1;
 } read_buffer_t;
 
 typedef struct command_response__t {
@@ -70,31 +70,32 @@ void wakeup(){
 }
 
 void process_complete_buffer(){
-  if (s_read_buffer.size >= MESH_HEADER_LENGHT && s_read_buffer.data[0] == 0xf1){
+  if (s_read_buffer.size >= MESH_HEADER_LENGTH && s_read_buffer.data[0] == 0xf1){
     if (tiny_main_ble_mesh_message.size == 0){
-      tiny_main_ble_mesh_message.size = s_read_buffer.size - MESH_HEADER_LENGHT;
-      memcpy(tiny_main_ble_mesh_message.data, s_read_buffer.data + MESH_HEADER_LENGHT, tiny_main_ble_mesh_message.size);
+      uint8_t size = min(s_read_buffer.size - MESH_HEADER_LENGTH, MESH_DATA_SIZE);
+      memcpy(tiny_main_ble_mesh_message.data, s_read_buffer.data + MESH_HEADER_LENGTH, size);
       tiny_main_ble_mesh_message.sender_id = s_read_buffer.data[4];
+      tiny_main_ble_mesh_message.size = size; //is filled after data - it is tested from i2c interrupt
       s_read_buffer.size = 0;
-      s_read_buffer.complete  = false;
+      s_read_buffer.complete = false;
     }
+    return; //waiting for empty tiny_main_ble_mesh_message
   }
-  else if (
-      (s_read_buffer.size == 2 && s_read_buffer.data[0] == 'O' && s_read_buffer.data[1] == 'K') ||
-      (s_read_buffer.size > 1 && s_read_buffer.data[0] == '+')
-  ){
+
+  if (s_read_buffer.size > 1 && s_read_buffer.data[0] == '+'){ //OK as answer to AT is not supported
     if (s_command_response_buffer.size == 0){
-      memcpy(s_command_response_buffer.data, s_read_buffer.data, s_read_buffer.size);
-      s_command_response_buffer.size = s_read_buffer.size;
+      uint8_t size = min(s_read_buffer.size, COMMAND_RESPONSE_SIZE);
+      memcpy(s_command_response_buffer.data, s_read_buffer.data, size);
+      s_command_response_buffer.size = size;
       s_read_buffer.size = 0;
       s_read_buffer.complete  = false;
     }
-    return;
+    return; //waiting for empty s_command_response_buffer
   }
-  else{ //unknown message - do not know how to process it but I need to free space for next messages - will be deleted
-    s_read_buffer.size = 0;
-    s_read_buffer.complete  = false;
-  }
+
+  //unknown message - do not know how to process it but I need to free space for next messages - will be deleted
+  s_read_buffer.size = 0;
+  s_read_buffer.complete  = false;
 }
 
 // read line from JDY to ble_buffer and process it
@@ -111,12 +112,30 @@ void readJdy(){
 
     uint8_t byte = Serial.read();
 
+    if (s_read_buffer.complete){
+      break; //reading is not fast enough, buffer was not extended to a message
+    }
+
+    if (s_read_buffer.size == READ_BUFFER_SIZE){
+      s_read_buffer.size = 0; // too long line to be stored it seems the message is corrupted will be deleted for sure
+      break;
+    }
+
+    if (s_read_buffer.size == 0 && byte != '+' && byte != 0xf1){ //OK as answer to AT is not supported
+      break; //we are probably lost somewhere in the middle of the message. waiting for the correct start
+    }
+
     //mesh message contains length as a last byte of header
     //to be possible to transfer binary data, checking \r \n must be avoidid unti end of expected data
-    if (s_read_buffer.data[0] == 0xf1 && s_read_buffer.size == MESH_HEADER_LENGHT - 1){
+    if (s_read_buffer.size == 2 && s_read_buffer.data[0] == 0xf1){ //0xF1 0xDD 1B_size
       s_expected_message_length = byte;
     }
-    if (s_expected_message_length-- == 0){
+    else if (s_expected_message_length > 0){
+      if (--s_expected_message_length == 0) {
+        s_read_buffer.complete = true;
+      }
+    }
+    else if (s_read_buffer.size > 0 && s_read_buffer.data[0] != 0xf1){
       //will not be stored waiting for \n
       if (byte == '\r'){ //empty mesh message is not expected
         continue;
@@ -128,15 +147,9 @@ void readJdy(){
         continue;
       }
     }
-    // too long line to be stored but it is necessary to finish reading to
-    // to doesn't be stored rest of the line as a new message
-    if (s_read_buffer.size == READ_BUFFER_SIZE){
-      continue;
-    }
 
     s_read_buffer.data[s_read_buffer.size++] = byte;
   }
-
 }
 
 void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
@@ -145,8 +158,6 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
       for (uint8_t index = 0; index < payload_size; index++){
         Serial.write(HugoTinyWireRead());
       }
-      Serial.write('\r');
-      Serial.write('\n');
       break;
 
     case I2C_AT_COMMAND_RESP:
@@ -155,23 +166,24 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
         s_buffer.size = 1;
       }
       else{
-        s_buffer.data[0] = s_command_response_buffer.size;
-        memcpy(s_buffer.data + 1, s_command_response_buffer.data, s_command_response_buffer.size);
+        s_buffer.data[0] = min(s_command_response_buffer.size, WIRE_BUFFER_SIZE - 1);
+        memcpy(s_buffer.data + 1, s_command_response_buffer.data, s_buffer.data[0]);
         s_buffer.size = s_command_response_buffer.size + 1;
         s_command_response_buffer.size = 0;
       }
       break;
     case I2C_MESH_DATA:
+
       if (tiny_main_ble_mesh_message.size){
-        s_buffer.data[0] = tiny_main_ble_mesh_message.size + 1; //sender_id + message
+        s_buffer.data[0] = min(tiny_main_ble_mesh_message.size + 1, WIRE_BUFFER_SIZE - 2); // sender_id + message
         s_buffer.data[1] = tiny_main_ble_mesh_message.sender_id;
-        memcpy(s_buffer.data + 2, tiny_main_ble_mesh_message.data, tiny_main_ble_mesh_message.size);
-        s_buffer.size = tiny_main_ble_mesh_message.size + 2;
+        memcpy(s_buffer.data + 2, tiny_main_ble_mesh_message.data, s_buffer.data[0] - 1); // -sender_id
+        s_buffer.size = s_buffer.data[0] + 1; // +size
         tiny_main_ble_mesh_message.size = 0;
       }
       else{
-        s_buffer.data[0] = 0;
-        s_buffer.size = 1;
+       s_buffer.data[0] = 0;
+       s_buffer.size = 1;
       }
       break;
   }
@@ -196,7 +208,6 @@ void HugoTinyWirePowerSave(uint8_t level){
  if (level == POWER_SAVE_DEEP){
    s_flags.sleep_me = true;
  }
-
 }
 
 void setup()
@@ -216,7 +227,6 @@ void setup()
   sleep_enable();
 }
 
-// the loop function runs over and over again forever
 void set_expected_resp_count(uint8_t count, uint16_t timeout_ms){
   s_flags.expected_resp_count = count;
   s_exp_resp_timeout_ms = timeout_ms;
@@ -253,4 +263,5 @@ void loop()
     sleep_mode();
     s_flags.sleep_me = false;
   }
+  //delay(10);
 }

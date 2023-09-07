@@ -60,14 +60,20 @@ int32_t tiny_main_power_get_bat_current_uA(){
   if (p_common_buffer->size != 2){
     return 0;
   }
-  uint16_t raw_voltage =  (p_common_buffer->data[0] << 8) | p_common_buffer->data[1];
-  bool negative = true;
+  uint16_t raw_voltage =  (((uint16_t)p_common_buffer->data[0]) << 8) | p_common_buffer->data[1];
+  bool negative = true; //charging will be shown as negative
+  int32_t current_uA = raw_voltage; //direct multiplication leads to wrong result
+  current_uA *= 100;
   if (p_common_buffer->data[0] & 0x80){
-    raw_voltage = ((raw_voltage - 1) ^ 0xffff);
+    //Note: it seems conversion is done automatically when raw_voltage is assigned to current_uA (signed)
+    //raw_voltage = ((raw_voltage - 1) ^ 0xffff);
     negative = false;
+    current_uA = raw_voltage * 100; //here is direct multiplication required
   }
 
-  int32_t current_uA = raw_voltage * 100; //(1000 * (0.01 / _SHUNT_R)); _SHUNT_R=0.1
+  //raw_voltage * 100; //(1000 * (0.01 / _SHUNT_R)); _SHUNT_R=0.1
+
+  //current_uA *= 100;
   if (negative){
     current_uA = -current_uA;
   }
