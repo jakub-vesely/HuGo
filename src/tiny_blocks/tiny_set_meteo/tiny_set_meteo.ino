@@ -1,9 +1,12 @@
 /*
-BOARD: hugo_adapter-i2c-pull-ups driving power-block, meteo-block and ble-block
+BOARD: hugo_adapter-i2c-pull-ups driving power-block, ambient-block and ble-block
 Chip: ATtiny412 or ATtiny1614
 Clock Speed: 10MHz
 Programmer: jtag2updi (megaTinyCore)
 */
+
+//#include <avr/wdt.h>
+#include <avr/sleep.h>
 
 #include <stdint.h>
 #include <Arduino.h>
@@ -13,6 +16,7 @@ Programmer: jtag2updi (megaTinyCore)
 #include <tiny_main_ambient.h>
 #include <tiny_main_ble.h>
 #include <tiny_main_power.h>
+#include <tiny_main_rj12.h>
 
 #define MESH_MAIN_NODE_ID 0x04
 
@@ -197,11 +201,32 @@ void publish_value(char const * variable, char const* value, char const* unit, b
     add_to_common_buffer(unit);
   }
   publish_buffer(to_display);
-  delay(10);
+  delay(50);
+}
+
+void RTC_init(void)
+{
+  /* Initialize RTC: */
+  while (RTC.STATUS > 0)
+  {
+    ;                                   /* Wait for all register to be synchronized */
+  }
+  RTC.CLKSEL = RTC_CLKSEL_INT32K_gc;    /* 32.768kHz Internal Ultra-Low-Power Oscillator (OSCULP32K) */
+
+  RTC.PITINTCTRL = RTC_PI_bm;           /* PIT Interrupt: enabled */
+
+  RTC.PITCTRLA = RTC_PERIOD_CYC32768_gc /* RTC Clock Cycles 16384, resulting in 32.768kHz/32768 = 1Hz */
+  | RTC_PITEN_bm;                       /* Enable PIT counter: enabled */
+}
+
+ISR(RTC_PIT_vect)
+{
+  RTC.PITINTFLAGS = RTC_PI_bm;          /* Clear interrupt flag by writing '1' (required) */
 }
 
 void setup()
 {
+  RTC_init();
   line[0] = '\0';
   for (uint8_t index = 0; index < disp_line_count; index++){
     disp_lines[index][0] = '\0';
@@ -216,8 +241,9 @@ void setup()
   display.setTextSize(1);
   display.setTextColor(WHITE);
 
-  watchdog.enable(Watchdog::TIMEOUT_120MS);
-  _PROTECTED_WRITE(WDT.CTRLA,0);
+  //wdt_disable();
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+  sleep_enable();
 
   // send_and_receive_command("AT");
   // delay(1000);
@@ -230,14 +256,17 @@ void setup()
   // send_and_receive_command("AT+MADDR0003");
   // delay(1000);
   // send_and_receive_command("AT+MCLSS0");
+  tiny_main_rj12_set_pin_mode(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin4, Rj12PinMode::input);
+  tiny_main_rj12_set_pin_mode(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin5, Rj12PinMode::input);
 }
 
 void loop()
 {
+  tiny_main_base_set_build_in_led(true);
+  delay(20);
+  tiny_main_base_set_build_in_led(false);
   display.clearDisplay();
   display.setCursor(0,0);
-
-  //tiny_main_base_set_build_in_led(true);
 
   charging_state_t charging_state = tiny_main_power_get_charging_state();
   heartbeat = !heartbeat;
@@ -259,20 +288,37 @@ void loop()
 
   measure_bme();
 
-  str = fill_decimal_number(bme.getTemperature(), 2, 3);
-  publish_value("t", str, "'C");
+  // str = fill_decimal_number(bme.getTemperature(), 2, 3);
+  // publish_value("t", str, "'C");
 
-  str = fill_decimal_number(bme.getPressure(), 2, 3);
-  publish_value("P", str, "hPa");
+  // str = fill_decimal_number(bme.getPressure(), 2, 3);
+  // publish_value("P", str, "hPa");
 
-  str = fill_decimal_number(bme.getHumidity() * 100 / 1024, 2, 3);
-  publish_value("RH", str, "%");
+  // str = fill_decimal_number(bme.getHumidity() * 100 / 1024, 2, 3);
+  // publish_value("RH", str, "%");
 
+  uint16_t rj12_pin4 =  tiny_main_rj12_get_pin_value_analog(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin4);
+  publish_value("p4", str, "");
 
+  uint16_t rj12_pin5 =  tiny_main_rj12_get_pin_value_analog(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin5);
+  publish_value("p5", str, "");
+
+  tiny_main_base_set_power_save(I2C_ADDRESS_BROADCAST, POWER_SAVE_DEEP);
   display.display();
-  for (uint8_t count = 0; count < 4; count++){
-    delay(1000 * 30);
+  delay(500);
+
+  tiny_main_base_set_build_in_led(true);
+  delay(100);
+  tiny_main_base_set_build_in_led(false);
+
+  for (uint8_t count = 0; count < 120; count++){
+    //delay(1000 * 2);
+    sleep_cpu();
   }
-  //wdt_disable();  // disable watchdog when running
-  //watchdog.reset();
+  //delay(100);
+  //wdt_enable(WDT_PERIOD_8KCLK_gc);
+  //sleep_cpu();
+  //wdt_reset();
+  //wdt_disable();
+  tiny_main_base_set_power_save(I2C_ADDRESS_BROADCAST, POWER_SAVE_NONE);
 }

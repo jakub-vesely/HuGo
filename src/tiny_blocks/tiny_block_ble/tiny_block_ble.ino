@@ -10,6 +10,7 @@ Programmer: jtag2updi (megaTinyCore)
 void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
 void HugoTinyWireFillModuleVersion();
 
+#define AUTO_DEEP_SLEEP_DISABLED //to be disabled deel sleep in hugo_tiny_wire.h
 #include <hugo_tiny_wire.h>
 #include <avr/sleep.h>
 
@@ -197,17 +198,18 @@ void HugoTinyWireFillModuleVersion(){
 }
 
 void HugoTinyWirePowerSave(uint8_t level){
- if (level == POWER_SAVE_NONE){
-   s_flags.wake_jdy = true;
-   return;
- }
+  if (level == POWER_SAVE_NONE){
+    s_flags.sleep_me = false;
+    s_flags.wake_jdy = true;
+    return;
+  }
 
- if (level >= POWER_SAVE_LIGHT){
-   s_flags.sleep_jdy = true;
- }
- if (level == POWER_SAVE_DEEP){
-   s_flags.sleep_me = true;
- }
+  if (level >= POWER_SAVE_LIGHT){
+    s_flags.sleep_jdy = true;
+  }
+  if (level == POWER_SAVE_DEEP){
+    s_flags.sleep_me = true;
+  }
 }
 
 void setup()
@@ -248,9 +250,8 @@ void loop()
 
   if (s_flags.sleep_jdy){
     set_expected_resp_count(2, 200); //OK + +SLLEP
-    Serial.write("AT+SLEEP2");
+    Serial.write("AT+SLEEP2\r\n");
     s_flags.sleep_jdy = false;
-
   }
 
   if (s_flags.wake_jdy){
@@ -259,9 +260,8 @@ void loop()
     s_flags.wake_jdy = false;
   }
 
-  if (s_flags.sleep_me){
+  if (s_flags.sleep_me && s_flags.expected_resp_count == 0){
     sleep_mode();
-    s_flags.sleep_me = false;
   }
   //delay(10);
 }

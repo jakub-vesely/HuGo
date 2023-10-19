@@ -32,6 +32,9 @@ void HugoTinyWireFillModuleVersion();
 #include <stdint.h>
 #include <EEPROM.h>
 #include <avr/wdt.h>
+#ifndef AUTO_DEEP_SLEEP_DISABLED
+#  include <avr/sleep.h>
+#endif
 #include <Wire.h>
 #include "hugo_defines.h"
 
@@ -153,6 +156,7 @@ static void i2c_receive_data(int count) {
                 uint8_t level = Wire.read();
                 #if defined(__AVR_ATtiny414__) || defined(__AVR_ATtiny1614__)
                     if (level == POWER_SAVE_DEEP){
+                        HugoTinyWirePowerSave(level);
                         digitalWrite(POWER_SAVE_PIN, 0);
                         deepSleepOn = true;
                     }
@@ -161,13 +165,18 @@ static void i2c_receive_data(int count) {
                             digitalWrite(POWER_SAVE_PIN, 1);
                             deepSleepOn = false;
                         }
-                        else{
-                            HugoTinyWirePowerSave(level);
-                        }
+
+                        HugoTinyWirePowerSave(level);
                     }
                 #else
                     HugoTinyWirePowerSave(level);
                 #endif
+
+#ifndef AUTO_DEEP_SLEEP_DISABLED
+                if (level == POWER_SAVE_DEEP){
+                    sleep_mode();
+                }
+#endif
             }
             break;
             default:
@@ -201,9 +210,15 @@ void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t** ext_addresses, bool
     }
 #endif
 
-     Wire.begin(address);
+     Wire.begin(address, true);
      Wire.onReceive(i2c_receive_data);
      Wire.onRequest(i2c_request_event);
+
+#ifndef AUTO_DEEP_SLEEP_DISABLED
+     set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+     sleep_enable();
+#endif
+
 }
 
 uint8_t HugoTinyWireRead() {

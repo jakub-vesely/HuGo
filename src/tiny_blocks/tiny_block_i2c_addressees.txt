@@ -11,8 +11,9 @@ ID_BUTTON        0x0D
 ID_DISTANCE      0x0E
 ID_POSITION      0x0F
 ID_IR            0x10
-ID_METEO         0x11
+ID_AMBIENT       0x11
 ID_BLE           0x12
+ID_RJ12          0x13
 
 chassis motor rivers: 0x20 0x21
 

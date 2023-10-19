@@ -17,10 +17,10 @@ void HugoTinyWireFillModuleVersion();
 
 #define HUGO_TINY_ONE_EXTENSION
 
+#include <EEPROM.h>
+
 #include <hugo_tiny_wire.h>
 #include <hugo_defines.h>
-#include <avr/sleep.h>
-#include <EEPROM.h>
 
 #define EXT_ADDRESS_DEFAULT 0x76
 #define EXT_ADDRESS_SDO_HI  0x77
@@ -46,18 +46,18 @@ void setup(){
   //pinMode(XSHUT_PIN, OUTPUT);
   //digitalWrite(XSHUT_PIN, 1);
 
-  HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_METEO, (uint8_t**)ext_addresses);
+  HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_AMBIENT, (uint8_t**)ext_addresses);
 }
 
 void HugoTinyWireFillModuleVersion(){
-  s_buffer.data[0] = I2C_BLOCK_TYPE_ID_METEO;
+  s_buffer.data[0] = I2C_BLOCK_TYPE_ID_AMBIENT;
   s_buffer.data[1] = 0;
   s_buffer.data[2] = 0;
   s_buffer.size = 3;
 }
 
 void HugoTinyWirePowerSave(uint8_t level){
-    //TODO
+  //sleep procedures in tiny_wire
 }
 
 void loop() {

@@ -4,7 +4,7 @@
 #include <tiny_main_base.h>
 
 static uint8_t s_power_ina_address = 0;
-tiny_common_buffer_t* p_common_buffer = tiny_main_base_get_common_buffer();
+static tiny_common_buffer_t* p_common_buffer = tiny_main_base_get_common_buffer();
 
 #define I2C_COMMAND_POWER_GET_STATE 0x01
 

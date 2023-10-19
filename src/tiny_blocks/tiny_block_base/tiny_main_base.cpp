@@ -85,9 +85,16 @@ bool tiny_main_base_send_i2c_message(uint8_t address, uint8_t expected_response_
 }
 
 uint8_t tiny_main_base_get_ext_module_address(uint8_t address){
-  tiny_main_base_send_i2c_command(address, I2C_BLOCK_TYPE_ID_BASE, GET_EXT_ADDRESS_COMMAND, 1);
+  tiny_main_base_send_i2c_command(address, I2C_BLOCK_TYPE_ID_BASE, I2C_COMMAND_GET_EXT_ADDRESS, 1);
   if (s_common_buffer.size != 1){
     return 0;
   }
   return  s_common_buffer.data[0];
+}
+
+void tiny_main_base_set_power_save(uint8_t address, uint8_t mode){
+  s_common_buffer.data[0] = mode;
+  s_common_buffer.size = 1;
+  tiny_main_base_send_i2c_command(address, I2C_BLOCK_TYPE_ID_BASE, I2C_COMMAND_SET_POWER_SAVE, 0);
+
 }

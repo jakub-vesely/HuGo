@@ -3,7 +3,7 @@
 
 from basal.logging import Logging
 from blocks.power_block import PowerBlock
-from blocks.meteo_block import MeteoBlock
+from blocks.ambient_block import AmbientBlock
 from basal.remote_value import RemoteValue
 from basal.active_variable import ActiveVariable
 from basal.power_mgmt import PowerMgmt, PowerPlan, BlePowerPlan
@@ -12,12 +12,12 @@ class Plan():
     def __init__(self) -> None:
         self.logging = Logging("Plan")
 
-        self.meteo = MeteoBlock(measurement_period=120)
+        self.ambient = AmbientBlock(measurement_period=120)
         self.power = PowerBlock(measurement_period=120)
 
-        RemoteValue.add("test.meteo.temperature", self.meteo.temperature)
-        RemoteValue.add("test.meteo.pressure", self.meteo.pressure)
-        RemoteValue.add("test.meteo.humidity", self.meteo.humidity)
+        RemoteValue.add("test.ambient.temperature", self.ambient.temperature)
+        RemoteValue.add("test.ambient.pressure", self.ambient.pressure)
+        RemoteValue.add("test.ambient.humidity", self.ambient.humidity)
 
         RemoteValue.add("test.power.is_usb_connected", self.power.is_usb_connected)
         RemoteValue.add("test.power.is_charging", self.power.is_charging)

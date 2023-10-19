@@ -21,15 +21,15 @@ class Plan():
     self.quantities = []
 
     temperature = ActiveQuantity(Temperature("t", 3))
-    RemoteValue.add("test.meteo.temperature", temperature)
+    RemoteValue.add("test.ambient.temperature", temperature)
     self.quantities.append(temperature)
 
     pressure = ActiveQuantity(Pressure("P", 3))
-    RemoteValue.add("test.meteo.pressure", pressure)
+    RemoteValue.add("test.ambient.pressure", pressure)
     self.quantities.append(pressure)
 
     humidity = ActiveQuantity(RelativeHumidity("RH", 3))
-    RemoteValue.add("test.meteo.pressure", humidity)
+    RemoteValue.add("test.ambient.humidity", humidity)
     self.quantities.append(humidity)
 
     current = ActiveQuantity(Current("I", 3))

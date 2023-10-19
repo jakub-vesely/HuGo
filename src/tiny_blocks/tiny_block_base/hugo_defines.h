@@ -5,7 +5,22 @@
 #define EEPROM_I2C_ADDRESS_POS 0x01
 
 #define I2C_ADDRESS_NONE 0xFF
+#define I2C_ADDRESS_BROADCAST 0x00
 
+//RJ12
+#define I2C_COMMAND_RJ12_SET_PIN4_AS_IN     0x01
+#define I2C_COMMAND_RJ12_SET_PIN5_AS_IN     0x02
+#define I2C_COMMAND_RJ12_SET_PIN4_DIG_VAL   0x03
+#define I2C_COMMAND_RJ12_SET_PIN5_DIG_VAL   0x04
+
+#define I2C_COMMAND_RJ12_SET_PIN4_AS_OUT    0x05
+#define I2C_COMMAND_RJ12_SET_PIN5_AS_OUT    0x06
+#define I2C_COMMAND_RJ12_GET_PIN4_DIG_VALUE 0x07
+#define I2C_COMMAND_RJ12_GET_PIN5_DIG_VALUE 0x08
+#define I2C_COMMAND_RJ12_GET_PIN4_ANA_VALUE 0x09
+#define I2C_COMMAND_RJ12_GET_PIN5_ANA_VALUE 0x0a
+
+//common
 #define I2C_COMMAND_SET_POWER_SAVE          0xF6
 #define I2C_COMMAND_GET_MODULE_VERSION      0xF7
 #define I2C_COMMAND_ACTIVATE_EXTENSION      0xF8
@@ -27,9 +42,9 @@
 #define I2C_BLOCK_TYPE_ID_DISTANCE          0x0E
 #define I2C_BLOCK_TYPE_ID_MOTION_TRACKING   0x0F
 #define I2C_BLOCK_TYPE_ID_IR                0x10
-#define I2C_BLOCK_TYPE_ID_METEO             0x11
+#define I2C_BLOCK_TYPE_ID_AMBIENT           0x11
 #define I2C_BLOCK_TYPE_ID_BLE               0x12
-
+#define I2C_BLOCK_TYPE_ID_RJ12              0x13
 
 #define I2C_BLOCK_TYPE_ID_BASE          0xFA //different from CHANGE_I2C_ADDRESS command
 #define I2C_BLOCK_TYPE_ID_NONE          0xFF
@@ -39,6 +54,7 @@
 #define POWER_SAVE_DEEP     2
 
 #include <stdint.h>
+#include <tiny_main_base.h>
 
 //ble command resp up to 13 (1B size + 12B answer_data)
 //mesh_response up to 15 (1B size) + (2B sender + 12B mesh_data)
