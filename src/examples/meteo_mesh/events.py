@@ -9,6 +9,9 @@ from basal.remote_value import RemoteValue
 from quantities.temperature import Temperature
 from quantities.pressure import Pressure
 from quantities.humidity import RelativeHumidity
+from quantities.angle import Angle
+from quantities.speed import Speed
+from quantities.length import length
 from quantities.current import Current
 from quantities.voltage import Voltage
 from basal.active_variable import ActiveVariable
@@ -31,6 +34,18 @@ class Plan():
     humidity = ActiveQuantity(RelativeHumidity("RH", 3))
     RemoteValue.add("test.ambient.humidity", humidity)
     self.quantities.append(humidity)
+
+    wind_direction = ActiveQuantity(Angle("wd", 3))
+    RemoteValue.add("test.ambient.wind_direction", wind_direction)
+    self.quantities.append(wind_direction)
+
+    wind_speed = ActiveQuantity(Speed("wv", 3))
+    RemoteValue.add("test.ambient.wind_speed", wind_speed)
+    self.quantities.append(wind_speed)
+
+    rain_gauge = ActiveQuantity(length("rain", 3))
+    RemoteValue.add("test.ambient.rain_gauge", rain_gauge)
+    self.quantities.append(rain_gauge)
 
     current = ActiveQuantity(Current("I", 3))
     RemoteValue.add("test.power.battery_current", current)
