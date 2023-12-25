@@ -8645,11 +8645,11 @@ Commonly found on CAT3 devices and some Microchip programmers.
 <instance part="GND5" gate="1" x="60.96" y="27.94" smashed="yes">
 <attribute name="VALUE" x="58.42" y="25.4" size="1.778" layer="96"/>
 </instance>
-<instance part="K.R3" gate="G$1" x="72.39" y="5.08" smashed="yes" rot="R180">
-<attribute name="NAME" x="81.28" y="7.3914" size="1.778" layer="95" rot="R180"/>
-</instance>
-<instance part="K.R4" gate="G$1" x="72.39" y="7.62" smashed="yes" rot="R180">
+<instance part="K.R3" gate="G$1" x="72.39" y="7.62" smashed="yes" rot="R180">
 <attribute name="NAME" x="81.28" y="9.9314" size="1.778" layer="95" rot="R180"/>
+</instance>
+<instance part="K.R4" gate="G$1" x="72.39" y="5.08" smashed="yes" rot="R180">
+<attribute name="NAME" x="81.28" y="7.3914" size="1.778" layer="95" rot="R180"/>
 </instance>
 <instance part="K.R5" gate="G$1" x="72.39" y="2.54" smashed="yes" rot="R180">
 <attribute name="NAME" x="81.28" y="4.8514" size="1.778" layer="95" rot="R180"/>
@@ -8728,39 +8728,25 @@ Commonly found on CAT3 devices and some Microchip programmers.
 <pinref part="JP2" gate="A" pin="5"/>
 <wire x1="93.98" y1="45.72" x2="55.88" y2="45.72" width="0.1524" layer="91"/>
 <pinref part="K.R3" gate="G$1" pin="1"/>
-<wire x1="77.47" y1="5.08" x2="86.36" y2="5.08" width="0.1524" layer="91"/>
-<wire x1="86.36" y1="5.08" x2="93.98" y2="5.08" width="0.1524" layer="91"/>
-<wire x1="93.98" y1="5.08" x2="93.98" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="77.47" y1="7.62" x2="86.36" y2="7.62" width="0.1524" layer="91"/>
+<wire x1="86.36" y1="7.62" x2="93.98" y2="7.62" width="0.1524" layer="91"/>
+<wire x1="93.98" y1="7.62" x2="93.98" y2="45.72" width="0.1524" layer="91"/>
 <pinref part="K.R6" gate="G$1" pin="2"/>
-<wire x1="86.36" y1="11.43" x2="86.36" y2="5.08" width="0.1524" layer="91"/>
-<junction x="86.36" y="5.08"/>
+<wire x1="86.36" y1="11.43" x2="86.36" y2="7.62" width="0.1524" layer="91"/>
+<junction x="86.36" y="7.62"/>
 </segment>
 </net>
 <net name="N$3" class="0">
 <segment>
 <pinref part="JP2" gate="A" pin="4"/>
 <wire x1="91.44" y1="43.18" x2="55.88" y2="43.18" width="0.1524" layer="91"/>
-<wire x1="91.44" y1="43.18" x2="91.44" y2="7.62" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="43.18" x2="91.44" y2="5.08" width="0.1524" layer="91"/>
 <pinref part="K.R4" gate="G$1" pin="1"/>
 <pinref part="K.R2" gate="G$1" pin="2"/>
-<wire x1="77.47" y1="7.62" x2="83.82" y2="7.62" width="0.1524" layer="91"/>
-<wire x1="83.82" y1="7.62" x2="83.82" y2="11.43" width="0.1524" layer="91"/>
-<wire x1="91.44" y1="7.62" x2="83.82" y2="7.62" width="0.1524" layer="91"/>
-<junction x="83.82" y="7.62"/>
-</segment>
-</net>
-<net name="N$1" class="0">
-<segment>
-<pinref part="K.R4" gate="G$1" pin="2"/>
-<pinref part="J1" gate="G$1" pin="5"/>
-<wire x1="67.31" y1="7.62" x2="63.5" y2="7.62" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$6" class="0">
-<segment>
-<pinref part="K.R3" gate="G$1" pin="2"/>
-<pinref part="J1" gate="G$1" pin="4"/>
-<wire x1="67.31" y1="5.08" x2="63.5" y2="5.08" width="0.1524" layer="91"/>
+<wire x1="77.47" y1="5.08" x2="83.82" y2="5.08" width="0.1524" layer="91"/>
+<wire x1="83.82" y1="5.08" x2="83.82" y2="11.43" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="5.08" x2="83.82" y2="5.08" width="0.1524" layer="91"/>
+<junction x="83.82" y="5.08"/>
 </segment>
 </net>
 <net name="N$7" class="0">
@@ -8775,6 +8761,20 @@ Commonly found on CAT3 devices and some Microchip programmers.
 <pinref part="K.R1" gate="G$1" pin="2"/>
 <pinref part="J1" gate="G$1" pin="2"/>
 <wire x1="67.31" y1="0" x2="63.5" y2="0" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$1" class="0">
+<segment>
+<pinref part="K.R3" gate="G$1" pin="2"/>
+<pinref part="J1" gate="G$1" pin="5"/>
+<wire x1="67.31" y1="7.62" x2="63.5" y2="7.62" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$4" class="0">
+<segment>
+<pinref part="K.R4" gate="G$1" pin="2"/>
+<pinref part="J1" gate="G$1" pin="4"/>
+<wire x1="67.31" y1="5.08" x2="63.5" y2="5.08" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
