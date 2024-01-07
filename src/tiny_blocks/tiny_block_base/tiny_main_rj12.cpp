@@ -14,18 +14,18 @@ void tiny_main_rj12_set_pin_mode(uint8_t block_address, Rj12PinId pin, Rj12PinMo
             command = pin == Rj12PinId::pin4 ? I2C_COMMAND_RJ12_PIN4_SET_AS_OUT : I2C_COMMAND_RJ12_PIN5_SET_AS_OUT;
         break;
         case Rj12PinMode::interrupt_rising:
-            if (pin == Rj12PinId::pin5){
-                command = I2C_COMMAND_RJ12_PIN5_SET_AS_COUNTER_RISI;
+            if (pin == Rj12PinId::pin4){
+                command = I2C_COMMAND_RJ12_PIN4_SET_AS_COUNTER_RISI;
             }
         break;
         case Rj12PinMode::interrupt_falling:
-            if (pin == Rj12PinId::pin5){
-                command = I2C_COMMAND_RJ12_PIN5_SET_AS_COUNTER_FALL;
+            if (pin == Rj12PinId::pin4){
+                command = I2C_COMMAND_RJ12_PIN4_SET_AS_COUNTER_FALL;
             }
         break;
         case Rj12PinMode::interrupt_change:
-            if (pin == Rj12PinId::pin5){
-                command = I2C_COMMAND_RJ12_PIN5_SET_AS_COUNTER_CHNG;
+            if (pin == Rj12PinId::pin4){
+                command = I2C_COMMAND_RJ12_PIN4_SET_AS_COUNTER_CHNG;
             }
         break;
     }
@@ -69,11 +69,11 @@ uint16_t tiny_main_rj12_get_pin_value_analog(uint8_t block_address, Rj12PinId pi
     return -1;
 }
 
-uint16_t tiny_main_rj12_pin5_get_count_and_reset(uint8_t block_address){
+uint16_t tiny_main_rj12_pin4_get_count_and_reset(uint8_t block_address){
     bool ret_val = tiny_main_base_send_i2c_command(
         block_address,
         I2C_BLOCK_TYPE_ID_RJ12,
-        I2C_COMMAND_RJ12_PIN5_GET_COUNT_AND_RESET,
+        I2C_COMMAND_RJ12_PIN4_GET_COUNT_AND_RESET,
         2
     );
 
@@ -84,11 +84,11 @@ uint16_t tiny_main_rj12_pin5_get_count_and_reset(uint8_t block_address){
     return (p_common_buffer->data[1] << 8) + p_common_buffer->data[0];
 }
 
-bool tiny_main_rj12_pin5_get_timestamp_diffs(uint8_t block_address){
+bool tiny_main_rj12_pin4_get_timestamp_diffs(uint8_t block_address){
     bool ret_val = tiny_main_base_send_i2c_command(
         block_address,
         I2C_BLOCK_TYPE_ID_RJ12,
-        I2C_COMMAND_RJ12_PIN5_GET_LAST_TIMESTAMPS,
+        I2C_COMMAND_RJ12_PIN4_GET_LAST_TIMESTAMPS,
         8
     );
 
@@ -108,7 +108,7 @@ bool tiny_main_rj12_pin5_set_oscil_period_ms(uint8_t block_address, uint16_t per
     return tiny_main_base_send_i2c_command(
         block_address,
         I2C_BLOCK_TYPE_ID_RJ12,
-        I2C_COMMAND_RJ12_PIN5_SET_OSCIL_PERIOD_MS,
+        I2C_COMMAND_RJ12_PIN4_SET_OSCIL_PERIOD_MS,
         0
     );
 }

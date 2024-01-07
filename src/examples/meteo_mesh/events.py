@@ -16,12 +16,16 @@ from quantities.current import Current
 from quantities.voltage import Voltage
 from basal.active_variable import ActiveVariable
 from basal.active_quantity import ActiveQuantity
+from blocks.block_types import BlockTypes
+from basal.power_mgmt import PowerMgmt, PowerPlan
 
 class Plan():
   def __init__(self) -> None:
     self.logging = Logging("events")
     self.ble = BleBlock()
     self.quantities = []
+
+    PowerMgmt.set_plan(PowerPlan.get_max_performance_plan())
 
     temperature = ActiveQuantity(Temperature("t", 3))
     RemoteValue.add("test.ambient.temperature", temperature)
@@ -39,7 +43,7 @@ class Plan():
     RemoteValue.add("test.ambient.wind_direction", wind_direction)
     self.quantities.append(wind_direction)
 
-    wind_speed = ActiveQuantity(Speed("wv", 3))
+    wind_speed = ActiveQuantity(Speed("ws", 3))
     RemoteValue.add("test.ambient.wind_speed", wind_speed)
     self.quantities.append(wind_speed)
 
@@ -64,6 +68,11 @@ class Plan():
 
     RemoteValue.add("test.main.status", self.heartbeat)
 
+    #from blocks.rj12 import Rj12Block
+    #rj_block = Rj12Block(0x30)
+    #rj_block.change_block_address(0x30)
+    #self.logging.info(rj_block.is_available())
+
     #self.event = Planner.postpone(1, self.ble.sleep)
     #while True:
       #response = self.ble.read_at_command_response(0.1)
@@ -75,7 +84,7 @@ class Plan():
 
     #self.event = Planner.postpone(1, self.sleep)
     #self.event = Planner.repeat(0.5, self.read)
-    self.event = Planner.repeat(0.3, self.read_mesh)
+    self.event = Planner.repeat(0.05, self.read_mesh)
     #Planner.repeat(5, self.send_mesh)
     #Planner.postpone(1, self.write)
 

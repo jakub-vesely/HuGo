@@ -5,7 +5,6 @@ Clock Speed: 10MHz
 Programmer: jtag2updi (megaTinyCore)
 */
 
-//#include <avr/wdt.h>
 #include <avr/sleep.h>
 
 #include <stdint.h>
@@ -19,14 +18,15 @@ Programmer: jtag2updi (megaTinyCore)
 #include <tiny_main_rj12.h>
 
 #define MESH_MAIN_NODE_ID 0x04
+#define RJ12_RAIN_GAUGE 0x30
 
 #define disp_line_with 11
 #define disp_line_count 6
 static char disp_lines[disp_line_count][disp_line_with];
 
 // 0,   22,5  45,   67.5, 90, 112.5,  135,  157.5,  180,  202.5 225,  247.5,  270,  292.5,  315,  337.5
-// 33k, 6k8,  8k2,  820,  1k, 680,,   2k2,  1k5,    3k9,  3k3,  15k,  12k,    120k  42k,    68k   22k
-static uint16_t wind_vane_values[16] = {301, 259, 637, 607, 946, 831, 888, 707, 789, 417, 471, 100, 111, 84, 198, 143};
+// 22k, 33k, 6k8,  8k2,  820,  1k, 680,,   2k2,  1k5,    3k9,  3k3,  15k,  12k,    120k  42k,    68k
+static uint16_t wind_vane_values[16] = {143, 301, 259, 637, 607, 946, 831, 888, 707, 789, 417, 471, 100, 111, 84, 198};
 
 char line[disp_line_with];
 
@@ -205,7 +205,7 @@ void publish_value(char const * variable, char const* value, char const* unit, b
     add_to_common_buffer(unit);
   }
   publish_buffer(to_display);
-  delay(50);
+  delay(100);
 }
 
 void RTC_init(void)
@@ -240,10 +240,11 @@ void setup()
   delay(10);//it is necessary to wait a while to all blocks and its extensions are is started
   tiny_main_power_init();
   tiny_main_ambient_init();
+
   //tiny_main_display_init();
-  //display.clearDisplay();
-  //display.setTextSize(1);
-  //display.setTextColor(WHITE);
+  // display.clearDisplay();
+  // display.setTextSize(1);
+  // display.setTextColor(WHITE);
 
   //wdt_disable();
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
@@ -260,13 +261,11 @@ void setup()
   // send_and_receive_command("AT+MADDR0003");
   // delay(1000);
   // send_and_receive_command("AT+MCLSS0");
-  tiny_main_rj12_set_pin_mode(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin4, Rj12PinMode::input);
-  tiny_main_rj12_set_pin_mode(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin5, Rj12PinMode::interrupt_rising);
-  tiny_main_rj12_pin5_set_oscil_period_ms(I2C_BLOCK_TYPE_ID_RJ12, 100);
+  tiny_main_rj12_set_pin_mode(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin5, Rj12PinMode::input);
+  tiny_main_rj12_set_pin_mode(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin4, Rj12PinMode::interrupt_rising);
 
-  tiny_main_base_set_build_in_led(true);
-  delay(100);
-  tiny_main_base_set_build_in_led(false);
+  tiny_main_rj12_set_pin_mode(RJ12_RAIN_GAUGE, Rj12PinId::pin4, Rj12PinMode::interrupt_rising);
+  tiny_main_rj12_pin5_set_oscil_period_ms(RJ12_RAIN_GAUGE, 100);
 }
 
 uint8_t get_closest_wind_direction_index(uint16_t measured){
@@ -284,8 +283,13 @@ uint8_t get_closest_wind_direction_index(uint16_t measured){
 
 void loop()
 {
+  tiny_main_base_set_build_in_led(true);
+  delay(50);
+  tiny_main_base_set_build_in_led(false);
+
   //display.clearDisplay();
   //display.setCursor(0,0);
+
   char* str;
   charging_state_t charging_state = tiny_main_power_get_charging_state();
   heartbeat = !heartbeat;
@@ -319,27 +323,23 @@ void loop()
   publish_value("RH", str, "%");
 
   //................
-  uint16_t rj12_pin4 =  tiny_main_rj12_get_pin_value_analog(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin4);
-  str = fill_decimal_number(rj12_pin4, 0, 3);
-  //publish_value("p4", str, "");
+  uint16_t rj12_pin5 =  tiny_main_rj12_get_pin_value_analog(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin5);
+  str = fill_decimal_number(rj12_pin5, 0, 3);
 
-  uint8_t wind_vane_index = get_closest_wind_direction_index(rj12_pin4);
-  //str = fill_decimal_number(wind_vane_index, 0, 3);
-  //display.print("idx="); display.println(str);
-
+  uint8_t wind_vane_index = get_closest_wind_direction_index(rj12_pin5);
   uint16_t wind_vane_value = ((uint16_t)wind_vane_index * ((uint16_t)(360 * 10 / (uint16_t)16))) / 10;
   str = fill_decimal_number(wind_vane_value, 0, 0);
   //display.print("ang="); display.println(str);
   publish_value("wd", str, "deg");
 
 
-  //uint16_t rj12_pin5 =  tiny_main_rj12_get_pin_value_digital(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin5);
-  //str = fill_decimal_number(rj12_pin5, 0, 2);
-  //publish_value("p5", str, "");
+  // uint16_t rj12_pin5 =  tiny_main_rj12_get_pin_value_digital(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin5);
+  // str = fill_decimal_number(rj12_pin5, 0, 2);
+  // publish_value("p5", str, "");
 
-  if (tiny_main_rj12_pin5_get_timestamp_diffs(I2C_BLOCK_TYPE_ID_RJ12)){
+  if (tiny_main_rj12_pin4_get_timestamp_diffs(I2C_BLOCK_TYPE_ID_RJ12)){
     uint32_t* diff1 = (uint32_t*)buffer->data;
-    //uint32_t* diff2 = (uint32_t*)(buffer->data + 4);
+    uint32_t* diff2 = (uint32_t*)(buffer->data + 4);
 
     // str = fill_decimal_number(*diff1, 0, 0);
     // display.println(str);
@@ -347,33 +347,33 @@ void loop()
     // str = fill_decimal_number(*diff2, 0, 0);
     // display.println(str);
 
-    //1 switch closure/sec = 2.4 km/h = 0.6 m/sec
-    uint32_t km_h = (1000 * 2.4 * 100) / (*diff1); //1000 ms, 100 decimal shift
-
+    uint32_t km_h = 0;
+    if (*diff2 < 5 * 1000){ //value older than 5 sec doesn make sense
+      //1 switch closure/sec = 2.4 km/h = 0.6 m/sec
+      km_h = (1000 * 2.4 * 100) / (*diff1); //1000 ms, 100 decimal shift
+    }
     str = fill_decimal_number(km_h, 2, 3);
-    publish_value("wv", str, "km/h");
+    publish_value("ws", str, "km/h");
     //display.println(str);
   }
 
-  uint16_t count = tiny_main_rj12_pin5_get_count_and_reset(I2C_BLOCK_TYPE_ID_RJ12);
-  str = fill_decimal_number(count, 0, 0);
-  publish_value("rain", str, "mm");
-  //display.println(str);
+  uint16_t count = tiny_main_rj12_pin4_get_count_and_reset(RJ12_RAIN_GAUGE);
 
+  //1 impulse = 0.2794mm
+  uint16_t amount = 2794 * count;
+
+  str = fill_decimal_number(amount, 4, 3);
+  publish_value("rain", str, "m");
+
+  //display.println(str);
 
   tiny_main_base_set_power_save(I2C_ADDRESS_BROADCAST, POWER_SAVE_DEEP);
   //display.display();
   //delay(100);
 
 
-  for (uint8_t count = 0; count < 120; count++){
-    //delay(1000 * 2);
+  for (uint8_t count = 0; count < 180; count++){
     sleep_cpu();
   }
-  //delay(100);
-  //wdt_enable(WDT_PERIOD_8KCLK_gc);
-  //sleep_cpu();
-  //wdt_reset();
-  //wdt_disable();
   tiny_main_base_set_power_save(I2C_ADDRESS_BROADCAST, POWER_SAVE_NONE);
 }
