@@ -39,7 +39,7 @@ charging_state_t tiny_main_power_get_charging_state(){
 
   if (ret_val && p_common_buffer->size == 1){
     state.is_usb_connected = (p_common_buffer->data[0] >> 1) & 1;
-    state.is_charging = p_common_buffer->data[0] & 1;
+    state.is_charging = p_common_buffer->data[0] & 1 == 1 ? 0 : 1;
   }
   return state;
 }
