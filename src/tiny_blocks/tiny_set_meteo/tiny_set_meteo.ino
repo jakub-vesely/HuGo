@@ -29,6 +29,7 @@ static char disp_lines[disp_line_count][disp_line_with];
 static uint16_t wind_vane_values[16] = {143, 301, 259, 637, 607, 946, 831, 888, 707, 789, 417, 471, 100, 111, 84, 198};
 
 char line[disp_line_with];
+uint8_t multiplier = 3;
 
 tiny_common_buffer_t* buffer = tiny_main_base_get_common_buffer();
 
@@ -240,13 +241,13 @@ void setup()
   delay(10);//it is necessary to wait a while to all blocks and its extensions are is started
   tiny_main_power_init();
   tiny_main_ambient_init();
+  //tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_AMBIENT, POWER_SAVE_DEEP); //it is not needed any more
 
   //tiny_main_display_init();
   // display.clearDisplay();
   // display.setTextSize(1);
   // display.setTextColor(WHITE);
 
-  //wdt_disable();
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
   sleep_enable();
 
@@ -280,20 +281,9 @@ uint8_t get_closest_wind_direction_index(uint16_t measured){
   }
   return closest_index;
 }
-
-void loop()
-{
-  tiny_main_base_set_build_in_led(true);
-  delay(50);
-  tiny_main_base_set_build_in_led(false);
-
-  //display.clearDisplay();
-  //display.setCursor(0,0);
-
+void process_power(){
   char* str;
   charging_state_t charging_state = tiny_main_power_get_charging_state();
-  heartbeat = !heartbeat;
-  publish_value("heart", heartbeat ? "1" : "0" , "", false);
   publish_value("charg", charging_state.is_charging ? "1" : "0" , "", false);
   publish_value("usb", charging_state.is_usb_connected ? "1" : "0" , "", false);
   //display.print(heartbeat ? "* " : "+ ");
@@ -311,9 +301,25 @@ void loop()
   str = fill_decimal_number(current_uA, 3, 3);
   publish_value("I", str, "mA");
 
+  if (voltage_mV < 3400){
+    multiplier = 10;
+  }
+  else if (voltage_mV < 3500){
+    multiplier = 6;
+  }
+  else if (voltage_mV < 3700) {
+    multiplier = 4;
+  }
+  else {
+    multiplier = 3;
+  }
+  tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_POWER, POWER_SAVE_DEEP);
+}
+
+void process_bme(){
   measure_bme();
 
-  str = fill_decimal_number(bme.getTemperature(), 2, 3);
+  char* str = fill_decimal_number(bme.getTemperature(), 2, 3);
   publish_value("t", str, "'C");
 
   str = fill_decimal_number(bme.getPressure(), 2, 3);
@@ -321,10 +327,12 @@ void loop()
 
   str = fill_decimal_number(bme.getHumidity() * 100 / 1024, 2, 3);
   publish_value("RH", str, "%");
+  //tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_AMBIENT, POWER_SAVE_DEEP);
+}
 
-  //................
+void process_wind(){
   uint16_t rj12_pin5 =  tiny_main_rj12_get_pin_value_analog(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin5);
-  str = fill_decimal_number(rj12_pin5, 0, 3);
+  char* str = fill_decimal_number(rj12_pin5, 0, 3);
 
   uint8_t wind_vane_index = get_closest_wind_direction_index(rj12_pin5);
   uint16_t wind_vane_value = ((uint16_t)wind_vane_index * ((uint16_t)(360 * 10 / (uint16_t)16))) / 10;
@@ -355,25 +363,52 @@ void loop()
     str = fill_decimal_number(km_h, 2, 3);
     publish_value("ws", str, "km/h");
     //display.println(str);
+    tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_RJ12, POWER_SAVE_DEEP);
   }
+}
 
+void process_rain() {
   uint16_t count = tiny_main_rj12_pin4_get_count_and_reset(RJ12_RAIN_GAUGE);
 
   //1 impulse = 0.2794mm
   uint16_t amount = 2794 * count;
 
-  str = fill_decimal_number(amount, 4, 3);
-  publish_value("rain", str, "m");
+  char *str = fill_decimal_number(amount, 4, 3);
+  publish_value("rain", str, "mm");
 
   //display.println(str);
+  tiny_main_base_set_power_save(RJ12_RAIN_GAUGE, POWER_SAVE_DEEP);
+}
+
+void loop()
+{
+  tiny_main_base_set_build_in_led(true);
+  delay(20);
+  tiny_main_base_set_build_in_led(false);
+
+  //display.clearDisplay();
+  //display.setCursor(0,0);
+
+  heartbeat = !heartbeat;
+  publish_value("heart", heartbeat ? "1" : "0" , "", false);
+
+  process_power();
+  process_bme();
+  process_wind();
+  process_rain();
 
   tiny_main_base_set_power_save(I2C_ADDRESS_BROADCAST, POWER_SAVE_DEEP);
+  //tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_BLE, POWER_SAVE_DEEP);
   //display.display();
   //delay(100);
 
-
-  for (uint8_t count = 0; count < 180; count++){
-    sleep_cpu();
+  for (uint8_t count1 = 0; count1 < multiplier; count1++){
+    for (uint8_t count2 = 0; count2 < 60; count2++){
+      sleep_cpu();
+    }
   }
+  //tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_BLE, POWER_SAVE_NONE);
+  //tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_AMBIENT, POWER_SAVE_NONE);
+
   tiny_main_base_set_power_save(I2C_ADDRESS_BROADCAST, POWER_SAVE_NONE);
 }
