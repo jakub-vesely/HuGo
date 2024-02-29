@@ -4,6 +4,7 @@
 from basal.logging import Logging
 from basal.planner import Planner
 from blocks.ble_block import BleBlock
+from blocks.main_block import MainBlock
 from blocks.block_base import PowerSaveLevel
 from basal.remote_value import RemoteValue
 from quantities.temperature import Temperature
@@ -26,6 +27,11 @@ class Plan():
     self.quantities = []
 
     PowerMgmt.set_plan(PowerPlan.get_max_performance_plan())
+
+    mainBlock = MainBlock();
+
+    #reboot once a day to clean fragmented RAM
+    Planner.postpone(60 * 60 * 24, mainBlock.reboot)
 
     temperature = ActiveQuantity(Temperature("t", 3))
     RemoteValue.add("test.ambient.temperature", temperature)
