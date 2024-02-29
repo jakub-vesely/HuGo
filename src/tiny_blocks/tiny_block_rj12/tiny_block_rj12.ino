@@ -2,13 +2,16 @@
 BOARD: hugo_adapter + hugo_rj12
 Chip: ATtiny412
 Clock Speed: 1MHz
+Options: milis-disabled (probably not required)
 Programmer: jtag2updi (megaTinyCore)
 */
 
 void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
 void HugoTinyWireFillModuleVersion();
 
+#include <avr/sleep.h>
 #include <hugo_tiny_wire.h>
+#include <util/atomic.h>
 
 #define PCB_VERSION 1
 #define ADJUSTMENT_VERSION 1
@@ -16,20 +19,22 @@ void HugoTinyWireFillModuleVersion();
 #define RJ_PIN4 PIN_PA6
 #define RJ_PIN5 PIN_PA3
 
-uint32_t timestamps[2] = {0, 0};
-uint16_t oscillation_period_ms;
-volatile uint16_t counter = 0;
-bool reset_counter = false;
-void count_isr(){
-  uint32_t now = millis();
-  timestamps[0] = timestamps[1];
-  timestamps[1] = now;
+uint16_t oscillation_period_ms = 0;
 
-  if (now - timestamps[1] < oscillation_period_ms){
-    return; //reduce switch oscillations
+volatile uint32_t timestamps[2] = {0, 0};
+volatile uint16_t pin_counter;
+volatile uint32_t rtc_counter=0;
+volatile int8_t rtc_correction=0;
+
+void pin_counter_isr(){
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    if (rtc_counter > timestamps[1] && rtc_counter - timestamps[1] > oscillation_period_ms){
+      pin_counter++;
+
+      timestamps[0] = timestamps[1];
+      timestamps[1] = rtc_counter;
+    }
   }
-
-  counter++;
 }
 
 void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
@@ -81,55 +86,52 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
     case I2C_COMMAND_RJ12_PIN4_SET_AS_COUNTER_RISI:
       pinMode(RJ_PIN4, INPUT_PULLUP);
       noInterrupts();
-      attachInterrupt(digitalPinToInterrupt(RJ_PIN4), count_isr, RISING);
+      attachInterrupt(digitalPinToInterrupt(RJ_PIN4), pin_counter_isr, RISING);
       interrupts();
     break;
 
     case I2C_COMMAND_RJ12_PIN4_SET_AS_COUNTER_FALL:
       pinMode(RJ_PIN4, INPUT_PULLUP);
       noInterrupts();
-      attachInterrupt(digitalPinToInterrupt(RJ_PIN4), count_isr, FALLING);
+      attachInterrupt(digitalPinToInterrupt(RJ_PIN4), pin_counter_isr, FALLING);
       interrupts();
     break;
 
     case I2C_COMMAND_RJ12_PIN4_SET_AS_COUNTER_CHNG:
       pinMode(RJ_PIN4, INPUT_PULLUP);
       noInterrupts();
-      attachInterrupt(digitalPinToInterrupt(RJ_PIN4), count_isr, CHANGE);
+      attachInterrupt(digitalPinToInterrupt(RJ_PIN4), pin_counter_isr, CHANGE);
       interrupts();
     break;
 
     case I2C_COMMAND_RJ12_PIN4_SET_OSCIL_PERIOD_MS:
       oscillation_period_ms = HugoTinyWireRead();
-      oscillation_period_ms += s_buffer.data[1] << 8;
+      oscillation_period_ms += HugoTinyWireRead() << 8;
     break;
 
     case I2C_COMMAND_RJ12_PIN4_GET_COUNT_AND_RESET:
-      noInterrupts();
-      s_buffer.data[0] = counter & 0xff;
-      s_buffer.data[1] = counter >> 8;
-      s_buffer.size = 2;
-      reset_counter = true;
-      interrupts();
+      ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        s_buffer.data[0] = (pin_counter & 0xff);
+        s_buffer.data[1] = (pin_counter >> 8);
+        s_buffer.size = 2;
+        pin_counter = 0;
+      }
     break;
     case I2C_COMMAND_RJ12_PIN4_GET_LAST_TIMESTAMPS:{
-      uint32_t now = millis();
-      noInterrupts();
-
+      noInterrupts(); //ATOMIC_BLOCK can't be used here due to initialization of variables
       uint32_t diff1 = timestamps[1] - timestamps[0];
-      uint32_t diff2 = now - timestamps[1] ;
+      uint32_t diff2 = rtc_counter - timestamps[1] ;
+      interrupts();
 
       s_buffer.data[0] = diff1 & 0xff;
-      s_buffer.data[1] = diff1 >> 8 & 0xff;
-      s_buffer.data[2] = diff1 >> 16 & 0xff;
-      s_buffer.data[3] = diff1 >> 24 & 0xff;
+      s_buffer.data[1] = (diff1 >> 8) & 0xff;
+      s_buffer.data[2] = (diff1 >> 16) & 0xff;
+      s_buffer.data[3] = (diff1 >> 24) & 0xff;
 
       s_buffer.data[4] = diff2 & 0xff;
-      s_buffer.data[5] = diff2 >> 8 & 0xff;
-      s_buffer.data[6] = diff2 >> 16 & 0xff;
-      s_buffer.data[7] = diff2 >> 24 & 0xff;
-
-      interrupts();
+      s_buffer.data[5] = (diff2 >> 8) & 0xff;
+      s_buffer.data[6] = (diff2 >> 16) & 0xff;
+      s_buffer.data[7] = (diff2 >> 24) & 0xff;
 
       s_buffer.size = 8;
     }
@@ -147,8 +149,37 @@ void HugoTinyWireFillModuleVersion(){
 void HugoTinyWirePowerSave(uint8_t level){
 }
 
+void RTC_init(void)
+{
+  /* Initialize RTC: */
+  while (RTC.STATUS > 0)
+  {
+    ;                                   /* Wait for all register to be synchronized */
+  }
+  RTC.CLKSEL = RTC_CLKSEL_INT32K_gc;    /* 32.768kHz Internal Ultra-Low-Power Oscillator (OSCULP32K) */
+
+  RTC.PITINTCTRL = RTC_PI_bm;           /* PIT Interrupt: enabled */
+
+  RTC.PITCTRLA = RTC_PERIOD_CYC512_gc | /* in 512/32.768kHz = 0.015625 ms */
+  RTC_PITEN_bm;                        /* Enable PIT counter: enabled */
+}
+
+ISR(RTC_PIT_vect)
+{
+  RTC.PITINTFLAGS = RTC_PI_bm;          /* Clear interrupt flag by writing '1' (required) */
+  rtc_counter += 15; //one interrupt each 0.015625 sec
+  rtc_correction += 1;
+  if (rtc_correction == 8){ //0.625 * 8 = 5
+    rtc_correction = 0;
+    rtc_counter += 5;
+  }
+}
+
 void setup()
 {
+  RTC_init();
+
+  pin_counter = 0;
   pinMode(RJ_PIN4, INPUT);
   pinMode(RJ_PIN5, INPUT);
 
@@ -159,13 +190,5 @@ void setup()
 
 void loop()
 {
-  //WORKAROUND: it seems it is not possible to reset couter directly
-  //it is necessary to do it in my loop with a delay
-  noInterrupts();
-  if (reset_counter){
-    counter = 0;
-    reset_counter = false;
-  }
-  interrupts();
-  delay(10);
+  sleep_cpu();
 }

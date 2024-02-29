@@ -370,8 +370,6 @@ void process_wind(){
     }
     str = fill_decimal_number(km_h, 2, 3);
     publish_value("ws", str, "km/h");
-    //display.println(str);
-    tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_RJ12, POWER_SAVE_DEEP);
   }
 }
 
@@ -383,9 +381,6 @@ void process_rain() {
 
   char *str = fill_decimal_number(amount, 4, 3);
   publish_value("rain", str, "mm");
-
-  //display.println(str);
-  tiny_main_base_set_power_save(RJ12_RAIN_GAUGE, POWER_SAVE_DEEP);
 }
 
 void loop()
@@ -407,7 +402,7 @@ void loop()
   process_wind();
   process_rain();
 
-  tiny_main_base_set_power_save(I2C_ADDRESS_BROADCAST, POWER_SAVE_DEEP);
+  //tiny_main_base_set_power_save(I2C_ADDRESS_BROADCAST, POWER_SAVE_DEEP);
   //tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_BLE, POWER_SAVE_DEEP);
 #ifdef USE_DISPLAY
   display.display();
@@ -419,6 +414,7 @@ void loop()
       sleep_cpu();
     }
   }
+
   //tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_BLE, POWER_SAVE_NONE);
   //tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_AMBIENT, POWER_SAVE_NONE);
 

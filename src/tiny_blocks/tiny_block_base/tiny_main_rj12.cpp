@@ -29,6 +29,7 @@ void tiny_main_rj12_set_pin_mode(uint8_t block_address, Rj12PinId pin, Rj12PinMo
             }
         break;
     }
+    p_common_buffer->size = 0;
     tiny_main_base_send_i2c_command(block_address, I2C_BLOCK_TYPE_ID_RJ12, command, 0);
 }
 
@@ -44,6 +45,7 @@ void tiny_main_rj12_set_pin_value(uint8_t block_address, Rj12PinId pin, bool val
 }
 
 bool tiny_main_rj12_get_pin_value_digital(uint8_t block_address, Rj12PinId pin){
+    p_common_buffer->size = 0;
     bool ret_val = tiny_main_base_send_i2c_command(
         block_address,
         I2C_BLOCK_TYPE_ID_RJ12,
@@ -57,6 +59,7 @@ bool tiny_main_rj12_get_pin_value_digital(uint8_t block_address, Rj12PinId pin){
 }
 
 uint16_t tiny_main_rj12_get_pin_value_analog(uint8_t block_address, Rj12PinId pin){
+    p_common_buffer->size = 0;
     bool ret_val = tiny_main_base_send_i2c_command(
         block_address,
         I2C_BLOCK_TYPE_ID_RJ12,
@@ -70,6 +73,7 @@ uint16_t tiny_main_rj12_get_pin_value_analog(uint8_t block_address, Rj12PinId pi
 }
 
 uint16_t tiny_main_rj12_pin4_get_count_and_reset(uint8_t block_address){
+    p_common_buffer->size = 0;
     bool ret_val = tiny_main_base_send_i2c_command(
         block_address,
         I2C_BLOCK_TYPE_ID_RJ12,
@@ -85,6 +89,7 @@ uint16_t tiny_main_rj12_pin4_get_count_and_reset(uint8_t block_address){
 }
 
 bool tiny_main_rj12_pin4_get_timestamp_diffs(uint8_t block_address){
+    p_common_buffer->size = 0;
     bool ret_val = tiny_main_base_send_i2c_command(
         block_address,
         I2C_BLOCK_TYPE_ID_RJ12,
