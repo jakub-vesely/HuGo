@@ -11,11 +11,15 @@ Programmer: jtag2updi (megaTinyCore)
 #include <Arduino.h>
 #include <hugo_defines.h>
 #include <tiny_main_base.h>
-//#include <tiny_main_display.h>
 #include <tiny_main_ambient.h>
 #include <tiny_main_ble.h>
 #include <tiny_main_power.h>
 #include <tiny_main_rj12.h>
+
+//#define USE_DISPLAY
+#ifdef USE_DISPLAY
+# include <tiny_main_display.h>
+#endif
 
 #define MESH_MAIN_NODE_ID 0x04
 #define RJ12_RAIN_GAUGE 0x30
@@ -186,9 +190,11 @@ void add_to_common_buffer(char const* text){
 }
 
 void publish_buffer(bool to_display){
-  // if (to_display){
-  //   display.println((char*)buffer->data);
-  // }
+#ifdef USE_DISPLAY
+  if (to_display){
+    display.println((char*)buffer->data);
+  }
+#endif
 
   tiny_main_ble_mesh_message.size = min(buffer->size, MAIN_BLE_MESH_BUFFER_SIZE);
   memcpy(tiny_main_ble_mesh_message.data, buffer->data, tiny_main_ble_mesh_message.size);
@@ -243,10 +249,12 @@ void setup()
   tiny_main_ambient_init();
   //tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_AMBIENT, POWER_SAVE_DEEP); //it is not needed any more
 
-  //tiny_main_display_init();
-  // display.clearDisplay();
-  // display.setTextSize(1);
-  // display.setTextColor(WHITE);
+#ifdef USE_DISPLAY
+  tiny_main_display_init();
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+#endif
 
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
   sleep_enable();
@@ -386,8 +394,10 @@ void loop()
   delay(20);
   tiny_main_base_set_build_in_led(false);
 
-  //display.clearDisplay();
-  //display.setCursor(0,0);
+#ifdef USE_DISPLAY
+  display.clearDisplay();
+  display.setCursor(0,0);
+#endif
 
   heartbeat = !heartbeat;
   publish_value("heart", heartbeat ? "1" : "0" , "", false);
@@ -399,8 +409,10 @@ void loop()
 
   tiny_main_base_set_power_save(I2C_ADDRESS_BROADCAST, POWER_SAVE_DEEP);
   //tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_BLE, POWER_SAVE_DEEP);
-  //display.display();
-  //delay(100);
+#ifdef USE_DISPLAY
+  display.display();
+  delay(200);
+#endif
 
   for (uint8_t count1 = 0; count1 < multiplier; count1++){
     for (uint8_t count2 = 0; count2 < 60; count2++){
