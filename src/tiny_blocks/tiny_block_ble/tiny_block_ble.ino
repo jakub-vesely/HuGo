@@ -26,6 +26,6 @@ void loop()
   ble_main();
 
   if (s_flags.sleep_me && s_flags.expected_resp_count == 0){
-    sleep_mode();
+    sleep_cpu();
   }
 }
