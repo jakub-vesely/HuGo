@@ -199,11 +199,13 @@ class Ble():
             started = True
             self.logger.info("Program Started")
             self.logger.debug("Remote values request")
-            await self._command(CommandId.remote_val_get_all, b"", True)
+
+            # when the device has just been started it doestn contain any real values
+            # all active variables contains default values that should not be extended
+            #await self._command(CommandId.remote_val_get_all, b"", True)
 
         except Exception:
           pass
-
 
   def monitor(self):
     try:
