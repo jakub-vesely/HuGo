@@ -174,7 +174,7 @@ static void i2c_receive_data(int count) {
 
 #ifndef AUTO_DEEP_SLEEP_DISABLED
                 if (level == POWER_SAVE_DEEP){
-                    sleep_mode();
+                    sleep_cpu();
                 }
 #endif
             }
