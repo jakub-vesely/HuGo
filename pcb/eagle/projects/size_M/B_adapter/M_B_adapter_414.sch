@@ -11495,25 +11495,28 @@ Source: www.kingbright.com</description>
 <part name="B.J2" library="pinhead2" deviceset="PINHD-1X6" device="" package3d_urn="urn:adsk.eagle:package:22472/2"/>
 <part name="B.J3" library="pinhead2" deviceset="PINHD-2X2" device="" package3d_urn="urn:adsk.eagle:package:22455/2"/>
 <part name="B.J4" library="pinhead2" deviceset="PINHD-2X2" device="" package3d_urn="urn:adsk.eagle:package:22455/2"/>
-<part name="B.C1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="100n"/>
+<part name="B.C11" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="100n"/>
 <part name="B.J1" library="pinhead2" deviceset="PINHD-1X5" device="" package3d_urn="urn:adsk.eagle:package:22469/2"/>
 <part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="B.U1" library="atmel" deviceset="ATTINY*14" device="-SSN" technology="4" value="AT414"/>
-<part name="B.R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="alt RX 0R"/>
-<part name="B.R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="alt TX 0R"/>
-<part name="B.T1" library="hugo" deviceset="N-MOSFET" device="" value="NX3008"/>
-<part name="B.R6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="100k"/>
+<part name="B.U11" library="atmel" deviceset="ATTINY*14" device="-SSN" technology="4" value="AT414"/>
+<part name="B.R13" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="alt RX 0R"/>
+<part name="B.R14" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="alt TX 0R"/>
+<part name="B.T11" library="hugo" deviceset="N-MOSFET" device="" value="NX3008"/>
+<part name="B.R16" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="100k"/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="B.R7" library="hugo" deviceset="FUSE" device="" value="alt fuse or 0R"/>
-<part name="B.R5" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="1k"/>
-<part name="B.D1" library="led" deviceset="LED" device="CHIP-LED0603" package3d_urn="urn:adsk.eagle:package:15819/3"/>
-<part name="B.R1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="2k2"/>
-<part name="B.R2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="2k2"/>
+<part name="B.R17" library="hugo" deviceset="FUSE" device="" value="alt fuse or 0R"/>
+<part name="B.R15" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="1k"/>
+<part name="B.D11" library="led" deviceset="LED" device="CHIP-LED0603" package3d_urn="urn:adsk.eagle:package:15819/3"/>
+<part name="B.R11" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="2k2"/>
+<part name="B.R12" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="2k2"/>
 <part name="+3V3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
+<part name="B.C12" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="100n"/>
+<part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="+3V4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -11540,7 +11543,7 @@ is used as I2C master</text>
 <attribute name="NAME" x="143.51" y="81.915" size="1.778" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="143.51" y="71.12" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="B.C1" gate="G$1" x="203.2" y="-5.08" smashed="yes">
+<instance part="B.C11" gate="G$1" x="203.2" y="-5.08" smashed="yes">
 <attribute name="NAME" x="204.724" y="-4.699" size="1.778" layer="95"/>
 <attribute name="VALUE" x="204.724" y="-9.779" size="1.778" layer="96"/>
 </instance>
@@ -11560,23 +11563,23 @@ is used as I2C master</text>
 <instance part="GND3" gate="1" x="104.14" y="60.96" smashed="yes">
 <attribute name="VALUE" x="101.6" y="58.42" size="1.778" layer="96"/>
 </instance>
-<instance part="B.U1" gate="G$1" x="111.76" y="27.94" smashed="yes">
+<instance part="B.U11" gate="G$1" x="111.76" y="27.94" smashed="yes">
 <attribute name="VALUE" x="71.12" y="12.192" size="1.778" layer="96" align="top-left"/>
 <attribute name="NAME" x="71.12" y="43.688" size="1.778" layer="95"/>
 </instance>
-<instance part="B.R3" gate="G$1" x="60.96" y="27.94" smashed="yes">
+<instance part="B.R13" gate="G$1" x="60.96" y="27.94" smashed="yes">
 <attribute name="NAME" x="57.15" y="29.4386" size="1.778" layer="95"/>
 <attribute name="VALUE" x="57.15" y="24.638" size="1.778" layer="96"/>
 </instance>
-<instance part="B.R4" gate="G$1" x="58.42" y="35.56" smashed="yes">
+<instance part="B.R14" gate="G$1" x="58.42" y="35.56" smashed="yes">
 <attribute name="NAME" x="54.61" y="37.0586" size="1.778" layer="95"/>
 <attribute name="VALUE" x="54.61" y="32.258" size="1.778" layer="96"/>
 </instance>
-<instance part="B.T1" gate="G$1" x="203.2" y="12.7" smashed="yes" rot="MR180">
+<instance part="B.T11" gate="G$1" x="203.2" y="12.7" smashed="yes" rot="MR180">
 <attribute name="NAME" x="209.55" y="12.7" size="1.778" layer="95" rot="MR270"/>
 <attribute name="VALUE" x="207.01" y="15.24" size="1.778" layer="96" rot="MR270"/>
 </instance>
-<instance part="B.R6" gate="G$1" x="190.5" y="0" smashed="yes" rot="R270">
+<instance part="B.R16" gate="G$1" x="190.5" y="0" smashed="yes" rot="R270">
 <attribute name="NAME" x="191.9986" y="3.81" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="187.198" y="3.81" size="1.778" layer="96" rot="R270"/>
 </instance>
@@ -11586,28 +11589,38 @@ is used as I2C master</text>
 <instance part="+3V1" gate="G$1" x="203.2" y="27.94" smashed="yes">
 <attribute name="VALUE" x="205.74" y="27.94" size="1.778" layer="96"/>
 </instance>
-<instance part="B.R7" gate="G$1" x="226.06" y="12.7" smashed="yes" rot="R90">
+<instance part="B.R17" gate="G$1" x="226.06" y="12.7" smashed="yes" rot="R90">
 <attribute name="NAME" x="224.5614" y="8.89" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="229.362" y="8.89" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="B.R5" gate="G$1" x="167.64" y="-20.32" smashed="yes" rot="R180">
+<instance part="B.R15" gate="G$1" x="167.64" y="-20.32" smashed="yes" rot="R180">
 <attribute name="NAME" x="171.45" y="-21.8186" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="171.45" y="-17.018" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="B.D1" gate="G$1" x="180.34" y="-20.32" smashed="yes" rot="R90">
+<instance part="B.D11" gate="G$1" x="180.34" y="-20.32" smashed="yes" rot="R90">
 <attribute name="NAME" x="184.912" y="-16.764" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="184.912" y="-14.605" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="B.R1" gate="G$1" x="35.56" y="22.86" smashed="yes" rot="R90">
+<instance part="B.R11" gate="G$1" x="35.56" y="22.86" smashed="yes" rot="R90">
 <attribute name="NAME" x="34.0614" y="19.05" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="38.862" y="19.05" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="B.R2" gate="G$1" x="43.18" y="22.86" smashed="yes" rot="R90">
+<instance part="B.R12" gate="G$1" x="43.18" y="22.86" smashed="yes" rot="R90">
 <attribute name="NAME" x="41.6814" y="19.05" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="46.482" y="19.05" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="+3V3" gate="G$1" x="43.18" y="38.1" smashed="yes">
 <attribute name="VALUE" x="45.72" y="38.1" size="1.778" layer="96"/>
+</instance>
+<instance part="B.C12" gate="G$1" x="66.04" y="71.12" smashed="yes">
+<attribute name="NAME" x="67.564" y="71.501" size="1.778" layer="95"/>
+<attribute name="VALUE" x="67.564" y="66.421" size="1.778" layer="96"/>
+</instance>
+<instance part="GND5" gate="1" x="66.04" y="58.42" smashed="yes">
+<attribute name="VALUE" x="63.5" y="55.88" size="1.778" layer="96"/>
+</instance>
+<instance part="+3V4" gate="G$1" x="66.04" y="83.82" smashed="yes">
+<attribute name="VALUE" x="68.58" y="83.82" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -11633,7 +11646,7 @@ is used as I2C master</text>
 <wire x1="139.7" y1="78.74" x2="144.78" y2="78.74" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="B.C1" gate="G$1" pin="2"/>
+<pinref part="B.C11" gate="G$1" pin="2"/>
 <pinref part="B.J1" gate="A" pin="4"/>
 <wire x1="203.2" y1="-10.16" x2="213.36" y2="-10.16" width="0.1524" layer="91"/>
 <wire x1="213.36" y1="-10.16" x2="223.52" y2="-10.16" width="0.1524" layer="91"/>
@@ -11643,13 +11656,18 @@ is used as I2C master</text>
 <label x="205.74" y="-10.16" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="B.D1" gate="G$1" pin="C"/>
-<pinref part="B.R6" gate="G$1" pin="2"/>
+<pinref part="B.D11" gate="G$1" pin="C"/>
+<pinref part="B.R16" gate="G$1" pin="2"/>
 <wire x1="190.5" y1="-5.08" x2="190.5" y2="-20.32" width="0.1524" layer="91"/>
 <pinref part="GND4" gate="1" pin="GND"/>
 <wire x1="190.5" y1="-20.32" x2="190.5" y2="-27.94" width="0.1524" layer="91"/>
 <wire x1="185.42" y1="-20.32" x2="190.5" y2="-20.32" width="0.1524" layer="91"/>
 <junction x="190.5" y="-20.32"/>
+</segment>
+<segment>
+<pinref part="B.C12" gate="G$1" pin="2"/>
+<pinref part="GND5" gate="1" pin="GND"/>
+<wire x1="66.04" y1="66.04" x2="66.04" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="SDA" class="0">
@@ -11663,7 +11681,7 @@ is used as I2C master</text>
 <wire x1="127" y1="68.58" x2="127" y2="78.74" width="0.1524" layer="91"/>
 <wire x1="127" y1="78.74" x2="132.08" y2="78.74" width="0.1524" layer="91"/>
 <junction x="127" y="68.58"/>
-<pinref part="B.U1" gate="G$1" pin="(LUT0-IN1/MOSI/AIN1/BREAK)PA1"/>
+<pinref part="B.U11" gate="G$1" pin="(LUT0-IN1/MOSI/AIN1/BREAK)PA1"/>
 <wire x1="157.48" y1="25.4" x2="170.18" y2="25.4" width="0.1524" layer="91"/>
 <wire x1="170.18" y1="25.4" x2="170.18" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="170.18" y1="60.96" x2="127" y2="60.96" width="0.1524" layer="91"/>
@@ -11671,7 +11689,7 @@ is used as I2C master</text>
 <wire x1="35.56" y1="0" x2="170.18" y2="0" width="0.1524" layer="91"/>
 <wire x1="170.18" y1="0" x2="170.18" y2="25.4" width="0.1524" layer="91"/>
 <junction x="170.18" y="25.4"/>
-<pinref part="B.R1" gate="G$1" pin="1"/>
+<pinref part="B.R11" gate="G$1" pin="1"/>
 <wire x1="35.56" y1="17.78" x2="35.56" y2="0" width="0.1524" layer="91"/>
 <junction x="35.56" y="0"/>
 </segment>
@@ -11688,7 +11706,7 @@ is used as I2C master</text>
 <wire x1="106.68" y1="71.12" x2="106.68" y2="63.5" width="0.1524" layer="91"/>
 <wire x1="106.68" y1="63.5" x2="144.78" y2="63.5" width="0.1524" layer="91"/>
 <junction x="144.78" y="63.5"/>
-<pinref part="B.U1" gate="G$1" pin="(LUT0-IN2/MISO/AIN2/EVOUT0)PA2"/>
+<pinref part="B.U11" gate="G$1" pin="(LUT0-IN2/MISO/AIN2/EVOUT0)PA2"/>
 <wire x1="157.48" y1="27.94" x2="172.72" y2="27.94" width="0.1524" layer="91"/>
 <wire x1="172.72" y1="27.94" x2="172.72" y2="63.5" width="0.1524" layer="91"/>
 <wire x1="172.72" y1="63.5" x2="144.78" y2="63.5" width="0.1524" layer="91"/>
@@ -11696,7 +11714,7 @@ is used as I2C master</text>
 <wire x1="43.18" y1="-2.54" x2="172.72" y2="-2.54" width="0.1524" layer="91"/>
 <wire x1="172.72" y1="-2.54" x2="172.72" y2="27.94" width="0.1524" layer="91"/>
 <junction x="172.72" y="27.94"/>
-<pinref part="B.R2" gate="G$1" pin="1"/>
+<pinref part="B.R12" gate="G$1" pin="1"/>
 <wire x1="43.18" y1="17.78" x2="43.18" y2="-2.54" width="0.1524" layer="91"/>
 <junction x="43.18" y="-2.54"/>
 </segment>
@@ -11705,7 +11723,7 @@ is used as I2C master</text>
 <segment>
 <pinref part="B.J1" gate="A" pin="5"/>
 <label x="205.74" y="-12.7" size="1.778" layer="95"/>
-<pinref part="B.U1" gate="G$1" pin="PA0(!RESET!/UPDI/AIN0/LUT0-IN0)"/>
+<pinref part="B.U11" gate="G$1" pin="PA0(!RESET!/UPDI/AIN0/LUT0-IN0)"/>
 <wire x1="177.8" y1="-12.7" x2="223.52" y2="-12.7" width="0.1524" layer="91"/>
 <wire x1="66.04" y1="40.64" x2="66.04" y2="48.26" width="0.1524" layer="91"/>
 <wire x1="66.04" y1="48.26" x2="177.8" y2="48.26" width="0.1524" layer="91"/>
@@ -11717,7 +11735,7 @@ is used as I2C master</text>
 <pinref part="B.J2" gate="A" pin="5"/>
 <wire x1="22.86" y1="7.62" x2="160.02" y2="7.62" width="0.1524" layer="91"/>
 <label x="40.64" y="7.62" size="1.778" layer="95"/>
-<pinref part="B.U1" gate="G$1" pin="(TCA0WO3/SCK/AIN3/EXTCLK)PA3"/>
+<pinref part="B.U11" gate="G$1" pin="(TCA0WO3/SCK/AIN3/EXTCLK)PA3"/>
 <wire x1="157.48" y1="30.48" x2="160.02" y2="30.48" width="0.1524" layer="91"/>
 <wire x1="160.02" y1="7.62" x2="160.02" y2="30.48" width="0.1524" layer="91"/>
 </segment>
@@ -11726,25 +11744,25 @@ is used as I2C master</text>
 <segment>
 <pinref part="B.J2" gate="A" pin="4"/>
 <label x="40.64" y="5.08" size="1.778" layer="95"/>
-<pinref part="B.U1" gate="G$1" pin="(DAC0OUT/AINN0/AIN6)PA6"/>
+<pinref part="B.U11" gate="G$1" pin="(DAC0OUT/AINN0/AIN6)PA6"/>
 <wire x1="157.48" y1="38.1" x2="165.1" y2="38.1" width="0.1524" layer="91"/>
 <wire x1="165.1" y1="38.1" x2="165.1" y2="5.08" width="0.1524" layer="91"/>
 <wire x1="165.1" y1="5.08" x2="55.88" y2="5.08" width="0.1524" layer="91"/>
 <wire x1="55.88" y1="5.08" x2="22.86" y2="5.08" width="0.1524" layer="91"/>
 <junction x="55.88" y="5.08"/>
 <wire x1="55.88" y1="5.08" x2="55.88" y2="27.94" width="0.1524" layer="91"/>
-<pinref part="B.R3" gate="G$1" pin="1"/>
+<pinref part="B.R13" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="PA7" class="0">
 <segment>
 <pinref part="B.J2" gate="A" pin="3"/>
 <label x="40.64" y="2.54" size="1.778" layer="95"/>
-<pinref part="B.U1" gate="G$1" pin="(LUT1-OUT/AINP0/AIN7)PA7"/>
+<pinref part="B.U11" gate="G$1" pin="(LUT1-OUT/AINP0/AIN7)PA7"/>
 <wire x1="157.48" y1="40.64" x2="167.64" y2="40.64" width="0.1524" layer="91"/>
 <wire x1="167.64" y1="40.64" x2="167.64" y2="2.54" width="0.1524" layer="91"/>
 <wire x1="167.64" y1="2.54" x2="53.34" y2="2.54" width="0.1524" layer="91"/>
-<pinref part="B.R4" gate="G$1" pin="1"/>
+<pinref part="B.R14" gate="G$1" pin="1"/>
 <wire x1="53.34" y1="2.54" x2="22.86" y2="2.54" width="0.1524" layer="91"/>
 <wire x1="53.34" y1="35.56" x2="53.34" y2="2.54" width="0.1524" layer="91"/>
 <junction x="53.34" y="2.54"/>
@@ -11764,32 +11782,37 @@ is used as I2C master</text>
 </segment>
 <segment>
 <pinref part="+3V1" gate="G$1" pin="+3V3"/>
-<pinref part="B.T1" gate="G$1" pin="D"/>
+<pinref part="B.T11" gate="G$1" pin="D"/>
 <wire x1="203.2" y1="25.4" x2="203.2" y2="20.32" width="0.1524" layer="91"/>
 <label x="203.2" y="22.86" size="1.778" layer="95"/>
 <wire x1="203.2" y1="20.32" x2="203.2" y2="17.78" width="0.1524" layer="91"/>
 <wire x1="226.06" y1="20.32" x2="203.2" y2="20.32" width="0.1524" layer="91"/>
 <junction x="203.2" y="20.32"/>
-<pinref part="B.R7" gate="G$1" pin="2"/>
+<pinref part="B.R17" gate="G$1" pin="2"/>
 <wire x1="226.06" y1="16.51" x2="226.06" y2="20.32" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="B.R1" gate="G$1" pin="2"/>
+<pinref part="B.R11" gate="G$1" pin="2"/>
 <wire x1="35.56" y1="27.94" x2="35.56" y2="30.48" width="0.1524" layer="91"/>
 <wire x1="35.56" y1="30.48" x2="43.18" y2="30.48" width="0.1524" layer="91"/>
-<pinref part="B.R2" gate="G$1" pin="2"/>
+<pinref part="B.R12" gate="G$1" pin="2"/>
 <wire x1="43.18" y1="30.48" x2="43.18" y2="27.94" width="0.1524" layer="91"/>
 <pinref part="+3V3" gate="G$1" pin="+3V3"/>
 <wire x1="43.18" y1="35.56" x2="43.18" y2="30.48" width="0.1524" layer="91"/>
 <junction x="43.18" y="30.48"/>
 <label x="43.18" y="33.02" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="B.C12" gate="G$1" pin="1"/>
+<pinref part="+3V4" gate="G$1" pin="+3V3"/>
+<wire x1="66.04" y1="73.66" x2="66.04" y2="81.28" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="N$3" class="0">
 <segment>
-<pinref part="B.T1" gate="G$1" pin="G"/>
-<pinref part="B.R6" gate="G$1" pin="1"/>
-<pinref part="B.U1" gate="G$1" pin="(TCA0WO1/SDA/XCK/AIN10)PB1"/>
+<pinref part="B.T11" gate="G$1" pin="G"/>
+<pinref part="B.R16" gate="G$1" pin="1"/>
+<pinref part="B.U11" gate="G$1" pin="(TCA0WO1/SDA/XCK/AIN10)PB1"/>
 <wire x1="157.48" y1="17.78" x2="190.5" y2="17.78" width="0.1524" layer="91"/>
 <wire x1="190.5" y1="17.78" x2="190.5" y2="10.16" width="0.1524" layer="91"/>
 <wire x1="190.5" y1="10.16" x2="190.5" y2="5.08" width="0.1524" layer="91"/>
@@ -11799,8 +11822,8 @@ is used as I2C master</text>
 </net>
 <net name="N$4" class="0">
 <segment>
-<pinref part="B.T1" gate="G$1" pin="S"/>
-<pinref part="B.C1" gate="G$1" pin="1"/>
+<pinref part="B.T11" gate="G$1" pin="S"/>
+<pinref part="B.C11" gate="G$1" pin="1"/>
 <wire x1="203.2" y1="5.08" x2="203.2" y2="2.54" width="0.1524" layer="91"/>
 <wire x1="203.2" y1="2.54" x2="203.2" y2="-2.54" width="0.1524" layer="91"/>
 <wire x1="203.2" y1="2.54" x2="215.9" y2="2.54" width="0.1524" layer="91"/>
@@ -11809,7 +11832,7 @@ is used as I2C master</text>
 <pinref part="B.J1" gate="A" pin="3"/>
 <wire x1="215.9" y1="-7.62" x2="223.52" y2="-7.62" width="0.1524" layer="91"/>
 <junction x="215.9" y="2.54"/>
-<pinref part="B.R7" gate="G$1" pin="1"/>
+<pinref part="B.R17" gate="G$1" pin="1"/>
 <wire x1="215.9" y1="2.54" x2="226.06" y2="2.54" width="0.1524" layer="91"/>
 <wire x1="226.06" y1="2.54" x2="226.06" y2="8.89" width="0.1524" layer="91"/>
 </segment>
@@ -11828,30 +11851,30 @@ is used as I2C master</text>
 </net>
 <net name="PA1" class="0">
 <segment>
-<pinref part="B.R5" gate="G$1" pin="1"/>
+<pinref part="B.R15" gate="G$1" pin="1"/>
 <wire x1="172.72" y1="-20.32" x2="177.8" y2="-20.32" width="0.1524" layer="91"/>
-<pinref part="B.D1" gate="G$1" pin="A"/>
+<pinref part="B.D11" gate="G$1" pin="A"/>
 </segment>
 </net>
 <net name="N$5" class="0">
 <segment>
-<pinref part="B.R5" gate="G$1" pin="2"/>
+<pinref part="B.R15" gate="G$1" pin="2"/>
 <wire x1="162.56" y1="-20.32" x2="162.56" y2="33.02" width="0.1524" layer="91"/>
-<pinref part="B.U1" gate="G$1" pin="(LUT0-OUT/TCD0WOA/TCA0WO4/!SS!/AIN4)PA4"/>
+<pinref part="B.U11" gate="G$1" pin="(LUT0-OUT/TCD0WOA/TCA0WO4/!SS!/AIN4)PA4"/>
 <wire x1="157.48" y1="33.02" x2="162.56" y2="33.02" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$1" class="0">
 <segment>
-<pinref part="B.R4" gate="G$1" pin="2"/>
-<pinref part="B.U1" gate="G$1" pin="PB3(TOSC1/RXD)"/>
+<pinref part="B.R14" gate="G$1" pin="2"/>
+<pinref part="B.U11" gate="G$1" pin="PB3(TOSC1/RXD)"/>
 <wire x1="63.5" y1="35.56" x2="66.04" y2="35.56" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$2" class="0">
 <segment>
-<pinref part="B.R3" gate="G$1" pin="2"/>
-<pinref part="B.U1" gate="G$1" pin="PB2(TOSC2/EVOUT1/TXD/TCA0WO2)"/>
+<pinref part="B.R13" gate="G$1" pin="2"/>
+<pinref part="B.U11" gate="G$1" pin="PB2(TOSC2/EVOUT1/TXD/TCA0WO2)"/>
 </segment>
 </net>
 </nets>
