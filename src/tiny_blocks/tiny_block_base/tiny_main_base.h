@@ -15,3 +15,5 @@ bool tiny_main_base_send_i2c_message(uint8_t address, uint8_t expected_response_
 uint8_t tiny_main_base_get_ext_module_address(uint8_t address);
 
 void tiny_main_base_set_power_save(uint8_t address, uint8_t mode);
+
+void tiny_main_string_to_buffer(char const *str);

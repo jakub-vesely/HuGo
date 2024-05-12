@@ -1,4 +1,6 @@
 #pragma once
+
+#ifdef main_ble
 #include <string.h>
 #include <hugo_defines.h>
 #include <tiny_main_base.h>
@@ -67,3 +69,5 @@ void tiny_main_ble_send_mesh_data(uint8_t block_id,  uint8_t target_id){
   buffer->data[buffer->size++] = 0x0a;
   tiny_main_ble_send_command(block_id);
 }
+
+#endif //main_ble

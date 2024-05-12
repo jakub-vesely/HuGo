@@ -98,3 +98,8 @@ void tiny_main_base_set_power_save(uint8_t address, uint8_t mode){
   tiny_main_base_send_i2c_command(address, I2C_BLOCK_TYPE_ID_BASE, I2C_COMMAND_SET_POWER_SAVE, 0);
 
 }
+
+void tiny_main_string_to_buffer(char const *str){
+  s_common_buffer.size = min(strlen(str), COMMON_BUFFER_SIZE);
+  memcpy(s_common_buffer.data, str, s_common_buffer.size);
+}
