@@ -61,5 +61,5 @@ void HugoTinyWirePowerSave(uint8_t level){
 }
 
 void loop() {
-  delayMicroseconds(500);
+  sleep_cpu(); //functionality is driven by i2c commands
 }
