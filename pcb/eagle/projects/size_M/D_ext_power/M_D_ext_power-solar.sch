@@ -11639,7 +11639,7 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/ina219"&gt; Datasheet &lt;/a&gt;</
 <part name="D.T1" library="hugo" deviceset="P-MOSFET" device="" value="FDV304"/>
 <part name="D.C7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="10u"/>
 <part name="D.R6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="3k3"/>
-<part name="D.R7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="390k"/>
+<part name="D.R7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="100k"/>
 <part name="D.D1" library="hugo" deviceset="LED_1.8" device=""/>
 <part name="D.L1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="L-EU" device="L3230M" package3d_urn="urn:adsk.eagle:package:23481/3" value="2u2"/>
 <part name="D.LIPOL" library="pinhead2" deviceset="PINHD-1X2" device="1X2-2"/>
@@ -11649,7 +11649,7 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/ina219"&gt; Datasheet &lt;/a&gt;</
 <part name="D.R10" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="0.1"/>
 <part name="D.U3" library="SamacSys_Parts" deviceset="INA219AIDR" device=""/>
 <part name="D.C1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="100n"/>
-<part name="D.R1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="4k7"/>
+<part name="D.R1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="5k1"/>
 <part name="D.F1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="0.5A"/>
 <part name="D.R2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="5k1"/>
 <part name="D.R5" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="5k1"/>
@@ -11781,8 +11781,8 @@ Source: &lt;a href="http://www.ti.com/lit/gpn/ina219"&gt; Datasheet &lt;/a&gt;</
 <attribute name="VALUE" x="6.096" y="187.579" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="D.D2" gate="G$1" x="20.32" y="213.36" smashed="yes" rot="R270">
-<attribute name="NAME" x="22.225" y="215.646" size="1.778" layer="95" rot="R270"/>
-<attribute name="VALUE" x="16.891" y="215.646" size="1.778" layer="96" rot="R270"/>
+<attribute name="NAME" x="23.114" y="215.265" size="1.778" layer="95"/>
+<attribute name="VALUE" x="23.114" y="212.471" size="1.778" layer="96"/>
 </instance>
 <instance part="D.T2" gate="G$1" x="-96.52" y="154.94" smashed="yes" rot="MR180">
 <attribute name="NAME" x="-90.17" y="154.94" size="1.778" layer="95" rot="MR270"/>
