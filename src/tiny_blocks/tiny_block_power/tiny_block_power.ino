@@ -113,5 +113,6 @@ void loop(){
   s_is_charging = s_charging_pin_value > CHARGING_TRESHOLD && s_charging_pin_value < USB_TRESHOLD;
   s_is_usb = s_charging_pin_value > USB_TRESHOLD | s_is_charging; //USB is prerequisite for charging
 #endif
-  delay(100); //100 ms
+  //delay(100); //100 ms
+  sleep_cpu();
 }

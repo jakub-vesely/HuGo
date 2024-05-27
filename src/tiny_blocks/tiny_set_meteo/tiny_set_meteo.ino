@@ -195,7 +195,7 @@ void setup()
 
   tiny_main_base_init();
   delay(200);//it is necessary to wait a while to all blocks and its extensions are is started
-  tiny_main_power_init();
+  tiny_main_power_init(false);
   tiny_main_ambient_init();
 
 #ifdef USE_DISPLAY
@@ -229,6 +229,8 @@ uint8_t get_closest_wind_direction_index(uint16_t measured){
   return closest_index;
 }
 void process_power(){
+  tiny_main_power_init(true);
+  delay(1);
   char* str;
   charging_state_t charging_state = tiny_main_power_get_charging_state();
   publish_value("charg", charging_state.is_charging ? "1" : "0" , "", false);
@@ -254,7 +256,9 @@ void process_power(){
   // else {
   //   multiplier = 3;
   // }
-  tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_POWER, POWER_SAVE_DEEP);
+
+  tiny_main_power_init(false);
+  //tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_POWER, POWER_SAVE_DEEP);
 }
 
 void process_bme(){
@@ -337,7 +341,7 @@ void loop()
   tiny_main_base_set_build_in_led(true);
   delay(20);
   tiny_main_base_set_build_in_led(false);
-  delay(200);
+  //delay(200);
 #ifdef USE_DISPLAY
   unsigned sec = 3;//10;
 #else
