@@ -21,8 +21,19 @@ static tiny_common_buffer_t* p_common_buffer = tiny_main_base_get_common_buffer(
 
 void tiny_main_power_init(bool on){
   s_power_ina_address = tiny_main_base_get_ext_module_address(I2C_BLOCK_TYPE_ID_POWER);
+  tiny_main_power_power_on(on);
+}
 
-  uint16_t config = 0;
+bool tiny_main_power_is_available(){
+  return s_power_ina_address != 0;
+}
+
+void tiny_main_power_power_on(bool on){
+  if (!tiny_main_power_is_available()){
+    return;
+  }
+
+  uint16_t config = 0;// | (_INA219_SADC_8SAM_4260 << 3) | (_INA219_BADC_RES_12BIT << 7) | (_INA219_PG_GD4_160MV << 11) | (_INA219_BRNG_16V << 13);
   if (on){
     config =  _INA219_MODE_SHUNT_BUS_CONTINUOUS | (_INA219_SADC_8SAM_4260 << 3) | (_INA219_BADC_RES_12BIT << 7) | (_INA219_PG_GD4_160MV << 11) | (_INA219_BRNG_16V << 13);
   }
@@ -47,6 +58,10 @@ charging_state_t tiny_main_power_get_charging_state(){
 }
 
 int32_t tiny_main_power_get_bat_voltage_mV(){
+  if (!tiny_main_power_is_available()){
+    return 0;
+  }
+
   p_common_buffer->size = 1;
   p_common_buffer->data[0] = _INA219_BUSVOLTAG_COMMAND;
   tiny_main_base_send_i2c_message(s_power_ina_address, 2);
@@ -55,6 +70,10 @@ int32_t tiny_main_power_get_bat_voltage_mV(){
 }
 
 int32_t tiny_main_power_get_bat_current_uA(){
+  if (!tiny_main_power_is_available()){
+    return 0;
+  }
+
   p_common_buffer->size = 1;
   p_common_buffer->data[0] = _INA219_SHUNT_VOLTAGE_COMMAND;
   tiny_main_base_send_i2c_message(s_power_ina_address, 2);

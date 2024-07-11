@@ -25,7 +25,8 @@ Programmer: jtag2updi (megaTinyCore)
 #endif
 
 #define MESH_MAIN_NODE_ID 0x04
-#define RJ12_RAIN_GAUGE 0x30
+#define RJ12_RAIN_GAUGE_ID 0x30
+#define RJ12_WIND_BLOCK_ID I2C_BLOCK_TYPE_ID_RJ12
 
 // 0,   22,5  45,   67.5, 90, 112.5,  135,  157.5,  180,  202.5 225,  247.5,  270,  292.5,  315,  337.5
 // 22k, 33k, 6k8,  8k2,  820,  1k, 680,,   2k2,  1k5,    3k9,  3k3,  15k,  12k,    120k  42k,    68k
@@ -40,6 +41,26 @@ static char s_dec_nr_buffer[DEC_NR_BUFFER_SIZE];
 
 static bool heartbeat = false;
 BleShield ble_shield;
+
+//#define WIND_AND_RAIN
+#ifdef WIND_AND_RAIN
+bool s_rain_block_available = false;
+bool s_wind_block_available = false;
+
+static uint32_t km_h = 0;
+static uint16_t wind_vane_value = 0;
+static uint16_t rain_amount = 0;
+#endif
+
+static int32_t s_temperature = 0;
+static int32_t s_pressure = 0;
+static int32_t s_humidity = 0;
+
+static charging_state_t s_charging_state = {0, 0};
+static int32_t s_voltage_mV = 0;
+static int32_t s_current_uA = 0;
+
+pocketBME280& bme = tiny_main_ambient_bme();
 
 char* fill_decimal_number(int32_t number, uint16_t decimal_shift, uint8_t precision = 4){
   s_dec_nr_buffer[DEC_NR_BUFFER_SIZE-1] = '\0';
@@ -119,25 +140,6 @@ char* fill_decimal_number(int32_t number, uint16_t decimal_shift, uint8_t precis
   return s_dec_nr_buffer + buffer_pos;
 }
 
-void measure_bme(){
-  bme.startMeasurement();
-  uint8_t timeout = 10;
-  while (!bme.isMeasuring()) {
-    delay(1);
-    if (timeout-- == 0){
-      break;
-    }
-  }
-
-  timeout = 100;
-  while (bme.isMeasuring()) {
-    delay(1);
-    if (timeout-- == 0){
-      break;
-    }
-  }
-}
-
 void add_to_common_buffer(char const* text){
   uint8_t append_size = min((COMMON_BUFFER_SIZE - 1), strlen(text));
   strncpy((char*)(buffer->data + buffer->size), text, append_size);
@@ -198,6 +200,11 @@ void setup()
   tiny_main_power_init(false);
   tiny_main_ambient_init();
 
+#ifdef WIND_AND_RAIN
+  s_rain_block_available = tiny_main_base_is_available(RJ12_RAIN_GAUGE_ID);
+  s_wind_block_available = tiny_main_base_is_available(RJ12_WIND_BLOCK_ID);
+#endif
+
 #ifdef USE_DISPLAY
   tiny_main_display_init();
   display.clearDisplay();
@@ -209,11 +216,11 @@ void setup()
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
   sleep_enable();
 
-  tiny_main_rj12_set_pin_mode(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin5, Rj12PinMode::input);
-  tiny_main_rj12_set_pin_mode(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin4, Rj12PinMode::interrupt_rising);
+  tiny_main_rj12_set_pin_mode(RJ12_WIND_BLOCK_ID, Rj12PinId::pin5, Rj12PinMode::input);
+  tiny_main_rj12_set_pin_mode(RJ12_WIND_BLOCK_ID, Rj12PinId::pin4, Rj12PinMode::interrupt_rising);
 
-  tiny_main_rj12_set_pin_mode(RJ12_RAIN_GAUGE, Rj12PinId::pin4, Rj12PinMode::interrupt_rising);
-  tiny_main_rj12_pin5_set_oscil_period_ms(RJ12_RAIN_GAUGE, 100);
+  tiny_main_rj12_set_pin_mode(RJ12_RAIN_GAUGE_ID, Rj12PinId::pin4, Rj12PinMode::interrupt_rising);
+  tiny_main_rj12_pin5_set_oscil_period_ms(RJ12_RAIN_GAUGE_ID, 100);
 }
 
 uint8_t get_closest_wind_direction_index(uint16_t measured){
@@ -229,20 +236,18 @@ uint8_t get_closest_wind_direction_index(uint16_t measured){
   return closest_index;
 }
 void process_power(){
-  tiny_main_power_init(true);
+  if (!tiny_main_power_is_available()){
+    return;
+  }
+
+  tiny_main_power_power_on(true);
   delay(1);
-  char* str;
-  charging_state_t charging_state = tiny_main_power_get_charging_state();
-  publish_value("charg", charging_state.is_charging ? "1" : "0" , "", false);
-  publish_value("usb", charging_state.is_usb_connected ? "1" : "0" , "", false);
 
-  int32_t voltage_mV = tiny_main_power_get_bat_voltage_mV();
-  str = fill_decimal_number(voltage_mV, 3, 3);
-  publish_value("U", str, "V");
+  s_charging_state = tiny_main_power_get_charging_state();
+  s_voltage_mV = tiny_main_power_get_bat_voltage_mV();
+  s_current_uA = tiny_main_power_get_bat_current_uA();
 
-  int32_t current_uA = tiny_main_power_get_bat_current_uA();
-  str = fill_decimal_number(current_uA, 3, 3);
-  publish_value("I", str, "mA");
+  tiny_main_power_power_on(false);
 
   // if (voltage_mV < 3400){
   //   multiplier = 10;
@@ -256,57 +261,107 @@ void process_power(){
   // else {
   //   multiplier = 3;
   // }
+}
 
-  tiny_main_power_init(false);
-  //tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_POWER, POWER_SAVE_DEEP);
+void publish_power(){
+  if (!tiny_main_power_is_available()){
+    return;
+  }
+
+  char* str;
+  publish_value("charg", s_charging_state.is_charging ? "1" : "0" , "", false);
+  publish_value("usb", s_charging_state.is_usb_connected ? "1" : "0" , "", false);
+
+  str = fill_decimal_number(s_voltage_mV, 3, 3);
+  publish_value("U", str, "V");
+
+  str = fill_decimal_number(s_current_uA, 3, 3);
+  publish_value("I", str, "mA");
 }
 
 void process_bme(){
-  measure_bme();
+  if (!tiny_main_ambient_is_available()){
+    return;
+  }
 
-  char* str = fill_decimal_number(bme.getTemperature(), 2, 3);
-  publish_value("t", str, "'C");
+  bme.startMeasurement();
+  uint8_t timeout = 10;
+  while (!bme.isMeasuring()) {
+    delay(1);
+    if (timeout-- == 0){
+      break;
+    }
+  }
 
-  str = fill_decimal_number(bme.getPressure(), 2, 3);
-  publish_value("P", str, "hPa");
+  timeout = 100;
+  while (bme.isMeasuring()) {
+    delay(1);
+    if (timeout-- == 0){
+      break;
+    }
+  }
 
-  str = fill_decimal_number(bme.getHumidity() * 100 / 1024, 2, 3);
-  publish_value("RH", str, "%");
-  tiny_main_base_set_power_save(I2C_BLOCK_TYPE_ID_AMBIENT, POWER_SAVE_DEEP);
+  s_temperature = bme.getTemperature();
+  s_pressure = bme.getPressure();
+  s_humidity = bme.getHumidity();
 }
 
+void publish_bme(){
+  if (!tiny_main_ambient_is_available()){
+    return;
+  }
+
+  char* str = fill_decimal_number(s_temperature, 2, 3);
+  publish_value("t", str, "'C");
+
+  str = fill_decimal_number(s_pressure, 2, 3);
+  publish_value("P", str, "hPa");
+
+  str = fill_decimal_number(s_humidity * 100 / 1024, 2, 3);
+  publish_value("RH", str, "%");
+}
+
+#ifdef WIND_AND_RAIN
 void process_wind(){
-  uint16_t rj12_pin5 =  tiny_main_rj12_get_pin_value_analog(I2C_BLOCK_TYPE_ID_RJ12, Rj12PinId::pin5);
+  uint16_t rj12_pin5 =  tiny_main_rj12_get_pin_value_analog(RJ12_WIND_BLOCK_ID, Rj12PinId::pin5);
   char* str = fill_decimal_number(rj12_pin5, 0, 3);
 
   uint8_t wind_vane_index = get_closest_wind_direction_index(rj12_pin5);
-  uint16_t wind_vane_value = ((uint16_t)wind_vane_index * ((uint16_t)(360 * 10 / (uint16_t)16))) / 10;
-  str = fill_decimal_number(wind_vane_value, 0, 0);
-  publish_value("wd", str, "deg");
+  wind_vane_value = ((uint16_t)wind_vane_index * ((uint16_t)(360 * 10 / (uint16_t)16))) / 10;
 
-  if (tiny_main_rj12_pin4_get_timestamp_diffs(I2C_BLOCK_TYPE_ID_RJ12)){
+  if (tiny_main_rj12_pin4_get_timestamp_diffs(RJ12_WIND_BLOCK_ID)){
     uint32_t* diff1 = (uint32_t*)buffer->data;
     uint32_t* diff2 = (uint32_t*)(buffer->data + 4);
 
-    uint32_t km_h = 0;
+    km_h = 0;
+
     if (*diff2 < 5 * 1000){ //value older than 5 sec doesn make sense
       //1 switch closure/sec = 2.4 km/h = 0.6 m/sec
       km_h = (1000 * 2.4 * 100) / (*diff1); //1000 ms, 100 decimal shift
     }
-    str = fill_decimal_number(km_h, 2, 3);
-    publish_value("ws", str, "km/h");
   }
 }
 
+void publish_wind(){
+  char* str = fill_decimal_number(wind_vane_value, 0, 0);
+  publish_value("wd", str, "deg");
+
+  str = fill_decimal_number(km_h, 2, 3);
+  publish_value("ws", str, "km/h");
+}
+
 void process_rain() {
-  uint16_t count = tiny_main_rj12_pin4_get_count_and_reset(RJ12_RAIN_GAUGE);
+  uint16_t count = tiny_main_rj12_pin4_get_count_and_reset(RJ12_RAIN_GAUGE_ID);
 
   //1 impulse = 0.2794mm = 279.4 um
-  uint16_t amount = 2794 * count;
+  rain_amount = 2794 * count;
+}
 
-  char *str = fill_decimal_number(amount, 7, 3);
+void publish_rain(){
+  char *str = fill_decimal_number(rain_amount, 7, 3);
   publish_value("rain", str, "um");
 }
+#endif
 
 void loop()
 {
@@ -326,8 +381,21 @@ void loop()
   process_bme();
 
 #ifdef WIND_AND_RAIN
-  process_wind();
-  process_rain();
+  if (s_wind_block_available){
+    process_wind();
+  }
+  if (s_rain_block_available){
+    process_rain();
+  }
+#endif
+
+  ble_shield.power_save(false);
+  publish_power();
+  publish_bme();
+
+#ifdef WIND_AND_RAIN
+  publish_wind();
+  publish_rain();
 #endif
 
 #ifdef USE_DISPLAY
@@ -335,13 +403,12 @@ void loop()
   delay(200);
 #endif
 
-  //tiny_main_base_set_power_save(I2C_ADDRESS_BROADCAST, POWER_SAVE_DEEP);
-  ble_shield.power_save(true);
-
   tiny_main_base_set_build_in_led(true);
   delay(20);
   tiny_main_base_set_build_in_led(false);
-  //delay(200);
+
+  ble_shield.power_save(true);
+
 #ifdef USE_DISPLAY
   unsigned sec = 3;//10;
 #else
@@ -352,8 +419,4 @@ void loop()
       sleep_cpu();
     }
   }
-
-  ble_shield.power_save(false);
-
-  //tiny_main_base_set_power_save(I2C_ADDRESS_BROADCAST, POWER_SAVE_NONE);
 }
