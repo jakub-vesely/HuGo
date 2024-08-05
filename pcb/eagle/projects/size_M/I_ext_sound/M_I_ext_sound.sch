@@ -8984,9 +8984,9 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <segment>
 <pinref part="I.U1" gate="U1" pin="TX"/>
 <wire x1="-12.7" y1="162.56" x2="0" y2="162.56" width="0.1524" layer="91"/>
-<wire x1="0" y1="96.52" x2="0" y2="162.56" width="0.1524" layer="91"/>
-<pinref part="I.J2" gate="A" pin="3"/>
-<wire x1="-60.96" y1="96.52" x2="0" y2="96.52" width="0.1524" layer="91"/>
+<pinref part="I.J2" gate="A" pin="4"/>
+<wire x1="0" y1="99.06" x2="0" y2="162.56" width="0.1524" layer="91"/>
+<wire x1="-60.96" y1="99.06" x2="0" y2="99.06" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="VCC" class="0">
@@ -9165,9 +9165,9 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <segment>
 <pinref part="I.U1" gate="U1" pin="RX"/>
 <wire x1="-2.54" y1="160.02" x2="-12.7" y2="160.02" width="0.1524" layer="91"/>
-<wire x1="-2.54" y1="160.02" x2="-2.54" y2="99.06" width="0.1524" layer="91"/>
-<pinref part="I.J2" gate="A" pin="4"/>
-<wire x1="-60.96" y1="99.06" x2="-2.54" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="-2.54" y1="160.02" x2="-2.54" y2="96.52" width="0.1524" layer="91"/>
+<pinref part="I.J2" gate="A" pin="3"/>
+<wire x1="-2.54" y1="96.52" x2="-60.96" y2="96.52" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="SDCLK" class="0">

@@ -958,12 +958,7 @@
 </net>
 <net name="GND" class="0">
 <segment>
-<wire x1="73.66" y1="50.8" x2="109.22" y2="50.8" width="0.1524" layer="91"/>
-<pinref part="JP2" gate="A" pin="6"/>
-<wire x1="73.66" y1="50.8" x2="73.66" y2="38.1" width="0.1524" layer="91"/>
-<wire x1="73.66" y1="38.1" x2="66.04" y2="38.1" width="0.1524" layer="91"/>
 <pinref part="JP11" gate="A" pin="4"/>
-<wire x1="109.22" y1="50.8" x2="109.22" y2="33.02" width="0.1524" layer="91"/>
 <wire x1="109.22" y1="33.02" x2="121.92" y2="33.02" width="0.1524" layer="91"/>
 </segment>
 </net>
