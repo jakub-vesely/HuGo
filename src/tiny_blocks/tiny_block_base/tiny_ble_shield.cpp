@@ -26,10 +26,11 @@ static uint16_t s_exp_resp_timeout_ms = 0;
 static unsigned long s_exp_resp_timeout_start = 0;
 
 void BleShield::init(){
-#if defined(__AVR_ATtiny414__) || defined(__AVR_ATtiny1614__)
+#if !defined(__AVR_ATtiny412__)
   pinMode(PIN_PA6, INPUT); //to be used PB3 and PB2 instead
   pinMode(PIN_PA7, INPUT);
 #endif
+
   Serial.begin(115200);
 
   pinMode(WAKEUP_PIN, OUTPUT);

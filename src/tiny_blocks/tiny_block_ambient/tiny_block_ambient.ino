@@ -4,9 +4,9 @@ This software is published under MIT license. Full text of the license is availa
 
 BME280 weather block
 
-PCBs: hugo_adapter + sensor_board
+PCBs: hugo_adapter + sensor_board be sure that the pin PA7 is not populated on the sensor board (70uA current increase otherwise) PA3 and PA6 coul be also unoccupied
 Chip: ATtiny412 (414)
-Clock Speed: 10MHz
+Clock Speed: 1MHz
 Programmer: jtag2updi (megaTinyCore)
 */
 
@@ -39,12 +39,13 @@ uint8_t HugoTinyWireGetExtAddress(){
 }
 
 void HugoTinyWireChangeExtAddress( uint8_t address){
-  //TODO
+      //TODO
 }
 
 void setup(){
   //pinMode(XSHUT_PIN, OUTPUT);
   //digitalWrite(XSHUT_PIN, 1);
+
 
   HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_AMBIENT, (uint8_t**)ext_addresses);
 }

@@ -3,7 +3,7 @@
 #include "tiny_main_base.h"
 #include <hugo_defines.h>
 
-#if defined(__AVR_ATtiny414__) || defined(__AVR_ATtiny1614__)
+#if !defined(__AVR_ATtiny412__)
 # define LED_PIN PIN_PA4
 #endif
 
@@ -13,15 +13,16 @@ tiny_common_buffer_t* tiny_main_base_get_common_buffer(){
 }
 
 void tiny_main_base_init(){
-#if defined(__AVR_ATtiny414__) || defined(__AVR_ATtiny1614__)
+#if !defined(__AVR_ATtiny412__)
   pinMode(LED_PIN, OUTPUT);
   PORTMUX.CTRLB |= PORTMUX_TWI0_ALTERNATE_gc; //_ATtiny414 uses alternative ports for i2c because of conflict with the POWER_SAVE_PIN
 #endif
+
   Wire.begin();
   delay(100);
 }
 
-#if defined(__AVR_ATtiny414__) || defined(__AVR_ATtiny1614__)
+#if !defined(__AVR_ATtiny412__)
 void tiny_main_base_set_build_in_led(bool state){
   digitalWrite(LED_PIN, state ? HIGH: LOW);
 }

@@ -46,7 +46,7 @@ static wire_buffer_t s_buffer;
     static uint8_t* s_active_extension = NULL;
 #endif
 
-#if defined(__AVR_ATtiny414__) || defined(__AVR_ATtiny1614__)
+#if !defined(__AVR_ATtiny412__)
     #define POWER_SAVE_PIN PIN_PB1 //FIXME
     bool deepSleepOn = false;
 #endif
@@ -154,7 +154,9 @@ static void i2c_receive_data(int count) {
             case I2C_COMMAND_SET_POWER_SAVE:
             {
                 uint8_t level = Wire.read();
-                #if defined(__AVR_ATtiny414__) || defined(__AVR_ATtiny1614__)
+                #if defined(__AVR_ATtiny412__)
+                    HugoTinyWirePowerSave(level);
+                #else
                     if (level == POWER_SAVE_DEEP){
                         HugoTinyWirePowerSave(level);
                         digitalWrite(POWER_SAVE_PIN, 0);
@@ -168,8 +170,6 @@ static void i2c_receive_data(int count) {
 
                         HugoTinyWirePowerSave(level);
                     }
-                #else
-                    HugoTinyWirePowerSave(level);
                 #endif
 
 #ifndef AUTO_DEEP_SLEEP_DISABLED
@@ -197,7 +197,20 @@ void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t** ext_addresses, bool
         address =  block_type_id; //block type IDs are chosen to be possible to use them as default I2c address
     }
 
-#if defined(__AVR_ATtiny414__) || defined(__AVR_ATtiny1614__)
+//set all pins as pulled-up inputs to reduce power consumption
+pinMode(PIN_PA1, INPUT_PULLUP);
+pinMode(PIN_PA2, INPUT_PULLUP);
+pinMode(PIN_PA3, INPUT_PULLUP);
+pinMode(PIN_PA6, INPUT_PULLUP);
+pinMode(PIN_PA7, INPUT_PULLUP);
+
+#if !defined(__AVR_ATtiny412__)
+    pinMode(PIN_PA4, INPUT_PULLUP);
+    pinMode(PIN_PA5, INPUT_PULLUP);
+    pinMode(PIN_PB1, INPUT_PULLUP);
+    pinMode(PIN_PB2, INPUT_PULLUP);
+    pinMode(PIN_PB3, INPUT_PULLUP);
+
     pinMode(POWER_SAVE_PIN, OUTPUT);
     digitalWrite(POWER_SAVE_PIN, 1);
 

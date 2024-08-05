@@ -8,7 +8,10 @@ static tiny_common_buffer_t* p_common_buffer = tiny_main_base_get_common_buffer(
 
 #define I2C_COMMAND_POWER_GET_STATE 0x01
 
+#define _INA219_MODE_POWER_DOWN             0b000
+#define _INA219_MODE_SHUNT_BUS_TRIGGERED    0b011
 #define _INA219_MODE_SHUNT_BUS_CONTINUOUS   0b111
+
 #define _INA219_SADC_8SAM_4260              0b1011
 #define _INA219_BADC_RES_12BIT              0b0011
 #define _INA219_PG_GD4_160MV                0b10
@@ -33,9 +36,9 @@ void tiny_main_power_power_on(bool on){
     return;
   }
 
-  uint16_t config = 0;// | (_INA219_SADC_8SAM_4260 << 3) | (_INA219_BADC_RES_12BIT << 7) | (_INA219_PG_GD4_160MV << 11) | (_INA219_BRNG_16V << 13);
+  uint16_t config = _INA219_MODE_POWER_DOWN; //| (_INA219_SADC_8SAM_4260 << 3) | (_INA219_BADC_RES_12BIT << 7) | (_INA219_PG_GD4_160MV << 11) | (_INA219_BRNG_16V << 13);
   if (on){
-    config =  _INA219_MODE_SHUNT_BUS_CONTINUOUS | (_INA219_SADC_8SAM_4260 << 3) | (_INA219_BADC_RES_12BIT << 7) | (_INA219_PG_GD4_160MV << 11) | (_INA219_BRNG_16V << 13);
+    config =  _INA219_MODE_SHUNT_BUS_TRIGGERED | (_INA219_SADC_8SAM_4260 << 3) | (_INA219_BADC_RES_12BIT << 7) | (_INA219_PG_GD4_160MV << 11) | (_INA219_BRNG_16V << 13);
   }
   p_common_buffer->size = 3;
   p_common_buffer->data[0] = _INA219_CONFIGURATION_COMMAND;
