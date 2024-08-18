@@ -16,7 +16,7 @@ class Ble():
     self.hook_keyboard = hook_keyboard
     self.connected = False
     self.notification_data = None
-    self.mac_address = mac_address
+    self.mac_address = mac_address.lower() if mac_address else None
     self.server = None
     self.client = None
     self.log_msg = ""
@@ -92,15 +92,15 @@ class Ble():
 
   def _detection_callback(self, device, _advertisement_data):
     if device.name and device.name.startswith("HuGo"):
-      reduced_address = device.address.replace(':', '')
-      if not self.mac_address or self.mac_address.lower() == reduced_address.lower():
+      reduced_address = device.address.replace(':', '').lower()
+      self.logger.info(("addr:", self.mac_address, device.address, reduced_address, ))
+      if not self.mac_address or self.mac_address == device.address.lower() or self.mac_address == reduced_address:
         self.server = device.address
       self.logger.debug("HuGo has been found: '%s, %s'", device.name, device.address)
 
   async def _scan(self):
     self.logger.info("Scanning...")
-    scanner = BleakScanner()
-    scanner.register_detection_callback(self._detection_callback)
+    scanner = BleakScanner(self._detection_callback)
 
     self.logger.debug("searching HuGo device")
     waiting = 0.5 # to be cough power_up window in case of power save
