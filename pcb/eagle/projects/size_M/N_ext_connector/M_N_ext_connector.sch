@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -9031,7 +9031,6 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <part name="P+2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="P+4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="N.R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="4k7"/>
@@ -9079,9 +9078,6 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 </instance>
 <instance part="GND4" gate="1" x="119.38" y="-7.62" smashed="yes">
 <attribute name="VALUE" x="116.84" y="-10.16" size="1.778" layer="96"/>
-</instance>
-<instance part="GND5" gate="1" x="60.96" y="27.94" smashed="yes">
-<attribute name="VALUE" x="58.42" y="25.4" size="1.778" layer="96"/>
 </instance>
 <instance part="P+4" gate="VCC" x="125.73" y="15.24" smashed="yes">
 <attribute name="VALUE" x="123.19" y="10.16" size="1.778" layer="96" rot="R90"/>
@@ -9139,12 +9135,6 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <pinref part="N.C1" gate="G$1" pin="2"/>
 <pinref part="GND1" gate="1" pin="GND"/>
 <wire x1="105.41" y1="38.1" x2="105.41" y2="35.56" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="JP2" gate="A" pin="6"/>
-<wire x1="60.96" y1="48.26" x2="55.88" y2="48.26" width="0.1524" layer="91"/>
-<pinref part="GND5" gate="1" pin="GND"/>
-<wire x1="60.96" y1="30.48" x2="60.96" y2="48.26" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="I.J3" gate="A" pin="4"/>

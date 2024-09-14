@@ -8598,7 +8598,6 @@ Commonly found on CAT3 devices and some Microchip programmers.
 <part name="P+3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="K.R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="100"/>
 <part name="K.R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="100"/>
 <part name="K.R5" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="100"/>
@@ -8642,9 +8641,6 @@ Commonly found on CAT3 devices and some Microchip programmers.
 <instance part="GND4" gate="1" x="83.82" y="-5.08" smashed="yes">
 <attribute name="VALUE" x="81.28" y="-7.62" size="1.778" layer="96"/>
 </instance>
-<instance part="GND5" gate="1" x="60.96" y="27.94" smashed="yes">
-<attribute name="VALUE" x="58.42" y="25.4" size="1.778" layer="96"/>
-</instance>
 <instance part="K.R3" gate="G$1" x="72.39" y="7.62" smashed="yes" rot="R180">
 <attribute name="NAME" x="81.28" y="9.9314" size="1.778" layer="95" rot="R180"/>
 </instance>
@@ -8676,12 +8672,6 @@ Commonly found on CAT3 devices and some Microchip programmers.
 <pinref part="K.C1" gate="G$1" pin="2"/>
 <pinref part="GND1" gate="1" pin="GND"/>
 <wire x1="114.3" y1="0" x2="114.3" y2="-2.54" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="JP2" gate="A" pin="6"/>
-<wire x1="60.96" y1="48.26" x2="55.88" y2="48.26" width="0.1524" layer="91"/>
-<pinref part="GND5" gate="1" pin="GND"/>
-<wire x1="60.96" y1="30.48" x2="60.96" y2="48.26" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="I.J3" gate="A" pin="4"/>

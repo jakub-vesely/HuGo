@@ -181,7 +181,7 @@
 <wire x1="5.715" y1="1.27" x2="5.08" y2="0.635" width="0.1524" layer="21"/>
 <wire x1="5.08" y1="-0.635" x2="5.715" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="6.985" y1="-1.27" x2="5.715" y2="-1.27" width="0.1524" layer="21"/>
-<pad name="1" x="-6.35" y="0" drill="1.016" diameter="1.5748" shape="square" rot="R90"/>
+<pad name="1" x="-6.35" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="2" x="-3.81" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="3" x="-1.27" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="4" x="1.27" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
@@ -234,7 +234,7 @@
 <wire x1="4.445" y1="1.27" x2="3.81" y2="0.635" width="0.1524" layer="21"/>
 <wire x1="3.81" y1="-0.635" x2="4.445" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="5.715" y1="-1.27" x2="4.445" y2="-1.27" width="0.1524" layer="21"/>
-<pad name="1" x="-5.08" y="0" drill="1.016" diameter="1.5748" shape="square" rot="R90"/>
+<pad name="1" x="-5.08" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="2" x="-2.54" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="3" x="0" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="4" x="2.54" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
@@ -495,7 +495,7 @@
 <wire x1="7.62" y1="-1.905" x2="7.62" y2="0.635" width="0.1524" layer="21"/>
 <wire x1="7.62" y1="0.635" x2="5.08" y2="0.635" width="0.1524" layer="21"/>
 <wire x1="6.35" y1="6.985" x2="6.35" y2="1.27" width="0.762" layer="21"/>
-<pad name="1" x="-6.35" y="-3.81" drill="1.016" diameter="1.5748" shape="square" rot="R90"/>
+<pad name="1" x="-6.35" y="-3.81" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="2" x="-3.81" y="-3.81" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="3" x="-1.27" y="-3.81" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="4" x="1.27" y="-3.81" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
@@ -539,7 +539,7 @@
 <wire x1="6.35" y1="-1.905" x2="6.35" y2="0.635" width="0.1524" layer="21"/>
 <wire x1="6.35" y1="0.635" x2="3.81" y2="0.635" width="0.1524" layer="21"/>
 <wire x1="5.08" y1="6.985" x2="5.08" y2="1.27" width="0.762" layer="21"/>
-<pad name="1" x="-5.08" y="-3.81" drill="1.016" diameter="1.5748" shape="square" rot="R90"/>
+<pad name="1" x="-5.08" y="-3.81" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="2" x="-2.54" y="-3.81" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="3" x="0" y="-3.81" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="4" x="2.54" y="-3.81" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
@@ -9635,11 +9635,8 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <wire x1="55.88" y1="127" x2="53.34" y2="127" width="0.1524" layer="91"/>
 <wire x1="53.34" y1="127" x2="53.34" y2="129.54" width="0.1524" layer="91"/>
 <junction x="53.34" y="127"/>
-<pinref part="G.J1" gate="A" pin="6"/>
-<wire x1="-73.66" y1="63.5" x2="38.1" y2="63.5" width="0.1524" layer="91"/>
-<wire x1="38.1" y1="63.5" x2="38.1" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="60.96" x2="38.1" y2="68.58" width="0.1524" layer="91"/>
 <junction x="38.1" y="68.58"/>
-<junction x="38.1" y="63.5"/>
 <pinref part="G.C4" gate="G$1" pin="1"/>
 <pinref part="G.C5" gate="G$1" pin="1"/>
 <wire x1="20.32" y1="137.16" x2="25.4" y2="137.16" width="0.1524" layer="91"/>
@@ -9650,11 +9647,9 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <pinref part="GND1" gate="1" pin="GND"/>
 <wire x1="38.1" y1="50.8" x2="38.1" y2="60.96" width="0.1524" layer="91"/>
 <label x="58.42" y="60.96" size="1.778" layer="95"/>
-<label x="-68.58" y="63.5" size="1.778" layer="95"/>
 <label x="139.7" y="149.86" size="1.778" layer="95"/>
 <label x="139.7" y="121.92" size="1.778" layer="95"/>
 <pinref part="G.J3" gate="G$1" pin="6"/>
-<wire x1="38.1" y1="60.96" x2="38.1" y2="63.5" width="0.1524" layer="91"/>
 <wire x1="156.21" y1="121.92" x2="121.92" y2="121.92" width="0.1524" layer="91"/>
 <junction x="121.92" y="121.92"/>
 <pinref part="G.MOTO1" gate="G$1" pin="6"/>

@@ -153,7 +153,7 @@
 <wire x1="2.54" y1="-0.635" x2="1.905" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="1.905" y1="-1.27" x2="0.635" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="0.635" y1="-1.27" x2="0" y2="-0.635" width="0.1524" layer="21"/>
-<pad name="1" x="-1.27" y="0" drill="1.016" diameter="1.6764" shape="square" rot="R90"/>
+<pad name="1" x="-1.27" y="0" drill="1.016" diameter="1.6764" shape="octagon" rot="R90"/>
 <pad name="2" x="1.27" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <text x="-2.6162" y="1.8288" size="1.27" layer="25" ratio="10">&gt;NAME</text>
 <text x="-2.54" y="-3.175" size="1.27" layer="27">&gt;VALUE</text>
@@ -184,7 +184,7 @@
 <wire x1="3.81" y1="-0.635" x2="3.175" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="3.175" y1="-1.27" x2="1.905" y2="-1.27" width="0.1524" layer="21"/>
 <wire x1="1.905" y1="-1.27" x2="1.27" y2="-0.635" width="0.1524" layer="21"/>
-<pad name="1" x="-2.54" y="0" drill="1.016" diameter="1.5748" shape="square" rot="R90"/>
+<pad name="1" x="-2.54" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="2" x="0" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="3" x="2.54" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <text x="-3.8862" y="1.8288" size="1.27" layer="25" ratio="10">&gt;NAME</text>
@@ -208,7 +208,7 @@
 <wire x1="3.81" y1="-2.54" x2="3.81" y2="0" width="0.1524" layer="21"/>
 <wire x1="3.81" y1="0" x2="1.27" y2="0" width="0.1524" layer="21"/>
 <wire x1="2.54" y1="6.35" x2="2.54" y2="0.635" width="0.762" layer="51"/>
-<pad name="1" x="-2.54" y="-3.81" drill="1.016" diameter="1.5748" shape="square" rot="R90"/>
+<pad name="1" x="-2.54" y="-3.81" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="2" x="0" y="-3.81" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="3" x="2.54" y="-3.81" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <text x="-4.445" y="-1.27" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
@@ -227,7 +227,7 @@
 <wire x1="-2.54" y1="1.12" x2="-2.54" y2="0.405" width="0.762" layer="21"/>
 <wire x1="0" y1="1.12" x2="0" y2="0.405" width="0.762" layer="21"/>
 <wire x1="2.54" y1="1.12" x2="2.54" y2="0.405" width="0.762" layer="21"/>
-<pad name="1" x="-2.54" y="0" drill="1.016" diameter="1.5748" shape="square" rot="R90"/>
+<pad name="1" x="-2.54" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="2" x="0" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="3" x="2.54" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <text x="-4.445" y="0" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
@@ -245,7 +245,7 @@
 </package>
 <package name="1X02/90" urn="urn:adsk.eagle:footprint:22310/1" locally_modified="yes">
 <description>&lt;b&gt;PIN HEADER&lt;/b&gt;</description>
-<pad name="1" x="-1.27" y="-3.81" drill="1.016" diameter="1.5748" shape="square" rot="R90"/>
+<pad name="1" x="-1.27" y="-3.81" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <pad name="2" x="1.27" y="-3.81" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <rectangle x1="-1.651" y1="-2.54" x2="-0.889" y2="-2.032" layer="21"/>
 <rectangle x1="0.889" y1="-2.54" x2="1.651" y2="-2.032" layer="21"/>
@@ -270,7 +270,7 @@
 <package name="1X02/90F">
 <wire x1="-1.31" y1="1.12" x2="-1.31" y2="0.024" width="0.762" layer="21"/>
 <wire x1="1.23" y1="1.12" x2="1.23" y2="0.024" width="0.762" layer="21"/>
-<pad name="1" x="-1.31" y="0" drill="1.016" diameter="1.6764" shape="square" rot="R90"/>
+<pad name="1" x="-1.31" y="0" drill="1.016" diameter="1.6764" shape="octagon" rot="R90"/>
 <pad name="2" x="1.23" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
 <text x="-3.215" y="0" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
 <rectangle x1="-1.691" y1="1.27" x2="-0.929" y2="1.778" layer="21"/>
@@ -282,6 +282,29 @@
 <text x="4.285" y="0" size="1.27" layer="27" ratio="10" rot="R90">&gt;VALUE</text>
 <wire x1="-2.794" y1="1.524" x2="-2.794" y2="2.54" width="0.2032" layer="21"/>
 <wire x1="2.794" y1="1.524" x2="2.794" y2="2.54" width="0.2032" layer="21"/>
+</package>
+<package name="1X02-2">
+<pad name="1" x="-1" y="0" drill="1.016" diameter="1.6764" shape="octagon" rot="R90"/>
+<pad name="2" x="1" y="0" drill="1.016" diameter="1.5748" shape="octagon" rot="R90"/>
+<text x="-2.6162" y="1.8288" size="1.27" layer="25" ratio="10">&gt;NAME</text>
+<text x="-2.54" y="-3.175" size="1.27" layer="27">&gt;VALUE</text>
+<rectangle x1="-1.524" y1="-0.254" x2="-1.016" y2="0.254" layer="51"/>
+<rectangle x1="1.016" y1="-0.254" x2="1.524" y2="0.254" layer="51"/>
+<wire x1="-2" y1="-0.6" x2="-2" y2="0.6" width="0.127" layer="21"/>
+<wire x1="-2" y1="0.6" x2="-1.4" y2="1.2" width="0.127" layer="21"/>
+<wire x1="-2" y1="-0.6" x2="-1.4" y2="-1.2" width="0.127" layer="21"/>
+<wire x1="1.4" y1="-1.2" x2="2" y2="-0.6" width="0.127" layer="21"/>
+<wire x1="2" y1="-0.6" x2="2" y2="0.6" width="0.127" layer="21"/>
+<wire x1="2" y1="0.6" x2="1.4" y2="1.2" width="0.127" layer="21"/>
+<wire x1="1.4" y1="1.2" x2="0.6" y2="1.2" width="0.127" layer="21"/>
+<wire x1="0.6" y1="-1.2" x2="1.4" y2="-1.2" width="0.127" layer="21"/>
+<wire x1="-1.4" y1="-1.2" x2="-0.6" y2="-1.2" width="0.127" layer="21"/>
+<wire x1="-1.4" y1="1.2" x2="-0.6" y2="1.2" width="0.127" layer="21"/>
+<wire x1="0" y1="-0.6" x2="0.6" y2="-1.2" width="0.127" layer="21"/>
+<wire x1="0" y1="-0.6" x2="-0.6" y2="-1.2" width="0.127" layer="21"/>
+<wire x1="-0.6" y1="1.2" x2="0" y2="0.6" width="0.127" layer="21"/>
+<wire x1="0" y1="0.6" x2="0.6" y2="1.2" width="0.127" layer="21"/>
+<wire x1="0" y1="0.6" x2="0" y2="-0.6" width="0.127" layer="21"/>
 </package>
 </packages>
 <packages3d>
@@ -369,6 +392,15 @@
 </technologies>
 </device>
 <device name="1X02/90F" package="1X02/90F">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="1X2-2" package="1X02-2">
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
