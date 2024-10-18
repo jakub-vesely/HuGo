@@ -1,12 +1,14 @@
 /*
 BOARD: hugo_adapter-i2c-pull-ups driving ble-shield, power-block and ambient-block (+ display block optionally)
-Chip: ATtiny412 or ATtiny1614
-Clock Speed: 10MHz
+Chip: ATtiny1614
+Clock Speed: 1 - 10MHz
 Programmer: jtag2updi (megaTinyCore)
 */
 
 //#define WIND_AND_RAIN
 //#define USE_DISPLAY
+//#define GET_CHARGING
+//#define GET_PRESSURE
 
 #include <avr/sleep.h>
 
@@ -18,7 +20,6 @@ Programmer: jtag2updi (megaTinyCore)
 #include <tiny_ble_shield.h>
 #include <tiny_main_power.h>
 #include <tiny_main_rj12.h>
-
 
 #ifdef USE_DISPLAY
 # include <tiny_main_display.h>
@@ -32,7 +33,7 @@ Programmer: jtag2updi (megaTinyCore)
 // 22k, 33k, 6k8,  8k2,  820,  1k, 680,,   2k2,  1k5,    3k9,  3k3,  15k,  12k,    120k  42k,    68k
 static uint16_t wind_vane_values[16] = {143, 301, 259, 637, 607, 946, 831, 888, 707, 789, 417, 471, 100, 111, 84, 198};
 
-uint8_t multiplier = 3;
+uint8_t multiplier = 5;
 
 tiny_common_buffer_t* buffer = tiny_main_base_get_common_buffer();
 
@@ -243,7 +244,9 @@ void process_power(){
   tiny_main_power_power_on(true);
   delay(1);
 
+#ifdef  GET_CHARGING
   s_charging_state = tiny_main_power_get_charging_state();
+#endif
   s_voltage_mV = tiny_main_power_get_bat_voltage_mV();
   s_current_uA = tiny_main_power_get_bat_current_uA();
 
@@ -269,8 +272,10 @@ void publish_power(){
   }
 
   char* str;
+#ifdef GET_CHARGING
   publish_value("charg", s_charging_state.is_charging ? "1" : "0" , "", false);
   publish_value("usb", s_charging_state.is_usb_connected ? "1" : "0" , "", false);
+#endif
 
   str = fill_decimal_number(s_voltage_mV, 3, 3);
   publish_value("U", str, "V");
@@ -302,7 +307,9 @@ void process_bme(){
   }
 
   s_temperature = bme.getTemperature();
+#if GET_PRESSURE
   s_pressure = bme.getPressure();
+#endif
   s_humidity = bme.getHumidity();
 }
 
@@ -314,8 +321,10 @@ void publish_bme(){
   char* str = fill_decimal_number(s_temperature, 2, 3);
   publish_value("t", str, "'C");
 
+#ifdef GET_PRESSURE
   str = fill_decimal_number(s_pressure, 2, 3);
   publish_value("P", str, "hPa");
+#endif
 
   str = fill_decimal_number(s_humidity * 100 / 1024, 2, 3);
   publish_value("RH", str, "%");
@@ -365,9 +374,9 @@ void publish_rain(){
 
 void loop()
 {
-  tiny_main_base_set_build_in_led(true);
-  delay(20);
-  tiny_main_base_set_build_in_led(false);
+  tiny_main_base_set_build_in_led_a(true);
+  delay(5);
+  tiny_main_base_set_build_in_led_a(false);
 
 #ifdef USE_DISPLAY
   display.clearDisplay();
@@ -388,7 +397,9 @@ void loop()
     process_rain();
   }
 #endif
-
+  tiny_main_base_set_build_in_led_a(true);
+  delay(5);
+  tiny_main_base_set_build_in_led_a(false);
   ble_shield.power_save(false);
   publish_power();
   publish_bme();
@@ -403,11 +414,12 @@ void loop()
   delay(200);
 #endif
 
-  tiny_main_base_set_build_in_led(true);
-  delay(20);
-  tiny_main_base_set_build_in_led(false);
-
   ble_shield.power_save(true);
+
+  tiny_main_base_set_build_in_led_a(true);
+  delay(5);
+  tiny_main_base_set_build_in_led_a(false);
+
 
 #ifdef USE_DISPLAY
   unsigned sec = 3;//10;
