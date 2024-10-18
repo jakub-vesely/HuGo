@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <hugo_gpio.h>
 
 //this function ask setting of power save level
 // one of three values is expected for parameter "level":
@@ -37,6 +38,7 @@ void HugoTinyWireFillModuleVersion();
 #endif
 #include <Wire.h>
 #include "hugo_defines.h"
+#include "hugo_gpio.h"
 
 uint8_t s_block_type_id = I2C_BLOCK_TYPE_ID_NONE;
 static wire_buffer_t s_buffer;
@@ -47,7 +49,6 @@ static wire_buffer_t s_buffer;
 #endif
 
 #if !defined(__AVR_ATtiny412__)
-    #define POWER_SAVE_PIN PIN_PB1 //FIXME
     bool deepSleepOn = false;
 #endif
 
@@ -159,12 +160,12 @@ static void i2c_receive_data(int count) {
                 #else
                     if (level == POWER_SAVE_DEEP){
                         HugoTinyWirePowerSave(level);
-                        digitalWrite(POWER_SAVE_PIN, 0);
+                        digitalWrite(HUGO_PIN_SHIELD_POWER, 0);
                         deepSleepOn = true;
                     }
                     else{
                         if (level == POWER_SAVE_NONE and deepSleepOn){
-                            digitalWrite(POWER_SAVE_PIN, 1);
+                            digitalWrite(HUGO_PIN_SHIELD_POWER, 1);
                             deepSleepOn = false;
                         }
 
@@ -197,39 +198,15 @@ void HugoTinyWireInitialize(uint8_t block_type_id, uint8_t** ext_addresses, bool
         address =  block_type_id; //block type IDs are chosen to be possible to use them as default I2c address
     }
 
-//set all pins as pulled-up inputs to reduce power consumption
-pinMode(PIN_PA1, INPUT_PULLUP);
-pinMode(PIN_PA2, INPUT_PULLUP);
-pinMode(PIN_PA3, INPUT_PULLUP);
-pinMode(PIN_PA6, INPUT_PULLUP);
-pinMode(PIN_PA7, INPUT_PULLUP);
+    hugo_gpio_initialize();
 
-#if !defined(__AVR_ATtiny412__)
-    pinMode(PIN_PA4, INPUT_PULLUP);
-    pinMode(PIN_PA5, INPUT_PULLUP);
-    pinMode(PIN_PB1, INPUT_PULLUP);
-    pinMode(PIN_PB2, INPUT_PULLUP);
-    pinMode(PIN_PB3, INPUT_PULLUP);
-
-    pinMode(POWER_SAVE_PIN, OUTPUT);
-    digitalWrite(POWER_SAVE_PIN, 1);
-
-
-    PORTMUX.CTRLB |= PORTMUX_TWI0_ALTERNATE_gc; //_ATtiny414 uses alternative ports for i2c because of conflict with the POWER_SAVE_PIN
-
-    if (used_serial){
-        pinMode(PIN_PA6, INPUT); //to be used PB3 and PB2 instead
-        pinMode(PIN_PA7, INPUT);
-    }
-#endif
-
-     Wire.begin(address, true);
-     Wire.onReceive(i2c_receive_data);
-     Wire.onRequest(i2c_request_event);
+    Wire.begin(address, true);
+    Wire.onReceive(i2c_receive_data);
+    Wire.onRequest(i2c_request_event);
 
 #ifndef AUTO_DEEP_SLEEP_DISABLED
-     set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-     sleep_enable();
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+    sleep_enable();
 #endif
 
 }

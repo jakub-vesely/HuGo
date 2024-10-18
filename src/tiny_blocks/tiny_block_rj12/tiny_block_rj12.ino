@@ -16,8 +16,8 @@ void HugoTinyWireFillModuleVersion();
 #define PCB_VERSION 1
 #define ADJUSTMENT_VERSION 1
 
-#define RJ_PIN4 PIN_PA6
-#define RJ_PIN5 PIN_PA3
+#define RJ_PIN4 HUGO_PIN_D2
+#define RJ_PIN5 HUGO_PIN_D3
 
 uint16_t oscillation_period_ms = 0;
 

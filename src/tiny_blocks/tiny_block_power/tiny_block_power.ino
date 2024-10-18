@@ -18,6 +18,7 @@ void HugoTinyWireFillModuleVersion();
 #define HUGO_TINY_ONE_EXTENSION
 
 #include <hugo_tiny_wire.h>
+#include <hugo_gpio.h>
 
 #define EEPROM_A0A1_POS EEPROM_RESERVED_MAX + 1
 #define INA_I2C_ADDRESS_NA0_NA1 0x40
@@ -25,9 +26,9 @@ void HugoTinyWireFillModuleVersion();
 #define INA_I2C_ADDRESS_NA0_A1  0x44
 #define INA_I2C_ADDRESS_A0_A1   0x45 //should be the default one
 
-#define INA_A0_PIN        PIN_PA7
-#define INA_A1_PIN        PIN_PA6
-#define CHARGE_STATE_PIN  PIN_PA3
+#define INA_A0_PIN        HUGO_PIN_D1
+#define INA_A1_PIN        HUGO_PIN_D2
+#define CHARGE_STATE_PIN  HUGO_PIN_D3
 
 #define CHARGING_TRESHOLD (int)(1024.0 / 3.3) //1V
 #define USB_TRESHOLD (int)(1024.0 / 3.3 * 2) //2V

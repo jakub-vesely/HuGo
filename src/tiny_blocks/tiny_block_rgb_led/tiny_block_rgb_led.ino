@@ -9,13 +9,14 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
 void HugoTinyWireFillModuleVersion();
 
 #include <hugo_tiny_wire.h>
+#include <hugo_gpio.h>
 
 #define PCB_VERSION 1
 #define ADJUSTMENT_VERSION 1
 //#include <Time.h>
-#define LED_R PIN_PA6
-#define LED_G PIN_PA7
-#define LED_B PIN_PA3
+#define LED_R HUGO_PIN_D2
+#define LED_G HUGO_PIN_D1
+#define LED_B HUGO_PIN_D3
 #define PWM_STEP 5
 
 #define R_COMP 50 //max is 100

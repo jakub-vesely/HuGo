@@ -26,7 +26,7 @@ void HugoTinyWireFillModuleVersion();
 
 #define EEPROM_A0_POS EEPROM_RESERVED_MAX + 1
 
-#define SSD_A0_PIN PIN_PA7
+#define SSD_A0_PIN HUGO_PIN_D1
 
 #define I2C_COMMAND_DISP_GET_DIMENSIONS 0x03
 

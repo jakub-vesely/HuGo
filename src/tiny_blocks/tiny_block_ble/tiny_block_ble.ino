@@ -26,7 +26,7 @@ void HugoTinyWireFillModuleVersion();
 #define I2C_AT_COMMAND_RESP  0x02
 #define I2C_MESH_DATA        0x03
 
-#define WAKEUP_PIN PIN_PA3
+#define WAKEUP_PIN HUGO_PIN_D3
 
 typedef struct read_buffer_t {
   uint8_t data[READ_BUFFER_SIZE];

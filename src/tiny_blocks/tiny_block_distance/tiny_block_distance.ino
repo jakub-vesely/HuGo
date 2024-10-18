@@ -27,7 +27,7 @@ void HugoTinyWireFillModuleVersion();
 
 //#define EEPROM_A0_POS EEPROM_RESERVED_MAX + 1
 
-#define XSHUT_PIN PIN_PA3
+#define XSHUT_PIN HUGO_PIN_D3
 
 #define EXT_ADDRESS_DEFAULT   0x29
 #define EXT_ADDRESS_PRESET1   0x28

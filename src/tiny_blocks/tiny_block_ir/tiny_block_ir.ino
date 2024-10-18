@@ -9,10 +9,10 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
 void HugoTinyWireFillModuleVersion();
 
 #include <hugo_tiny_wire.h>
-
+#include <hugo_gpio.h>
 #include <IRLremote.h>
 
-#define IR_RECV_PIN PIN_PA6
+#define IR_RECV_PIN HUGO_PIN_D2
 
 #define I2C_COMMAND_GET_IR_DATA_READY    1
 #define I2C_COMMAND_GET_IR_DATA         2
@@ -44,7 +44,7 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
       s_ir_data.command = ir_command;
       s_ir_data.repeat = false;
     }
-    
+
     s_buffer.data[0] = s_ir_data.address & 0xff;
     s_buffer.data[1] = s_ir_data.address >> 8;
     s_buffer.data[2] = s_ir_data.command;

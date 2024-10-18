@@ -9,11 +9,12 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
 void HugoTinyWireFillModuleVersion();
 
 #include <hugo_tiny_wire.h>
+#include <hugo_gpio.h>
 
 #define PCB_VERSION 2
 #define ADJUSTMENT_VERSION 0
 
-#define BUTTON_PIN PIN_PA3
+#define BUTTON_PIN HUGO_PIN_D3
 #define I2C_COMMAND_BUTTON_ID 1
 #define I2C_COMMAND_BUTTON_VALUE 2
 

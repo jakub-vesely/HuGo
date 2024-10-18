@@ -1,13 +1,14 @@
+#include <Arduino.h>
+
 #include "tiny_ble_shield.h"
 #include <tiny_main_base.h>
 #include <hugo_defines.h>
-
-#include <Arduino.h>
+#include <hugo_gpio.h>
 
 void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
 void HugoTinyWireFillModuleVersion();
 
-#define WAKEUP_PIN PIN_PA3
+#define WAKEUP_PIN HUGO_PIN_D3
 #define COMMAND_RESPONSE_SIZE 16 //largest 13 (+JDY-25-START)
 
 #define MESH_DATA_SIZE 12 // max size of mesh data (16 including 2B_sender 2B_receiver)
@@ -27,8 +28,8 @@ static unsigned long s_exp_resp_timeout_start = 0;
 
 void BleShield::init(){
 #if !defined(__AVR_ATtiny412__)
-  pinMode(PIN_PA6, INPUT); //to be used PB3 and PB2 instead
-  pinMode(PIN_PA7, INPUT);
+  pinMode(HUGO_PIN_D2, INPUT); //to be used PB3 and PB2 instead
+  pinMode(HUGO_PIN_D1, INPUT);
 #endif
 
   Serial.begin(115200);
