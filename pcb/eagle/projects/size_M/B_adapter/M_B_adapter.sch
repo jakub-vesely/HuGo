@@ -11861,14 +11861,12 @@ is used as I2C master</text>
 <wire x1="157.48" y1="35.56" x2="185.42" y2="35.56" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="PB3" class="0">
+<net name="PA7" class="0">
 <segment>
-<pinref part="B.U11" gate="G$1" pin="PB3(TOSC1/RXD)"/>
 <pinref part="B.R14" gate="G$1" pin="2"/>
-<wire x1="165.1" y1="-17.78" x2="165.1" y2="45.72" width="0.1524" layer="91"/>
-<wire x1="165.1" y1="45.72" x2="63.5" y2="45.72" width="0.1524" layer="91"/>
-<wire x1="63.5" y1="45.72" x2="63.5" y2="35.56" width="0.1524" layer="91"/>
-<wire x1="63.5" y1="35.56" x2="66.04" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="165.1" y1="-17.78" x2="165.1" y2="40.64" width="0.1524" layer="91"/>
+<pinref part="B.U11" gate="G$1" pin="(LUT1-OUT/AINP0/AIN7)PA7"/>
+<wire x1="157.48" y1="40.64" x2="165.1" y2="40.64" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$5" class="0">
