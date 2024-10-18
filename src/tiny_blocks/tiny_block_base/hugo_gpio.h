@@ -91,6 +91,8 @@ inline void hugo_gpio_initialize(){
     pinMode(PIN_PB3, INPUT_PULLUP);
 
     pinMode(HUGO_PIN_SHIELD_POWER, OUTPUT);
+    pinMode(HUGO_PIN_LED_A, OUTPUT);
+    pinMode(HUGO_PIN_LED_B, OUTPUT);
     digitalWrite(HUGO_PIN_SHIELD_POWER, 1);
 
     if (IS_I2C_ALTERNATIVE){
