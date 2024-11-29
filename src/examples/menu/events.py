@@ -1,10 +1,10 @@
 #  Copyright (c) 2022 Jakub Vesely
 #  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
 
-from ___basal.___logging import Logging
-from ___blocks.___five_way_switch_block import FiveWaySwitchBlock
-from ___blocks.___display_block import DisplayBlock
-from ___extra.___menu import Menu, MenuItem
+from basal.logging import Logging
+from blocks.five_way_switch_block import FiveWaySwitchBlock
+from blocks.display_block import DisplayBlock
+from extra.menu import Menu, MenuItem
 
 class Plan():
     def __init__(self) -> None:
