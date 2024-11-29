@@ -4,11 +4,10 @@
 #   error HUGO_PCB_VERSION is not defined
 #else
 #   if HUGO_PCB_VERSION < 7
+#pragma message(HUGO_PCB_VERSION)
 #       define HUGO_PIN_D1 PIN_PA7
 #       define HUGO_PIN_D2 PIN_PA6
 #       define HUGO_PIN_D3 PIN_PA3
-//#       define HUGO_PIN_D4
-//#       define HUGO_PIN_D5
 
 #       if defined(__AVR_ATtiny412__)
 //Serial communication for old PCBs is not implemented any more
@@ -31,15 +30,12 @@
 //#       define HUGO_PIN_LED_B
 
 #       if defined(__AVR_ATtiny412__)
-//#           define HUGO_PIN_LED_A
+#           define IS_I2C_ALTERNATIVE false
+#        else
+#           define HUGO_PIN_LED_A PIN_PA4
 //#           define HUGO_PIN_SHIELD_POWER
 
-#           define IS_I2C_ALTERNATIVE false
-        else
-#           define HUGO_PIN_LED_A PIN_PA4
-#           define HUGO_PIN_SHIELD_POWER
-
-            define IS_I2C_ALTERNATIVE true
+#            define IS_I2C_ALTERNATIVE true
 #       endif
 #       define IS_UART_ALTERNATIVE false
 #   else
@@ -78,7 +74,7 @@ inline void hugo_gpio_initialize(){
     //set all pins as pulled-up inputs to reduce power consumption
     pinMode(PIN_PA1, INPUT_PULLUP);
     pinMode(PIN_PA2, INPUT_PULLUP);
-    pinMode(PIN_PA3, INPUT_PULLUP);
+    //pinMode(PIN_PA3, INPUT_PULLUP);
     pinMode(PIN_PA6, INPUT_PULLUP);
     pinMode(PIN_PA7, INPUT_PULLUP);
 
@@ -90,10 +86,12 @@ inline void hugo_gpio_initialize(){
     pinMode(PIN_PB2, INPUT_PULLUP);
     pinMode(PIN_PB3, INPUT_PULLUP);
 
-    pinMode(HUGO_PIN_SHIELD_POWER, OUTPUT);
     pinMode(HUGO_PIN_LED_A, OUTPUT);
-    pinMode(HUGO_PIN_LED_B, OUTPUT);
-    digitalWrite(HUGO_PIN_SHIELD_POWER, 1);
+#   if HUGO_PCB_VERSION >= 7
+        pinMode(HUGO_PIN_SHIELD_POWER, OUTPUT);
+        digitalWrite(HUGO_PIN_SHIELD_POWER, 1);
+        pinMode(HUGO_PIN_LED_B, OUTPUT);
+#   endif
 
     if (IS_I2C_ALTERNATIVE){
         PORTMUX.CTRLB |= PORTMUX_TWI0_ALTERNATE_gc; //_ATtiny414 uses alternative ports for i2c because of conflict with the POWER_SAVE_PIN

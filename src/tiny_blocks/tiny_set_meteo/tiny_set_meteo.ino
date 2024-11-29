@@ -197,7 +197,7 @@ void setup()
   RTC_init();
 
   tiny_main_base_init();
-  delay(200);//it is necessary to wait a while to all blocks and its extensions are is started
+  delay(200);//it is necessary to wait a while to all blocks and its extensions are started
   tiny_main_power_init(false);
   tiny_main_ambient_init();
 
@@ -217,11 +217,15 @@ void setup()
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
   sleep_enable();
 
+#ifdef WIND_AND_RAIN
   tiny_main_rj12_set_pin_mode(RJ12_WIND_BLOCK_ID, Rj12PinId::pin5, Rj12PinMode::input);
   tiny_main_rj12_set_pin_mode(RJ12_WIND_BLOCK_ID, Rj12PinId::pin4, Rj12PinMode::interrupt_rising);
 
   tiny_main_rj12_set_pin_mode(RJ12_RAIN_GAUGE_ID, Rj12PinId::pin4, Rj12PinMode::interrupt_rising);
   tiny_main_rj12_pin5_set_oscil_period_ms(RJ12_RAIN_GAUGE_ID, 100);
+#endif
+
+  delay(100); //give extra time to self-initialize all sensors
 }
 
 uint8_t get_closest_wind_direction_index(uint16_t measured){
@@ -247,8 +251,17 @@ void process_power(){
 #ifdef  GET_CHARGING
   s_charging_state = tiny_main_power_get_charging_state();
 #endif
-  s_voltage_mV = tiny_main_power_get_bat_voltage_mV();
-  s_current_uA = tiny_main_power_get_bat_current_uA();
+
+  uint8_t counter = 3;
+  while (counter > 0) {
+    s_voltage_mV = tiny_main_power_get_bat_voltage_mV();
+    s_current_uA = tiny_main_power_get_bat_current_uA();
+    if (s_voltage_mV > 1000){
+      break;
+    }
+    counter--;
+    delay(100);
+  }
 
   tiny_main_power_power_on(false);
 
@@ -265,9 +278,18 @@ void process_power(){
   //   multiplier = 3;
   // }
 }
-
+void warn(uint8_t count){
+  delay(100); //to separate from another warning
+  for(uint8_t index=0; index<count; index++){
+    tiny_main_base_set_build_in_led_a(true);
+    delay(100);
+    tiny_main_base_set_build_in_led_a(false);
+    delay(20);
+  }
+}
 void publish_power(){
-  if (!tiny_main_power_is_available()){
+  if (s_voltage_mV < 1000){ //it happens that INA returns 300 mV
+    warn(3);
     return;
   }
 
@@ -289,12 +311,18 @@ void process_bme(){
     return;
   }
 
+  s_temperature = 0;
+#if GET_PRESSURE
+  s_pressure = 0;
+#endif
+  s_humidity = 0;
+
   bme.startMeasurement();
   uint8_t timeout = 10;
   while (!bme.isMeasuring()) {
     delay(1);
     if (timeout-- == 0){
-      break;
+      return;
     }
   }
 
@@ -302,7 +330,7 @@ void process_bme(){
   while (bme.isMeasuring()) {
     delay(1);
     if (timeout-- == 0){
-      break;
+      return;
     }
   }
 
@@ -314,7 +342,8 @@ void process_bme(){
 }
 
 void publish_bme(){
-  if (!tiny_main_ambient_is_available()){
+  if (s_humidity == 0){ //0 is not expected as a real humidity - huminicy probably han't been set
+    warn(2);
     return;
   }
 
@@ -397,9 +426,6 @@ void loop()
     process_rain();
   }
 #endif
-  tiny_main_base_set_build_in_led_a(true);
-  delay(5);
-  tiny_main_base_set_build_in_led_a(false);
   ble_shield.power_save(false);
   publish_power();
   publish_bme();

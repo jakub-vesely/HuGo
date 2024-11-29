@@ -104,7 +104,7 @@ void tiny_main_string_to_buffer(char const *str){
   memcpy(s_common_buffer.data, str, s_common_buffer.size);
 }
 
-bool tiny_main_base_fill_module_version(uint8_t block_address){
+void tiny_main_base_fill_module_version(uint8_t block_address){
   tiny_main_base_send_i2c_command(
       block_address,
       I2C_BLOCK_TYPE_ID_RJ12,
@@ -112,6 +112,7 @@ bool tiny_main_base_fill_module_version(uint8_t block_address){
       3
   );
 }
+
 bool tiny_main_base_is_available(uint8_t block_address){
     tiny_main_base_fill_module_version(block_address);
     return s_common_buffer.size == 3;

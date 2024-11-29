@@ -2,8 +2,8 @@
 power board management
 
 BOARD: hugo_adapter + hugo_power
-Chip: ATtiny412
-Clock Speed: 10MHz
+Chip: ATtiny412, 414, 1614
+Clock Speed: 1MHz
 Programmer: jtag2updi (megaTinyCore)
 */
 
@@ -12,8 +12,7 @@ uint8_t HugoTinyWireGetExtAddress();
 void HugoTinyWireChangeExtAddress(uint8_t address);
 void HugoTinyWireFillModuleVersion();
 
-#define PCB_VERSION 2
-#define ADJUSTMENT_VERSION 1
+#define ADJUSTMENT_VERSION 0
 
 #define HUGO_TINY_ONE_EXTENSION
 
@@ -30,11 +29,15 @@ void HugoTinyWireFillModuleVersion();
 #define INA_A1_PIN        HUGO_PIN_D2
 #define CHARGE_STATE_PIN  HUGO_PIN_D3
 
+#if !defined(__AVR_ATtiny412__) && HUGO_PCB_VERSION >= 7
+# define POWER_ENABLE_PIN  HUGO_PIN_D5
+#endif
+
 #define CHARGING_TRESHOLD (int)(1024.0 / 3.3) //1V
-#define USB_TRESHOLD (int)(1024.0 / 3.3 * 2) //2V
+#define USB_TRESHOLD (int)(1024.0 / 3.3 * 2.5) //2V
 
 #define I2C_COMMAND_POWER_GET_STATE      0x01
-//static uint8_t s_ina_a; //two lowest bites only are valid (a0 lowest, a1, second lowest)
+#define I2C_COMMAND_POWER_POWER_OFF      0x02
 
 static const uint8_t ext1_addresses[5] = {
   INA_I2C_ADDRESS_NA0_NA1, INA_I2C_ADDRESS_A0_NA1, INA_I2C_ADDRESS_NA0_A1, INA_I2C_ADDRESS_A0_A1, 0x00
@@ -46,18 +49,18 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
   switch (command){
 
     case I2C_COMMAND_POWER_GET_STATE:
-#if PCB_VERSION < 2 || ADJUSTMENT_VERSION < 1
-      uint8_t charging_pin_value = digitalRead(CHARGE_STATE_PIN); //10 bit A/D converter
-      bool is_charging = charging_pin_value == 0;
-      bool is_usb = 0; //not able to recognize
-#else
-      uint8_t charging_pin_value = analogRead(CHARGE_STATE_PIN); //10 bit A/D converter
+      uint16_t charging_pin_value = analogRead(CHARGE_STATE_PIN); //10 bit A/D converter
       bool is_charging = charging_pin_value > CHARGING_TRESHOLD && charging_pin_value < USB_TRESHOLD;
-      bool is_usb = charging_pin_value > USB_TRESHOLD | is_charging; //USB is prerequisite for charging
-#endif
-      //pinMode(CHARGE_STATE_PIN, INPUT_PULLUP);
+      bool is_usb = charging_pin_value > USB_TRESHOLD || is_charging; //USB is prerequisite for charging
       s_buffer.data[0] = (is_usb ? 2 : 0) | (is_charging ? 1 : 0);
       s_buffer.size = 1;
+      tiny_main_base_set_build_in_led_a(is_charging);
+      tiny_main_base_set_build_in_led_b(is_usb);
+      break;
+    case I2C_COMMAND_POWER_POWER_OFF:
+#if !defined(__AVR_ATtiny412__) && HUGO_PCB_VERSION >= 7
+      digitalWrite(POWER_ENABLE_PIN, false);
+#endif
       break;
   }
 }
@@ -77,20 +80,15 @@ void HugoTinyWireChangeExtAddress( uint8_t address){
 
 void HugoTinyWireFillModuleVersion(){
   s_buffer.data[0] = I2C_BLOCK_TYPE_ID_POWER;
-  s_buffer.data[1] = PCB_VERSION;
+  s_buffer.data[1] = HUGO_PCB_VERSION;
   s_buffer.data[2] = ADJUSTMENT_VERSION;
   s_buffer.size = 3;
 }
 
 void HugoTinyWirePowerSave(uint8_t level){
-
 }
 
 void setup(){
-  pinMode(CHARGE_STATE_PIN, INPUT);
-  pinMode(INA_A0_PIN, OUTPUT);
-  pinMode(INA_A1_PIN, OUTPUT);
-
   uint8_t a_values =  EEPROM.read(EEPROM_A0A1_POS); //default value should be 0xFF
   uint8_t a0_value =  a_values & 1;
   uint8_t a1_value =  (a_values >> 1) & 1;
@@ -107,22 +105,44 @@ void setup(){
     s_current_ext_address = INA_I2C_ADDRESS_A0_A1;
   }
 
-  digitalWrite(INA_A0_PIN, a0_value);
-  digitalWrite(INA_A1_PIN, a1_value);
-
   HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_POWER, (uint8_t**)ext_addresses);
 
-  pinMode(CHARGE_STATE_PIN, INPUT); //there is a pull down resistor on the power shiled
+#if !defined(__AVR_ATtiny412__) && HUGO_PCB_VERSION >=7
+  pinMode(POWER_ENABLE_PIN, OUTPUT);
+  digitalWrite(POWER_ENABLE_PIN, true);
+#endif
 
-  //FIXME should be only here? HugoTinyWireInitialize set defaults
   pinMode(INA_A0_PIN, OUTPUT);
   pinMode(INA_A1_PIN, OUTPUT);
   digitalWrite(INA_A0_PIN, a0_value);
   digitalWrite(INA_A1_PIN, a1_value);
 
+  pinMode(HUGO_PIN_LED_A, OUTPUT);
+  pinMode(HUGO_PIN_LED_B, OUTPUT);
+  digitalWrite(HUGO_PIN_LED_A, false);
+  digitalWrite(HUGO_PIN_LED_B, false);
 
+  pinMode(CHARGE_STATE_PIN, INPUT); //there is a pull down resistor on the power shield
 }
 
 void loop(){
+  // for (int index=0; index < 200; index++){
+  //   delay(500);
+  //   digitalWrite(CHARGE_STATE_PIN, true);
+  //   delay(500);
+  //   digitalWrite(CHARGE_STATE_PIN, false);
+  // }
+
+  // for (int index=0; index < 10; index++){
+  //   delay(500);
+  //   digitalWrite(HUGO_PIN_LED_B, true);
+  //   delay(500);
+  //   digitalWrite(HUGO_PIN_LED_B, false);
+  // }
+  // digitalWrite(HUGO_PIN_LED_A, true);
+  // delay(500);
+  // digitalWrite(POWER_ENABLE_PIN, false);
+
   sleep_cpu();
+
 }
