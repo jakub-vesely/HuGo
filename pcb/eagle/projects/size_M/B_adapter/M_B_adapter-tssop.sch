@@ -8773,606 +8773,6 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 </deviceset>
 </devicesets>
 </library>
-<library name="atmel">
-<description>&lt;b&gt;AVR Devices&lt;/b&gt;&lt;p&gt;
-Configurable logic, microcontrollers, nonvolatile memories&lt;p&gt;
-
-based on the original libraries:
-&lt;ul&gt;
-&lt;li&gt;&lt;i&gt;atmel.lbr&lt;/i&gt;  (created and revised by &lt;author&gt;librarian@cadsoft.de&lt;/author&gt; ), based on the following sources:
-  &lt;ul&gt;
-  &lt;li&gt;www.atmel.com
-  &lt;li&gt;CD-ROM : Configurable Logic Microcontroller Nonvolatile Memory
-  &lt;li&gt;CadSoft download site, www.cadsoft.de or www.cadsoftusa.com , file at90smcu_v400.zip
-  &lt;li&gt;avr.lbr
-&lt;/ul&gt;
-&lt;li&gt;&lt;i&gt;Atmel_By_element14_Batch_1-00.lbr&lt;/i&gt;
-&lt;/ul&gt;&lt;br&gt;
-
-These libraries are rearanged by &lt;author&gt;kylie&lt;/author&gt; because
-&lt;ul&gt;
-&lt;li&gt;elimination of package doubles (same layout, but different names)
-&lt;li&gt;unification/renaming of symbols, packages
-&lt;li&gt;renaming of packages to most commonly used names/codes, if possible according to JEDEC
-&lt;li&gt;elimination of power pins in symbols; power supply symbol (VCC,GND) in devices added
-&lt;li&gt;in case of multiple power supply pads in devices: update to APPEND-mode
-&lt;/ul&gt;
-
-The author do not warrant that this library is free from error or will meet your specific requirements.&lt;p&gt;&lt;br&gt;
-
-&lt;b&gt;Updates:&lt;/b&gt;&lt;p&gt;
-&lt;p&gt;
-25.04.2019:
-&lt;ul&gt;
-  &lt;li&gt;ATmega164/324/644/1284,  ATmega165/325/645/3250/6450,  ATmega169/329/649/3290/6490 devices revised
-&lt;/ul&gt;
-24.03.2019:
-&lt;ul&gt;
-  &lt;li&gt;ATmega103 device revised
-  &lt;li&gt;ATmega48(P,PV,A,PA)/88(P,PV,A,PA)/168(P,PV,A,PA), ATmega48PB/88PB/168PB/328(P), ATmega328PB devices added
-&lt;/ul&gt;
-17.03.2019:
-&lt;ul&gt;
-  &lt;li&gt;QFP packages revised: land pattern according to Miccrochip AN 8826 &lt;i&gt;Atmel-8826B-SEEPROM-PCB-Mounting-Guidelines-Surface-Mount-Packages-ApplicationNote.pdf&lt;/i&gt;
-  &lt;li&gt;ATmega8(L,A), ATmega16(L,A), ATmega32(L,A), ATmega64(L,A), ATmega128(L,A), ATmega48(V)/88(V)/168(V) devices revised
-&lt;/ul&gt;
-06.03.2019:
-&lt;ul&gt;
-  &lt;li&gt;land pattern of packages
-  &lt;ul&gt;
-    &lt;li&gt;QFN20_3X3_0.40, QFN20_3X3_0.45, QFN20_4X4_0.50, QFN20_5X5_0.65, QFN24_4X4_0.50, QFN28_4X4_0.45, QFN32_5X5_0.50, QFN44_7X7_0.50, QFN64_9X9_0.50
-    &lt;li&gt;DFN8_2x2, DFN8_2x3, DFN10_3X3
-    &lt;li&gt;BGA 15CC1, 32CC1
-  &lt;/ul&gt;revised (see Miccrochip AN 8826 &lt;i&gt;Atmel-8826B-SEEPROM-PCB-Mounting-Guidelines-Surface-Mount-Packages-ApplicationNote.pdf&lt;/i&gt;)
-&lt;/ul&gt;&lt;p&gt;
-02.2019:
-&lt;ul&gt;
-  &lt;li&gt;ATtiny devices revised
-  &lt;li&gt;tiny-0-series devices added
-&lt;/ul&gt;
-03.2018:
-&lt;ul&gt;
-  &lt;li&gt;tiny-1-series devices added
-  &lt;li&gt;programming interfaces (UPDI, MISO/MOSI) in various packages added
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br&gt;
-&lt;b&gt;Useful links:&lt;/b&gt;&lt;p&gt;
-&lt;p&gt;
-&lt;a href="https://en.wikipedia.org/wiki/ATtiny_microcontroller_comparison_chart"&gt;WIKIPEDIA ATtiny microcontroller comparison chart&lt;/a&gt;&lt;p&gt;</description>
-<packages>
-<package name="SO14">
-<description>
-&lt;B&gt;Small Outline IC&lt;/B&gt;, 150mil body width, 50mil lead pitch&lt;p&gt;
-package/pad dimensions according to IPC-SM-782, RLP No. 302A&lt;p&gt;
-JEDEC: MS-012 AB&lt;br&gt;
-IPC: SO14&lt;p&gt;
-other notations: SO-14, SOIC14, SOIC-14
-</description>
-<smd name="1" x="-3.81" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
-<smd name="2" x="-2.54" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
-<smd name="3" x="-1.27" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
-<smd name="4" x="0" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
-<smd name="5" x="1.27" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
-<smd name="6" x="2.54" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
-<smd name="7" x="3.81" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
-<smd name="8" x="3.81" y="2.6" dx="0.6" dy="2.2" layer="1"/>
-<smd name="9" x="2.54" y="2.6" dx="0.6" dy="2.2" layer="1"/>
-<smd name="10" x="1.27" y="2.6" dx="0.6" dy="2.2" layer="1"/>
-<smd name="11" x="0" y="2.6" dx="0.6" dy="2.2" layer="1"/>
-<smd name="12" x="-1.27" y="2.6" dx="0.6" dy="2.2" layer="1"/>
-<smd name="13" x="-2.54" y="2.6" dx="0.6" dy="2.2" layer="1"/>
-<smd name="14" x="-3.81" y="2.6" dx="0.6" dy="2.2" layer="1"/>
-<text x="-5.08" y="0" size="1.27" layer="25" rot="R90" align="bottom-center">&gt;NAME</text>
-<text x="0" y="0" size="1.27" layer="27" align="center">&gt;VALUE</text>
-<wire x1="-4.325" y1="-1.95" x2="-4.325" y2="1.95" width="0.2032" layer="21"/>
-<wire x1="4.325" y1="1.95" x2="4.325" y2="-1.95" width="0.2032" layer="21"/>
-<wire x1="4.325" y1="-1.95" x2="-4.325" y2="-1.95" width="0.2032" layer="51"/>
-<wire x1="-4.325" y1="1.95" x2="4.325" y2="1.95" width="0.2032" layer="51"/>
-<wire x1="4.325" y1="-1.45" x2="-4.325" y2="-1.45" width="0.2032" layer="51"/>
-<rectangle x1="-4.02" y1="-3" x2="-3.6" y2="-1.95" layer="51"/>
-<rectangle x1="-2.75" y1="-3" x2="-2.33" y2="-1.95" layer="51"/>
-<rectangle x1="-1.48" y1="-3" x2="-1.06" y2="-1.95" layer="51"/>
-<rectangle x1="-0.21" y1="-3" x2="0.21" y2="-1.95" layer="51"/>
-<rectangle x1="1.06" y1="-3" x2="1.48" y2="-1.95" layer="51"/>
-<rectangle x1="2.33" y1="-3" x2="2.75" y2="-1.95" layer="51"/>
-<rectangle x1="3.6" y1="-3" x2="4.02" y2="-1.95" layer="51"/>
-<rectangle x1="3.6" y1="1.95" x2="4.02" y2="3" layer="51"/>
-<rectangle x1="2.33" y1="1.95" x2="2.75" y2="3" layer="51"/>
-<rectangle x1="1.06" y1="1.95" x2="1.48" y2="3" layer="51"/>
-<rectangle x1="-0.21" y1="1.95" x2="0.21" y2="3" layer="51"/>
-<rectangle x1="-1.48" y1="1.95" x2="-1.06" y2="3" layer="51"/>
-<rectangle x1="-2.75" y1="1.95" x2="-2.33" y2="3" layer="51"/>
-<rectangle x1="-4.02" y1="1.95" x2="-3.6" y2="3" layer="51"/>
-<wire x1="-5" y1="4" x2="5" y2="4" width="0" layer="39"/>
-<wire x1="5" y1="-4" x2="-5" y2="-4" width="0" layer="39"/>
-<wire x1="-5" y1="-4" x2="-5" y2="4" width="0" layer="39"/>
-<wire x1="5" y1="4" x2="5" y2="-4" width="0" layer="39"/>
-</package>
-</packages>
-<symbols>
-<symbol name="TINY814">
-<description>
-AVR tiny-1-series Attiny214/414/814
-</description>
-<pin name="PB3(TOSC1/RXD)" x="-45.72" y="7.62" length="middle"/>
-<pin name="PB2(TOSC2/EVOUT1/TXD/TCA0WO2)" x="-45.72" y="0" length="middle"/>
-<pin name="(TCA0WO1/SDA/XCK/AIN10)PB1" x="45.72" y="-10.16" length="middle" rot="R180"/>
-<pin name="(TCA0WO0/SCL/XDIR/AIN11)PB0" x="45.72" y="-12.7" length="middle" rot="R180"/>
-<pin name="(LUT1-OUT/AINP0/AIN7)PA7" x="45.72" y="12.7" length="middle" rot="R180"/>
-<pin name="(DAC0OUT/AINN0/AIN6)PA6" x="45.72" y="10.16" length="middle" rot="R180"/>
-<pin name="(TCD0WOB/TCB0WO/TCA0WO5/AC0OUT/AIN5)PA5" x="45.72" y="7.62" length="middle" rot="R180"/>
-<pin name="(LUT0-OUT/TCD0WOA/TCA0WO4/!SS!/AIN4)PA4" x="45.72" y="5.08" length="middle" rot="R180"/>
-<pin name="(TCA0WO3/SCK/AIN3/EXTCLK)PA3" x="45.72" y="2.54" length="middle" rot="R180"/>
-<pin name="(LUT0-IN2/MISO/AIN2/EVOUT0)PA2" x="45.72" y="0" length="middle" rot="R180"/>
-<pin name="(LUT0-IN1/MOSI/AIN1/BREAK)PA1" x="45.72" y="-2.54" length="middle" rot="R180"/>
-<pin name="PA0(!RESET!/UPDI/AIN0/LUT0-IN0)" x="-45.72" y="12.7" length="middle"/>
-<text x="-40.64" y="-15.748" size="1.778" layer="96" align="top-left">&gt;VALUE</text>
-<text x="-40.64" y="15.748" size="1.778" layer="95">&gt;NAME</text>
-<wire x1="-40.64" y1="15.24" x2="40.64" y2="15.24" width="0.254" layer="94"/>
-<wire x1="40.64" y1="15.24" x2="40.64" y2="-15.24" width="0.254" layer="94"/>
-<wire x1="40.64" y1="-15.24" x2="-40.64" y2="-15.24" width="0.254" layer="94"/>
-<wire x1="-40.64" y1="-15.24" x2="-40.64" y2="15.24" width="0.254" layer="94"/>
-</symbol>
-<symbol name="PWR">
-<text x="-0.508" y="0" size="1.778" layer="95" rot="R90" align="bottom-center">&gt;NAME</text>
-<text x="0.635" y="-2.54" size="1.27" layer="95" rot="R90" align="top-right">GND</text>
-<text x="0.508" y="2.54" size="1.27" layer="95" rot="R90" align="top-left">VCC</text>
-<pin name="GND" x="0" y="-7.62" visible="pad" length="middle" direction="pwr" rot="R90"/>
-<pin name="VCC" x="0" y="7.62" visible="pad" length="middle" direction="pwr" rot="R270"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="ATTINY*14" prefix="IC">
-<description>
-8-bit &lt;b&gt;AVR tiny-1-series Microcontroller&lt;/b&gt;&lt;p&gt;
-CPU: two-cycle hardware multiplier&lt;br&gt;
-single pin Unified Program Debug Interface (UPDI)&lt;br&gt;
-programmable watchdog timer with separate on-chip oscillator&lt;br&gt;
-programmable brown-out detection circuit with software disable function&lt;br&gt;
-internal calibrated oscillator&lt;p&gt;
-
-&lt;table cellspacing="0" cellpadding="3" border="1"&gt;
-  &lt;tr&gt;
-    &lt;td&gt;Status&lt;/td&gt;
-    &lt;td bgcolor="lightgreen"&gt;aktiv&lt;/td&gt;
-    &lt;td bgcolor="lightgreen"&gt;aktiv&lt;/td&gt;
-    &lt;td bgcolor="lightgreen"&gt;aktiv&lt;/td&gt;
-    &lt;td bgcolor="lightgreen"&gt;aktiv&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr bgcolor="#EBEBEB"&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td align="center"&gt;ATtiny214&lt;/td&gt;
-    &lt;td align="center"&gt;ATtiny414&lt;/td&gt;
-    &lt;td align="center"&gt;ATtiny814&lt;/td&gt;
-    &lt;td align="center"&gt;ATtiny1614&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;General purpose working registers&lt;/td&gt;
-  &lt;td colspan="4" align="center"&gt;32&lt;/td&gt;
-  &lt;tr&gt;
-    &lt;td&gt;SRAM&lt;/td&gt;
-    &lt;td align="right"&gt;128 B&lt;/td&gt;
-    &lt;td align="right"&gt;256 B&lt;/td&gt;
-    &lt;td align="right"&gt;512 B&lt;/td&gt;
-    &lt;td align="right"&gt;2 kB&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;Program flash memory&lt;/td&gt;
-    &lt;td align="right"&gt;2 kB&lt;/td&gt;
-    &lt;td align="right"&gt;4 kB&lt;/td&gt;
-    &lt;td align="right"&gt;8 kB&lt;/td&gt;
-    &lt;td align="right"&gt;16 kB&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;EEPROM&lt;/td&gt;
-    &lt;td align="right"&gt;64 B&lt;/td&gt;
-    &lt;td align="right"&gt;128 B&lt;/td&gt;
-    &lt;td align="right"&gt;128 B&lt;/td&gt;
-    &lt;td align="right"&gt;256 B&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;16-bit Timer/Counter type A (TCA)&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;1&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;16-bit Timer/Counter type B (TCB)&lt;/td&gt;
-    &lt;td colspan="3" align="center"&gt;1&lt;/td&gt;
-    &lt;td align="center"&gt;2&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;12-bit Timer/Counter type D (TCD)&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;1&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;Real Time Counter (RTC)&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;1&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;USART&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;1&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;SPI&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;1&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;TWI (I2C)&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;1&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;ADC&lt;/td&gt;
-    &lt;td colspan="3" align="center"&gt;1&lt;/td&gt;
-    &lt;td align="center"&gt;2&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;ADC channels&lt;/td&gt;
-    &lt;td colspan="3" align="center"&gt;10&lt;/td&gt;
-    &lt;td align="center"&gt;10+4&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;ADC resolution&lt;/td&gt;
-  &lt;td colspan="4" align="center"&gt;10 bit&lt;/td&gt;
-  &lt;/tr&gt;  &lt;tr&gt;
-    &lt;td&gt;DAC&lt;/td&gt;
-    &lt;td colspan="3" align="center"&gt;1&lt;/td&gt;
-    &lt;td align="center"&gt;3&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;AC&lt;/td&gt;
-    &lt;td colspan="3" align="center"&gt;1&lt;/td&gt;
-    &lt;td align="center"&gt;3&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;Peripheral Touch Controller (PTC)&lt;/td&gt;
-    &lt;td colspan="2" align="center"&gt;-&lt;/td&gt;
-    &lt;td colspan="2" align="center"&gt;1&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PTC number of self-capacitance channels&lt;/td&gt;
-    &lt;td colspan="2" align="center"&gt;-&lt;/td&gt;
-    &lt;td colspan="2" align="center"&gt;6&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PTC number of mutual-capacitance channels&lt;/td&gt;
-    &lt;td colspan="2" align="center"&gt;-&lt;/td&gt;
-    &lt;td colspan="2" align="center"&gt;9&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;Custom Configurable Logic/Lookup tables&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;1/2&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;Window Watchdog&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;1&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;Event System channels&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;6&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;General purpose I/O&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;12&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;External interrupts&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;12&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;CRCSCAN&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;1&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;Operating voltage&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;&lt;nobr&gt;1.8 ... 5.5 V&lt;/nobr&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td rowspan="3"&gt;Speed grade&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;&lt;nobr&gt;0 ... 5 MHz @ 1.8 ... 5.5 V&lt;/nobr&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td colspan="4" align="center"&gt;&lt;nobr&gt;0 ... 10 MHz @ 2.7 ... 5.5 V&lt;/nobr&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td colspan="4" align="center"&gt;&lt;nobr&gt;0 ... 20 MHz @ 4.5 ... 5.5 V&lt;/nobr&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td rowspan="4"&gt;Clock options&lt;/td&gt;
-    &lt;td colspan="4" align="center"&gt;&lt;nobr&gt;internal 16/20 MHz low power RC oscillator&lt;/nobr&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td colspan="4" align="center"&gt;&lt;nobr&gt;internal 32.768 kHz ultra low power RC oscillator&lt;/nobr&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td colspan="4" align="center"&gt;&lt;nobr&gt;external 32.768 kHz low-frequency crystal oscillator&lt;/nobr&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td colspan="4" align="center"&gt;&lt;nobr&gt;external clock input&lt;/nobr&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/table&gt;
-
-&lt;p&gt;
-
-&lt;table cellspacing="0" cellpadding="3" border="1"&gt;
-  &lt;tr bgcolor="#EBEBEB"&gt;
-    &lt;td&gt;Pin Name&lt;/td&gt;
-    &lt;td&gt;Other/Special&lt;/td&gt;
-    &lt;td&gt;ADC0&lt;/td&gt;
-    &lt;td&gt;ADC1&lt;/td&gt;
-    &lt;td&gt;PTC&lt;/td&gt;
-    &lt;td&gt;AC0&lt;/td&gt;
-    &lt;td&gt;AC1&lt;/td&gt;
-    &lt;td&gt;AC2&lt;/td&gt;
-    &lt;td&gt;DAC0&lt;/td&gt;
-    &lt;td&gt;USART0&lt;/td&gt;
-    &lt;td&gt;SPI0&lt;/td&gt;
-    &lt;td&gt;TWI0&lt;/td&gt;
-    &lt;td&gt;TCA0&lt;/td&gt;
-    &lt;td&gt;TCBn&lt;/td&gt;
-    &lt;td&gt;TCD0&lt;/td&gt;
-    &lt;td&gt;CCL&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PA0&lt;/td&gt;
-    &lt;td&gt;!RESET, UPDI&lt;/td&gt;
-    &lt;td&gt;AIN0&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;LUT0-IN0&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PA1&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;AIN1&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;font color="gray"&gt;&lt;i&gt;TxD&lt;/i&gt;&lt;/font&gt;&lt;/td&gt;
-    &lt;td&gt;MOSI&lt;/td&gt;
-    &lt;td&gt;&lt;font color="gray"&gt;&lt;i&gt;SDA&lt;/i&gt;&lt;/font&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;LUT0-IN1&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PA2&lt;/td&gt;
-    &lt;td&gt;EVOUT0&lt;/td&gt;
-    &lt;td&gt;AIN2&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;font color="gray"&gt;&lt;i&gt;RxD&lt;/i&gt;&lt;/font&gt;&lt;/td&gt;
-    &lt;td&gt;MISO&lt;/td&gt;
-    &lt;td&gt;&lt;font color="gray"&gt;&lt;i&gt;SCL&lt;/i&gt;&lt;/font&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;LUT0-IN2&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PA3&lt;/td&gt;
-    &lt;td&gt;EXTCLK&lt;/td&gt;
-    &lt;td&gt;AIN3&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;font color="gray"&gt;&lt;i&gt;XCK&lt;/i&gt;&lt;/font&gt;&lt;/td&gt;
-    &lt;td&gt;SCK&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;WO3&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;TCB1 WO&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PA4&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;AIN4&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;AIN0&lt;/td&gt;
-    &lt;td bgcolor="#CCFFFF"&gt;X0/Y0&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;font color="gray"&gt;&lt;i&gt;XDIR&lt;/i&gt;&lt;/font&gt;&lt;/td&gt;
-    &lt;td&gt;!SS&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;WO4&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;WOA&lt;/td&gt;
-    &lt;td&gt;LUT0-OUT&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PA5&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;VREFA&lt;/td&gt;
-    &lt;td&gt;AIN5&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;AIN1&lt;/td&gt;
-    &lt;td bgcolor="#CCFFFF"&gt;X1/Y1&lt;/td&gt;
-    &lt;td&gt;OUT&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;AINN0&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;WO5&lt;/td&gt;
-    &lt;td&gt;TCB0 WO&lt;/td&gt;
-    &lt;td&gt;WOB&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PA6&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;AIN6&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;AIN2&lt;/td&gt;
-    &lt;td bgcolor="#CCFFFF"&gt;X2/Y2&lt;/td&gt;
-    &lt;td&gt;AINN0&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;AINP1&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;AINP0&lt;/td&gt;
-    &lt;td&gt;OUT&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PA7&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;AIN7&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;AIN3&lt;/td&gt;
-    &lt;td bgcolor="#CCFFFF"&gt;X3/Y3&lt;/td&gt;
-    &lt;td&gt;AINP0&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;AINP0&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;AINN0&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;LUT1-OUT&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PB3&lt;/td&gt;
-    &lt;td&gt;TOSC1&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;OUT&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;RxD&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;font color="gray"&gt;&lt;i&gt;WO0&lt;/i&gt;&lt;/font&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PB2&lt;/td&gt;
-    &lt;td&gt;TOSC2, EVOUT1&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;OUT&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;TxD&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;WO2&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PB1&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;AIN10&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td bgcolor="#CCFFFF"&gt;X4/Y4&lt;/td&gt;
-    &lt;td&gt;AINP2&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;XCK&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;SDA&lt;/td&gt;
-    &lt;td&gt;WO1&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;PB0&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;AIN11&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td bgcolor="#CCFFFF"&gt;X5/Y5&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;AINP2&lt;/td&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;AINP1&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;XDIR&lt;/td&gt;
-    &lt;td&gt;&lt;/td&gt;
-    &lt;td&gt;SCL&lt;/td&gt;
-    &lt;td&gt;WO0&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td bgcolor="#CCFFFF"&gt;&lt;/td&gt;
-    &lt;td colspan="15"&gt;only available in devices with 8/16KByte flash, X- or Y-line&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td bgcolor="#D9FFD9"&gt;&lt;/td&gt;
-    &lt;td colspan="15"&gt;only available in device ATtiny1614&lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/table&gt;
-</description>
-<gates>
-<gate name="G$1" symbol="TINY814" x="0" y="0" addlevel="must"/>
-<gate name="P" symbol="PWR" x="60.96" y="0" addlevel="request"/>
-</gates>
-<devices>
-<device name="-SSN" package="SO14">
-<connects>
-<connect gate="G$1" pin="(DAC0OUT/AINN0/AIN6)PA6" pad="4"/>
-<connect gate="G$1" pin="(LUT0-IN1/MOSI/AIN1/BREAK)PA1" pad="11"/>
-<connect gate="G$1" pin="(LUT0-IN2/MISO/AIN2/EVOUT0)PA2" pad="12"/>
-<connect gate="G$1" pin="(LUT0-OUT/TCD0WOA/TCA0WO4/!SS!/AIN4)PA4" pad="2"/>
-<connect gate="G$1" pin="(LUT1-OUT/AINP0/AIN7)PA7" pad="5"/>
-<connect gate="G$1" pin="(TCA0WO0/SCL/XDIR/AIN11)PB0" pad="9"/>
-<connect gate="G$1" pin="(TCA0WO1/SDA/XCK/AIN10)PB1" pad="8"/>
-<connect gate="G$1" pin="(TCA0WO3/SCK/AIN3/EXTCLK)PA3" pad="13"/>
-<connect gate="G$1" pin="(TCD0WOB/TCB0WO/TCA0WO5/AC0OUT/AIN5)PA5" pad="3"/>
-<connect gate="G$1" pin="PA0(!RESET!/UPDI/AIN0/LUT0-IN0)" pad="10"/>
-<connect gate="G$1" pin="PB2(TOSC2/EVOUT1/TXD/TCA0WO2)" pad="7"/>
-<connect gate="G$1" pin="PB3(TOSC1/RXD)" pad="6"/>
-<connect gate="P" pin="GND" pad="14"/>
-<connect gate="P" pin="VCC" pad="1"/>
-</connects>
-<technologies>
-<technology name="16"/>
-<technology name="2"/>
-<technology name="4"/>
-<technology name="8"/>
-</technologies>
-</device>
-<device name="-SSF" package="SO14">
-<connects>
-<connect gate="G$1" pin="(DAC0OUT/AINN0/AIN6)PA6" pad="4"/>
-<connect gate="G$1" pin="(LUT0-IN1/MOSI/AIN1/BREAK)PA1" pad="11"/>
-<connect gate="G$1" pin="(LUT0-IN2/MISO/AIN2/EVOUT0)PA2" pad="12"/>
-<connect gate="G$1" pin="(LUT0-OUT/TCD0WOA/TCA0WO4/!SS!/AIN4)PA4" pad="2"/>
-<connect gate="G$1" pin="(LUT1-OUT/AINP0/AIN7)PA7" pad="5"/>
-<connect gate="G$1" pin="(TCA0WO0/SCL/XDIR/AIN11)PB0" pad="9"/>
-<connect gate="G$1" pin="(TCA0WO1/SDA/XCK/AIN10)PB1" pad="8"/>
-<connect gate="G$1" pin="(TCA0WO3/SCK/AIN3/EXTCLK)PA3" pad="13"/>
-<connect gate="G$1" pin="(TCD0WOB/TCB0WO/TCA0WO5/AC0OUT/AIN5)PA5" pad="3"/>
-<connect gate="G$1" pin="PA0(!RESET!/UPDI/AIN0/LUT0-IN0)" pad="10"/>
-<connect gate="G$1" pin="PB2(TOSC2/EVOUT1/TXD/TCA0WO2)" pad="7"/>
-<connect gate="G$1" pin="PB3(TOSC1/RXD)" pad="6"/>
-<connect gate="P" pin="GND" pad="14"/>
-<connect gate="P" pin="VCC" pad="1"/>
-</connects>
-<technologies>
-<technology name="16"/>
-<technology name="2"/>
-<technology name="4"/>
-<technology name="8"/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
 <library name="hugo">
 <packages>
 <package name="SO23">
@@ -11483,6 +10883,104 @@ Source: www.kingbright.com</description>
 </deviceset>
 </devicesets>
 </library>
+<library name="ATTINY412-SSN">
+<description>&lt;8-bit Microcontrollers - MCU 20MHz, 4KB, SOIC8, Ind 105C, Green, Tube&lt;/b&gt;&lt;p&gt;
+&lt;author&gt;Created by SamacSys&lt;/author&gt;</description>
+<packages>
+<package name="TSSOP14">
+<description>&lt;b&gt;Plastic Small-Outline Package&lt;/b&gt;</description>
+<wire x1="-2.325" y1="-2.25" x2="2.325" y2="-2.25" width="0.2032" layer="21"/>
+<wire x1="2.325" y1="-2.25" x2="2.325" y2="2.25" width="0.2032" layer="21"/>
+<wire x1="2.325" y1="2.25" x2="-2.325" y2="2.25" width="0.2032" layer="21"/>
+<wire x1="-2.325" y1="2.25" x2="-2.325" y2="-2.25" width="0.2032" layer="21"/>
+<circle x="-1.625" y="-1.6" radius="0.325" width="0" layer="21"/>
+<text x="-2.625" y="-3" size="1.27" layer="25" rot="R90">&gt;NAME</text>
+<text x="4.025" y="-3" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
+<smd name="1" x="-1.95" y="-3" dx="0.3" dy="0.75" layer="1"/>
+<smd name="2" x="-1.3" y="-3" dx="0.3" dy="0.75" layer="1"/>
+<smd name="3" x="-0.65" y="-3" dx="0.3" dy="0.75" layer="1"/>
+<smd name="4" x="0" y="-3" dx="0.3" dy="0.75" layer="1"/>
+<smd name="5" x="0.65" y="-3" dx="0.3" dy="0.75" layer="1"/>
+<smd name="6" x="1.3" y="-3" dx="0.3" dy="0.75" layer="1"/>
+<smd name="7" x="1.95" y="-3" dx="0.3" dy="0.75" layer="1"/>
+<smd name="8" x="1.95" y="3" dx="0.3" dy="0.75" layer="1"/>
+<smd name="9" x="1.3" y="3" dx="0.3" dy="0.75" layer="1"/>
+<smd name="10" x="0.65" y="3" dx="0.3" dy="0.75" layer="1"/>
+<smd name="11" x="0" y="3" dx="0.3" dy="0.75" layer="1"/>
+<smd name="12" x="-0.65" y="3" dx="0.3" dy="0.75" layer="1"/>
+<smd name="13" x="-1.3" y="3" dx="0.3" dy="0.75" layer="1"/>
+<smd name="14" x="-1.95" y="3" dx="0.3" dy="0.75" layer="1"/>
+<rectangle x1="-2.05" y1="-3.25" x2="-1.85" y2="-2.25" layer="51"/>
+<rectangle x1="-1.4" y1="-3.25" x2="-1.2" y2="-2.25" layer="51"/>
+<rectangle x1="-0.75" y1="-3.25" x2="-0.55" y2="-2.25" layer="51"/>
+<rectangle x1="-0.1" y1="-3.25" x2="0.1" y2="-2.25" layer="51"/>
+<rectangle x1="0.55" y1="-3.25" x2="0.75" y2="-2.25" layer="51"/>
+<rectangle x1="1.2" y1="-3.25" x2="1.4" y2="-2.25" layer="51"/>
+<rectangle x1="1.85" y1="-3.25" x2="2.05" y2="-2.25" layer="51"/>
+<rectangle x1="-2.05" y1="2.25" x2="-1.85" y2="3.25" layer="51"/>
+<rectangle x1="-1.4" y1="2.25" x2="-1.2" y2="3.25" layer="51"/>
+<rectangle x1="-0.75" y1="2.25" x2="-0.55" y2="3.25" layer="51"/>
+<rectangle x1="-0.1" y1="2.25" x2="0.1" y2="3.25" layer="51"/>
+<rectangle x1="0.55" y1="2.25" x2="0.75" y2="3.25" layer="51"/>
+<rectangle x1="1.2" y1="2.25" x2="1.4" y2="3.25" layer="51"/>
+<rectangle x1="1.85" y1="2.25" x2="2.05" y2="3.25" layer="51"/>
+</package>
+</packages>
+<symbols>
+<symbol name="ATTINY414">
+<pin name="PB3(TOSC1/RXD)" x="-48.26" y="5.08" length="middle"/>
+<pin name="PB2(TOSC2/EVOUT1/TXD/TCA0WO2)" x="-48.26" y="-2.54" length="middle"/>
+<pin name="(TCA0WO1/SDA/XCK/AIN10)PB1" x="43.18" y="-12.7" length="middle" rot="R180"/>
+<pin name="(TCA0WO0/SCL/XDIR/AIN11)PB0" x="43.18" y="-15.24" length="middle" rot="R180"/>
+<pin name="(LUT1-OUT/AINP0/AIN7)PA7" x="43.18" y="10.16" length="middle" rot="R180"/>
+<pin name="(DAC0OUT/AINN0/AIN6)PA6" x="43.18" y="7.62" length="middle" rot="R180"/>
+<pin name="(TCD0WOB/TCB0WO/TCA0WO5/AC0OUT/AIN5)PA5" x="43.18" y="5.08" length="middle" rot="R180"/>
+<pin name="(LUT0-OUT/TCD0WOA/TCA0WO4/!SS!/AIN4)PA4" x="43.18" y="2.54" length="middle" rot="R180"/>
+<pin name="(TCA0WO3/SCK/AIN3/EXTCLK)PA3" x="43.18" y="0" length="middle" rot="R180"/>
+<pin name="(LUT0-IN2/MISO/AIN2/EVOUT0)PA2" x="43.18" y="-2.54" length="middle" rot="R180"/>
+<pin name="(LUT0-IN1/MOSI/AIN1/BREAK)PA1" x="43.18" y="-5.08" length="middle" rot="R180"/>
+<pin name="PA0(!RESET!/UPDI/AIN0/LUT0-IN0)" x="-48.26" y="10.16" length="middle"/>
+<text x="-43.18" y="-18.288" size="1.778" layer="96" align="top-left">&gt;VALUE</text>
+<text x="-43.18" y="18.288" size="1.778" layer="95">&gt;NAME</text>
+<wire x1="-43.18" y1="17.78" x2="38.1" y2="17.78" width="0.254" layer="94"/>
+<wire x1="38.1" y1="17.78" x2="38.1" y2="-17.78" width="0.254" layer="94"/>
+<wire x1="38.1" y1="-17.78" x2="-43.18" y2="-17.78" width="0.254" layer="94"/>
+<wire x1="-43.18" y1="-17.78" x2="-43.18" y2="17.78" width="0.254" layer="94"/>
+<pin name="VCC" x="-48.26" y="15.24" length="middle"/>
+<pin name="GND" x="43.18" y="15.24" length="middle" rot="R180"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="ATTINY3224-XU">
+<gates>
+<gate name="G$1" symbol="ATTINY414" x="2.54" y="2.54"/>
+</gates>
+<devices>
+<device name="" package="TSSOP14">
+<connects>
+<connect gate="G$1" pin="(DAC0OUT/AINN0/AIN6)PA6" pad="4"/>
+<connect gate="G$1" pin="(LUT0-IN1/MOSI/AIN1/BREAK)PA1" pad="11"/>
+<connect gate="G$1" pin="(LUT0-IN2/MISO/AIN2/EVOUT0)PA2" pad="12"/>
+<connect gate="G$1" pin="(LUT0-OUT/TCD0WOA/TCA0WO4/!SS!/AIN4)PA4" pad="2"/>
+<connect gate="G$1" pin="(LUT1-OUT/AINP0/AIN7)PA7" pad="5"/>
+<connect gate="G$1" pin="(TCA0WO0/SCL/XDIR/AIN11)PB0" pad="9"/>
+<connect gate="G$1" pin="(TCA0WO1/SDA/XCK/AIN10)PB1" pad="8"/>
+<connect gate="G$1" pin="(TCA0WO3/SCK/AIN3/EXTCLK)PA3" pad="13"/>
+<connect gate="G$1" pin="(TCD0WOB/TCB0WO/TCA0WO5/AC0OUT/AIN5)PA5" pad="3"/>
+<connect gate="G$1" pin="GND" pad="14"/>
+<connect gate="G$1" pin="PA0(!RESET!/UPDI/AIN0/LUT0-IN0)" pad="10"/>
+<connect gate="G$1" pin="PB2(TOSC2/EVOUT1/TXD/TCA0WO2)" pad="7"/>
+<connect gate="G$1" pin="PB3(TOSC1/RXD)" pad="6"/>
+<connect gate="G$1" pin="VCC" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -11501,7 +10999,6 @@ Source: www.kingbright.com</description>
 <part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="B.U11" library="atmel" deviceset="ATTINY*14" device="-SSN" technology="4" value="AT414"/>
 <part name="B.R16" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="100k"/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
@@ -11516,12 +11013,14 @@ Source: www.kingbright.com</description>
 <part name="+3V4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="B.R14" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="2k2"/>
 <part name="B.D12" library="led" deviceset="LED" device="CHIP-LED0603" package3d_urn="urn:adsk.eagle:package:15819/3" value="GREEN"/>
-<part name="D.T1" library="hugo" deviceset="P-MOSFET" device="" value="FDV304"/>
+<part name="B.U1" library="ATTINY412-SSN" deviceset="ATTINY3224-XU" device=""/>
+<part name="GND1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
+<part name="D.T11" library="hugo" deviceset="P-MOSFET" device="" value="FDV304"/>
 </parts>
 <sheets>
 <sheet>
 <plain>
-<text x="195.58" y="58.42" size="1.778" layer="97">* br17 is used if the transistor is not. 
+<text x="198.12" y="48.26" size="1.778" layer="97">* br17 is used if the transistor is not. 
 * it can be replaced by a fuse as well
 * br16 it is not used when the trasistor is not</text>
 <text x="76.2" y="53.34" size="1.778" layer="97" rot="R180">* R3(R3) are used when TX(RX) is used. 
@@ -11560,31 +11059,27 @@ is used as I2C master</text>
 <instance part="GND3" gate="1" x="104.14" y="60.96" smashed="yes">
 <attribute name="VALUE" x="101.6" y="58.42" size="1.778" layer="96"/>
 </instance>
-<instance part="B.U11" gate="G$1" x="111.76" y="27.94" smashed="yes">
-<attribute name="VALUE" x="71.12" y="12.192" size="1.778" layer="96" align="top-left"/>
-<attribute name="NAME" x="71.12" y="43.688" size="1.778" layer="95"/>
-</instance>
-<instance part="B.R16" gate="G$1" x="198.12" y="38.1" smashed="yes">
-<attribute name="NAME" x="194.31" y="39.5986" size="1.778" layer="95"/>
-<attribute name="VALUE" x="194.31" y="34.798" size="1.778" layer="96"/>
+<instance part="B.R16" gate="G$1" x="195.58" y="38.1" smashed="yes">
+<attribute name="NAME" x="191.77" y="39.5986" size="1.778" layer="95"/>
+<attribute name="VALUE" x="191.77" y="34.798" size="1.778" layer="96"/>
 </instance>
 <instance part="GND4" gate="1" x="190.5" y="-30.48" smashed="yes">
 <attribute name="VALUE" x="187.96" y="-33.02" size="1.778" layer="96"/>
 </instance>
-<instance part="+3V1" gate="G$1" x="203.2" y="53.34" smashed="yes">
-<attribute name="VALUE" x="205.74" y="53.34" size="1.778" layer="96"/>
+<instance part="+3V1" gate="G$1" x="203.2" y="45.72" smashed="yes">
+<attribute name="VALUE" x="205.74" y="45.72" size="1.778" layer="96"/>
 </instance>
 <instance part="B.R17" gate="G$1" x="226.06" y="22.86" smashed="yes" rot="R90">
 <attribute name="NAME" x="224.5614" y="19.05" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="229.362" y="19.05" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="B.R13" gate="G$1" x="170.18" y="-25.4" smashed="yes" rot="R180">
-<attribute name="NAME" x="173.99" y="-26.8986" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="173.99" y="-22.098" size="1.778" layer="96" rot="R180"/>
+<instance part="B.R13" gate="G$1" x="182.88" y="-25.4" smashed="yes" rot="R180">
+<attribute name="NAME" x="186.69" y="-26.8986" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="186.69" y="-22.098" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="B.D11" gate="G$1" x="180.34" y="-25.4" smashed="yes" rot="R90">
-<attribute name="NAME" x="184.912" y="-21.844" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="184.912" y="-19.685" size="1.778" layer="96" rot="R180"/>
+<instance part="B.D11" gate="G$1" x="170.18" y="-25.4" smashed="yes" rot="R90">
+<attribute name="NAME" x="174.752" y="-21.844" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="174.752" y="-19.685" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="B.R11" gate="G$1" x="35.56" y="22.86" smashed="yes" rot="R90">
 <attribute name="NAME" x="34.0614" y="19.05" size="1.778" layer="95" rot="R90"/>
@@ -11597,27 +11092,34 @@ is used as I2C master</text>
 <instance part="+3V3" gate="G$1" x="43.18" y="38.1" smashed="yes">
 <attribute name="VALUE" x="45.72" y="38.1" size="1.778" layer="96"/>
 </instance>
-<instance part="B.C12" gate="G$1" x="66.04" y="71.12" smashed="yes">
-<attribute name="NAME" x="67.564" y="71.501" size="1.778" layer="95"/>
-<attribute name="VALUE" x="67.564" y="66.421" size="1.778" layer="96"/>
+<instance part="B.C12" gate="G$1" x="58.42" y="73.66" smashed="yes">
+<attribute name="NAME" x="59.944" y="74.041" size="1.778" layer="95"/>
+<attribute name="VALUE" x="59.944" y="68.961" size="1.778" layer="96"/>
 </instance>
-<instance part="GND5" gate="1" x="66.04" y="58.42" smashed="yes">
-<attribute name="VALUE" x="63.5" y="55.88" size="1.778" layer="96"/>
+<instance part="GND5" gate="1" x="58.42" y="58.42" smashed="yes">
+<attribute name="VALUE" x="55.88" y="55.88" size="1.778" layer="96"/>
 </instance>
-<instance part="+3V4" gate="G$1" x="66.04" y="83.82" smashed="yes">
-<attribute name="VALUE" x="68.58" y="83.82" size="1.778" layer="96"/>
+<instance part="+3V4" gate="G$1" x="58.42" y="83.82" smashed="yes">
+<attribute name="VALUE" x="60.96" y="83.82" size="1.778" layer="96"/>
 </instance>
-<instance part="B.R14" gate="G$1" x="170.18" y="-17.78" smashed="yes" rot="R180">
-<attribute name="NAME" x="173.99" y="-19.2786" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="173.99" y="-14.478" size="1.778" layer="96" rot="R180"/>
+<instance part="B.R14" gate="G$1" x="182.88" y="-17.78" smashed="yes" rot="R180">
+<attribute name="NAME" x="186.69" y="-19.2786" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="186.69" y="-14.478" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="B.D12" gate="G$1" x="180.34" y="-17.78" smashed="yes" rot="R90">
-<attribute name="NAME" x="184.912" y="-14.224" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="184.912" y="-12.065" size="1.778" layer="96" rot="R180"/>
+<instance part="B.D12" gate="G$1" x="170.18" y="-17.78" smashed="yes" rot="R90">
+<attribute name="NAME" x="174.752" y="-14.224" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="174.752" y="-12.065" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="D.T1" gate="G$1" x="200.66" y="22.86" smashed="yes">
-<attribute name="NAME" x="196.85" y="25.4" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="199.39" y="25.4" size="1.778" layer="96" rot="R90"/>
+<instance part="B.U1" gate="G$1" x="114.3" y="30.48" smashed="yes">
+<attribute name="VALUE" x="71.12" y="12.192" size="1.778" layer="96" align="top-left"/>
+<attribute name="NAME" x="71.12" y="48.768" size="1.778" layer="95"/>
+</instance>
+<instance part="GND1" gate="1" x="170.18" y="43.18" smashed="yes">
+<attribute name="VALUE" x="167.64" y="40.64" size="1.778" layer="96"/>
+</instance>
+<instance part="D.T11" gate="G$1" x="200.66" y="25.4" smashed="yes">
+<attribute name="NAME" x="196.85" y="27.94" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="199.39" y="27.94" size="1.778" layer="96" rot="R90"/>
 </instance>
 </instances>
 <busses>
@@ -11646,19 +11148,24 @@ is used as I2C master</text>
 <junction x="215.9" y="-10.16"/>
 </segment>
 <segment>
-<pinref part="B.D11" gate="G$1" pin="C"/>
 <pinref part="GND4" gate="1" pin="GND"/>
+<pinref part="B.R13" gate="G$1" pin="1"/>
 <wire x1="190.5" y1="-17.78" x2="190.5" y2="-25.4" width="0.1524" layer="91"/>
 <wire x1="190.5" y1="-25.4" x2="190.5" y2="-27.94" width="0.1524" layer="91"/>
-<wire x1="185.42" y1="-25.4" x2="190.5" y2="-25.4" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="-25.4" x2="190.5" y2="-25.4" width="0.1524" layer="91"/>
 <junction x="190.5" y="-25.4"/>
-<pinref part="B.D12" gate="G$1" pin="C"/>
-<wire x1="185.42" y1="-17.78" x2="190.5" y2="-17.78" width="0.1524" layer="91"/>
+<pinref part="B.R14" gate="G$1" pin="1"/>
+<wire x1="187.96" y1="-17.78" x2="190.5" y2="-17.78" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="B.C12" gate="G$1" pin="2"/>
 <pinref part="GND5" gate="1" pin="GND"/>
-<wire x1="66.04" y1="66.04" x2="66.04" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="58.42" y1="68.58" x2="58.42" y2="60.96" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="B.U1" gate="G$1" pin="GND"/>
+<pinref part="GND1" gate="1" pin="GND"/>
+<wire x1="157.48" y1="45.72" x2="170.18" y2="45.72" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="SDA" class="0">
@@ -11680,9 +11187,9 @@ is used as I2C master</text>
 <pinref part="B.R11" gate="G$1" pin="1"/>
 <wire x1="35.56" y1="17.78" x2="35.56" y2="0" width="0.1524" layer="91"/>
 <junction x="35.56" y="0"/>
-<pinref part="B.U11" gate="G$1" pin="(TCA0WO1/SDA/XCK/AIN10)PB1"/>
 <wire x1="157.48" y1="17.78" x2="175.26" y2="17.78" width="0.1524" layer="91"/>
 <junction x="175.26" y="17.78"/>
+<pinref part="B.U1" gate="G$1" pin="(TCA0WO1/SDA/XCK/AIN10)PB1"/>
 </segment>
 </net>
 <net name="SCL" class="0">
@@ -11705,19 +11212,20 @@ is used as I2C master</text>
 <pinref part="B.R12" gate="G$1" pin="1"/>
 <wire x1="43.18" y1="17.78" x2="43.18" y2="-2.54" width="0.1524" layer="91"/>
 <junction x="43.18" y="-2.54"/>
-<pinref part="B.U11" gate="G$1" pin="(TCA0WO0/SCL/XDIR/AIN11)PB0"/>
 <wire x1="157.48" y1="15.24" x2="177.8" y2="15.24" width="0.1524" layer="91"/>
 <junction x="177.8" y="15.24"/>
+<pinref part="B.U1" gate="G$1" pin="(TCA0WO0/SCL/XDIR/AIN11)PB0"/>
 </segment>
 </net>
 <net name="UPDI" class="0">
 <segment>
 <pinref part="B.J1" gate="A" pin="5"/>
-<pinref part="B.U11" gate="G$1" pin="PA0(!RESET!/UPDI/AIN0/LUT0-IN0)"/>
 <wire x1="182.88" y1="-12.7" x2="223.52" y2="-12.7" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="40.64" x2="66.04" y2="48.26" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="48.26" x2="182.88" y2="48.26" width="0.1524" layer="91"/>
-<wire x1="182.88" y1="48.26" x2="182.88" y2="-12.7" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="50.8" x2="182.88" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="182.88" y1="50.8" x2="182.88" y2="-12.7" width="0.1524" layer="91"/>
+<pinref part="B.U1" gate="G$1" pin="PA0(!RESET!/UPDI/AIN0/LUT0-IN0)"/>
+<wire x1="66.04" y1="40.64" x2="63.5" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="40.64" x2="63.5" y2="50.8" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="PA3" class="0">
@@ -11725,9 +11233,9 @@ is used as I2C master</text>
 <pinref part="B.J2" gate="A" pin="5"/>
 <wire x1="22.86" y1="7.62" x2="167.64" y2="7.62" width="0.1524" layer="91"/>
 <label x="40.64" y="7.62" size="1.778" layer="95"/>
-<pinref part="B.U11" gate="G$1" pin="(TCA0WO3/SCK/AIN3/EXTCLK)PA3"/>
 <wire x1="167.64" y1="30.48" x2="167.64" y2="7.62" width="0.1524" layer="91"/>
 <wire x1="157.48" y1="30.48" x2="167.64" y2="30.48" width="0.1524" layer="91"/>
+<pinref part="B.U1" gate="G$1" pin="(TCA0WO3/SCK/AIN3/EXTCLK)PA3"/>
 </segment>
 </net>
 <net name="PA2" class="0">
@@ -11735,9 +11243,9 @@ is used as I2C master</text>
 <pinref part="B.J2" gate="A" pin="4"/>
 <label x="40.64" y="5.08" size="1.778" layer="95"/>
 <wire x1="22.86" y1="5.08" x2="170.18" y2="5.08" width="0.1524" layer="91"/>
-<pinref part="B.U11" gate="G$1" pin="(LUT0-IN2/MISO/AIN2/EVOUT0)PA2"/>
 <wire x1="157.48" y1="27.94" x2="170.18" y2="27.94" width="0.1524" layer="91"/>
 <wire x1="170.18" y1="27.94" x2="170.18" y2="5.08" width="0.1524" layer="91"/>
+<pinref part="B.U1" gate="G$1" pin="(LUT0-IN2/MISO/AIN2/EVOUT0)PA2"/>
 </segment>
 </net>
 <net name="VCC" class="0">
@@ -11754,15 +11262,17 @@ is used as I2C master</text>
 </segment>
 <segment>
 <pinref part="+3V1" gate="G$1" pin="+3V3"/>
-<wire x1="203.2" y1="50.8" x2="203.2" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="203.2" y1="43.18" x2="203.2" y2="38.1" width="0.1524" layer="91"/>
 <wire x1="203.2" y1="38.1" x2="203.2" y2="30.48" width="0.1524" layer="91"/>
 <wire x1="203.2" y1="30.48" x2="203.2" y2="27.94" width="0.1524" layer="91"/>
 <wire x1="226.06" y1="30.48" x2="203.2" y2="30.48" width="0.1524" layer="91"/>
 <junction x="203.2" y="30.48"/>
 <pinref part="B.R17" gate="G$1" pin="2"/>
 <wire x1="226.06" y1="26.67" x2="226.06" y2="30.48" width="0.1524" layer="91"/>
-<pinref part="D.T1" gate="G$1" pin="S"/>
+<pinref part="D.T11" gate="G$1" pin="S"/>
+<junction x="203.2" y="30.48"/>
 <pinref part="B.R16" gate="G$1" pin="2"/>
+<wire x1="200.66" y1="38.1" x2="203.2" y2="38.1" width="0.1524" layer="91"/>
 <junction x="203.2" y="38.1"/>
 </segment>
 <segment>
@@ -11779,13 +11289,100 @@ is used as I2C master</text>
 <segment>
 <pinref part="B.C12" gate="G$1" pin="1"/>
 <pinref part="+3V4" gate="G$1" pin="+3V3"/>
-<wire x1="66.04" y1="73.66" x2="66.04" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="58.42" y1="76.2" x2="58.42" y2="78.74" width="0.1524" layer="91"/>
+<pinref part="B.U1" gate="G$1" pin="VCC"/>
+<wire x1="58.42" y1="78.74" x2="58.42" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="45.72" x2="66.04" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="78.74" x2="58.42" y2="78.74" width="0.1524" layer="91"/>
+<junction x="58.42" y="78.74"/>
 </segment>
 </net>
-<net name="N$4" class="0">
+<net name="VBAT" class="0">
 <segment>
+<pinref part="B.J1" gate="A" pin="2"/>
+<wire x1="223.52" y1="-5.08" x2="226.06" y2="-5.08" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="PB2" class="0">
+<segment>
+<wire x1="190.5" y1="25.4" x2="190.5" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="190.5" y1="38.1" x2="190.5" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="190.5" y1="53.34" x2="60.96" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="53.34" x2="60.96" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="27.94" x2="66.04" y2="27.94" width="0.1524" layer="91"/>
+<pinref part="B.U1" gate="G$1" pin="PB2(TOSC2/EVOUT1/TXD/TCA0WO2)"/>
+<pinref part="D.T11" gate="G$1" pin="G"/>
+<wire x1="195.58" y1="25.4" x2="190.5" y2="25.4" width="0.1524" layer="91"/>
+<pinref part="B.R16" gate="G$1" pin="1"/>
+<junction x="190.5" y="38.1"/>
+</segment>
+</net>
+<net name="PA4" class="0">
+<segment>
+<pinref part="B.J2" gate="A" pin="6"/>
+<wire x1="160.02" y1="10.16" x2="160.02" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="160.02" y1="10.16" x2="22.86" y2="10.16" width="0.1524" layer="91"/>
+<label x="40.64" y="10.16" size="1.778" layer="95"/>
+<wire x1="157.48" y1="33.02" x2="160.02" y2="33.02" width="0.1524" layer="91"/>
+<pinref part="B.U1" gate="G$1" pin="(LUT0-OUT/TCD0WOA/TCA0WO4/!SS!/AIN4)PA4"/>
+</segment>
+</net>
+<net name="PA1" class="0">
+<segment>
+<pinref part="B.J2" gate="A" pin="3"/>
+<wire x1="172.72" y1="25.4" x2="157.48" y2="25.4" width="0.1524" layer="91"/>
+<wire x1="172.72" y1="2.54" x2="172.72" y2="25.4" width="0.1524" layer="91"/>
+<wire x1="172.72" y1="2.54" x2="22.86" y2="2.54" width="0.1524" layer="91"/>
+<label x="40.64" y="2.54" size="1.778" layer="95"/>
+<pinref part="B.U1" gate="G$1" pin="(LUT0-IN1/MOSI/AIN1/BREAK)PA1"/>
+</segment>
+</net>
+<net name="PA5" class="0">
+<segment>
+<pinref part="B.J1" gate="A" pin="1"/>
+<wire x1="185.42" y1="35.56" x2="185.42" y2="-2.54" width="0.1524" layer="91"/>
+<wire x1="185.42" y1="-2.54" x2="223.52" y2="-2.54" width="0.1524" layer="91"/>
+<wire x1="157.48" y1="35.56" x2="185.42" y2="35.56" width="0.1524" layer="91"/>
+<pinref part="B.U1" gate="G$1" pin="(TCD0WOB/TCB0WO/TCA0WO5/AC0OUT/AIN5)PA5"/>
+</segment>
+</net>
+<net name="PA7" class="0">
+<segment>
+<wire x1="157.48" y1="40.64" x2="165.1" y2="40.64" width="0.1524" layer="91"/>
+<pinref part="B.U1" gate="G$1" pin="(LUT1-OUT/AINP0/AIN7)PA7"/>
+<wire x1="165.1" y1="-17.78" x2="165.1" y2="40.64" width="0.1524" layer="91"/>
+<pinref part="B.D12" gate="G$1" pin="A"/>
+<wire x1="167.64" y1="-17.78" x2="165.1" y2="-17.78" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$5" class="0">
+<segment>
+<wire x1="162.56" y1="-25.4" x2="162.56" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="162.56" y1="38.1" x2="157.48" y2="38.1" width="0.1524" layer="91"/>
+<pinref part="B.U1" gate="G$1" pin="(DAC0OUT/AINN0/AIN6)PA6"/>
+<pinref part="B.D11" gate="G$1" pin="A"/>
+<wire x1="167.64" y1="-25.4" x2="162.56" y2="-25.4" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$1" class="0">
+<segment>
+<pinref part="B.R14" gate="G$1" pin="2"/>
+<pinref part="B.D12" gate="G$1" pin="C"/>
+<wire x1="177.8" y1="-17.78" x2="175.26" y2="-17.78" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$2" class="0">
+<segment>
+<pinref part="B.R13" gate="G$1" pin="2"/>
+<pinref part="B.D11" gate="G$1" pin="C"/>
+<wire x1="177.8" y1="-25.4" x2="175.26" y2="-25.4" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$3" class="0">
+<segment>
+<pinref part="D.T11" gate="G$1" pin="D"/>
 <pinref part="B.C11" gate="G$1" pin="1"/>
-<wire x1="203.2" y1="15.24" x2="203.2" y2="5.08" width="0.1524" layer="91"/>
+<wire x1="203.2" y1="17.78" x2="203.2" y2="5.08" width="0.1524" layer="91"/>
 <wire x1="203.2" y1="5.08" x2="203.2" y2="-2.54" width="0.1524" layer="91"/>
 <wire x1="203.2" y1="5.08" x2="215.9" y2="5.08" width="0.1524" layer="91"/>
 <wire x1="215.9" y1="5.08" x2="215.9" y2="-7.62" width="0.1524" layer="91"/>
@@ -11796,88 +11393,6 @@ is used as I2C master</text>
 <pinref part="B.R17" gate="G$1" pin="1"/>
 <wire x1="215.9" y1="5.08" x2="226.06" y2="5.08" width="0.1524" layer="91"/>
 <wire x1="226.06" y1="5.08" x2="226.06" y2="19.05" width="0.1524" layer="91"/>
-<pinref part="D.T1" gate="G$1" pin="D"/>
-</segment>
-</net>
-<net name="VBAT" class="0">
-<segment>
-<pinref part="B.J1" gate="A" pin="2"/>
-<wire x1="223.52" y1="-5.08" x2="226.06" y2="-5.08" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="PA51" class="0">
-<segment>
-<pinref part="B.R13" gate="G$1" pin="1"/>
-<wire x1="175.26" y1="-25.4" x2="177.8" y2="-25.4" width="0.1016" layer="91"/>
-<pinref part="B.D11" gate="G$1" pin="A"/>
-</segment>
-</net>
-<net name="PB2" class="0">
-<segment>
-<wire x1="195.58" y1="22.86" x2="190.5" y2="22.86" width="0.1524" layer="91"/>
-<wire x1="190.5" y1="22.86" x2="190.5" y2="38.1" width="0.1524" layer="91"/>
-<wire x1="190.5" y1="38.1" x2="190.5" y2="53.34" width="0.1524" layer="91"/>
-<wire x1="190.5" y1="53.34" x2="60.96" y2="53.34" width="0.1524" layer="91"/>
-<wire x1="60.96" y1="53.34" x2="60.96" y2="27.94" width="0.1524" layer="91"/>
-<pinref part="B.U11" gate="G$1" pin="PB2(TOSC2/EVOUT1/TXD/TCA0WO2)"/>
-<wire x1="60.96" y1="27.94" x2="66.04" y2="27.94" width="0.1524" layer="91"/>
-<pinref part="D.T1" gate="G$1" pin="G"/>
-<pinref part="B.R16" gate="G$1" pin="1"/>
-<wire x1="193.04" y1="38.1" x2="190.5" y2="38.1" width="0.1524" layer="91"/>
-<junction x="190.5" y="38.1"/>
-</segment>
-</net>
-<net name="PA4" class="0">
-<segment>
-<pinref part="B.J2" gate="A" pin="6"/>
-<wire x1="160.02" y1="10.16" x2="160.02" y2="33.02" width="0.1524" layer="91"/>
-<wire x1="160.02" y1="10.16" x2="22.86" y2="10.16" width="0.1524" layer="91"/>
-<label x="40.64" y="10.16" size="1.778" layer="95"/>
-<pinref part="B.U11" gate="G$1" pin="(LUT0-OUT/TCD0WOA/TCA0WO4/!SS!/AIN4)PA4"/>
-<wire x1="157.48" y1="33.02" x2="160.02" y2="33.02" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="PA1" class="0">
-<segment>
-<pinref part="B.J2" gate="A" pin="3"/>
-<pinref part="B.U11" gate="G$1" pin="(LUT0-IN1/MOSI/AIN1/BREAK)PA1"/>
-<wire x1="172.72" y1="25.4" x2="157.48" y2="25.4" width="0.1524" layer="91"/>
-<wire x1="172.72" y1="2.54" x2="172.72" y2="25.4" width="0.1524" layer="91"/>
-<wire x1="172.72" y1="2.54" x2="22.86" y2="2.54" width="0.1524" layer="91"/>
-<label x="40.64" y="2.54" size="1.778" layer="95"/>
-</segment>
-</net>
-<net name="N$3" class="0">
-<segment>
-<pinref part="B.R14" gate="G$1" pin="1"/>
-<pinref part="B.D12" gate="G$1" pin="A"/>
-<wire x1="175.26" y1="-17.78" x2="177.8" y2="-17.78" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="PA5" class="0">
-<segment>
-<pinref part="B.J1" gate="A" pin="1"/>
-<wire x1="185.42" y1="35.56" x2="185.42" y2="-2.54" width="0.1524" layer="91"/>
-<wire x1="185.42" y1="-2.54" x2="223.52" y2="-2.54" width="0.1524" layer="91"/>
-<pinref part="B.U11" gate="G$1" pin="(TCD0WOB/TCB0WO/TCA0WO5/AC0OUT/AIN5)PA5"/>
-<wire x1="157.48" y1="35.56" x2="185.42" y2="35.56" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="PA7" class="0">
-<segment>
-<pinref part="B.R14" gate="G$1" pin="2"/>
-<wire x1="165.1" y1="-17.78" x2="165.1" y2="40.64" width="0.1524" layer="91"/>
-<pinref part="B.U11" gate="G$1" pin="(LUT1-OUT/AINP0/AIN7)PA7"/>
-<wire x1="157.48" y1="40.64" x2="165.1" y2="40.64" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$5" class="0">
-<segment>
-<pinref part="B.R13" gate="G$1" pin="2"/>
-<wire x1="165.1" y1="-25.4" x2="162.56" y2="-25.4" width="0.1524" layer="91"/>
-<wire x1="162.56" y1="-25.4" x2="162.56" y2="38.1" width="0.1524" layer="91"/>
-<pinref part="B.U11" gate="G$1" pin="(DAC0OUT/AINN0/AIN6)PA6"/>
-<wire x1="162.56" y1="38.1" x2="157.48" y2="38.1" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
