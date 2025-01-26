@@ -10853,10 +10853,10 @@ Source: www.bourns.com .. 6000_series.pdf</description>
 <smd name="GND11" x="1.27" y="-4.699" dx="2.032" dy="0.762" layer="1" thermals="no"/>
 </package>
 <package name="USB-C">
-<smd name="SH2" x="-5.08" y="-1.27" dx="1.8" dy="1.2" layer="1"/>
-<smd name="SH3" x="5.06" y="-1.27" dx="1.8" dy="1.2" layer="1"/>
-<smd name="SH1" x="-5.08" y="2.91" dx="1.8" dy="1.2" layer="1"/>
-<smd name="SH4" x="5.06" y="2.91" dx="1.8" dy="1.2" layer="1"/>
+<smd name="SH2" x="-5.18" y="-1.27" dx="1.9" dy="1.3" layer="1"/>
+<smd name="SH3" x="5.18" y="-1.27" dx="1.9" dy="1.3" layer="1"/>
+<smd name="SH1" x="-5.18" y="2.91" dx="1.9" dy="1.3" layer="1"/>
+<smd name="SH4" x="5.18" y="2.91" dx="1.9" dy="1.3" layer="1"/>
 <hole x="2.88" y="2.38" drill="0.65"/>
 <hole x="-2.9" y="2.38" drill="0.65"/>
 <wire x1="3.81" y1="-3.87" x2="-3.81" y2="-3.87" width="0.127" layer="51"/>
@@ -10875,6 +10875,15 @@ Source: www.bourns.com .. 6000_series.pdf</description>
 <smd name="B5" x="1.74" y="3.825" dx="1.45" dy="0.3" layer="1" rot="R90"/>
 <smd name="A8" x="1.24" y="3.825" dx="1.45" dy="0.3" layer="1" rot="R90"/>
 <text x="-3.81" y="5.08" size="1.27" layer="25">&gt;NAME</text>
+</package>
+<package name="SHOTKY_2.8">
+<smd name="A" x="-1.4" y="0" dx="1.2" dy="1.2" layer="1"/>
+<smd name="K" x="1.4" y="0" dx="1.2" dy="1.2" layer="1"/>
+<text x="-2.1" y="1.1" size="1.016" layer="25">&gt;NAME</text>
+<wire x1="-1.3" y1="0.8" x2="1.3" y2="0.8" width="0.1524" layer="51"/>
+<wire x1="1.3" y1="0.8" x2="1.3" y2="-0.8" width="0.1524" layer="51"/>
+<wire x1="1.3" y1="-0.8" x2="-1.3" y2="-0.8" width="0.1524" layer="51"/>
+<wire x1="-1.3" y1="-0.8" x2="-1.3" y2="0.8" width="0.1524" layer="51"/>
 </package>
 </packages>
 <symbols>
@@ -10942,6 +10951,24 @@ Source: www.bourns.com .. 6000_series.pdf</description>
 <wire x1="-7.62" y1="-15.24" x2="-7.62" y2="17.78" width="0.254" layer="94"/>
 <wire x1="-7.62" y1="17.78" x2="5.08" y2="17.78" width="0.254" layer="94"/>
 <text x="-5.08" y="20.32" size="1.27" layer="95">&gt;NAME</text>
+</symbol>
+<symbol name="SHOTKY">
+<wire x1="-1.27" y1="-1.27" x2="1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="1.27" y1="0" x2="-1.27" y2="1.27" width="0.254" layer="94"/>
+<wire x1="1.905" y1="1.27" x2="1.27" y2="1.27" width="0.254" layer="94"/>
+<wire x1="1.27" y1="1.27" x2="1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="1.27" x2="-1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="0" x2="-1.27" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="1.27" y1="0" x2="1.27" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="1.905" y1="1.27" x2="1.905" y2="1.016" width="0.254" layer="94"/>
+<wire x1="1.27" y1="-1.27" x2="0.635" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="0.635" y1="-1.016" x2="0.635" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="0" x2="-2.54" y2="0" width="0.254" layer="94"/>
+<wire x1="1.27" y1="0" x2="2.54" y2="0" width="0.254" layer="94"/>
+<text x="-2.286" y="1.905" size="1.778" layer="95">&gt;NAME</text>
+<text x="-2.286" y="-3.429" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="A" x="-2.54" y="0" visible="off" length="point" direction="pas"/>
+<pin name="C" x="2.54" y="0" visible="off" length="point" direction="pas" rot="R180"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -11016,6 +11043,22 @@ Source: www.bourns.com .. 6000_series.pdf</description>
 <connect gate="G$1" pin="SBU2" pad="B8"/>
 <connect gate="G$1" pin="VBUS1" pad="A4B9"/>
 <connect gate="G$1" pin="VBUS2" pad="B4A9"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="SHOTKY_2.8">
+<gates>
+<gate name="G$1" symbol="SHOTKY" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="SHOTKY_2.8">
+<connects>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="K"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -11299,14 +11342,13 @@ Source: &lt;a href="http://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_
 <part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="C.C2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="100n"/>
 <part name="C.C4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="100n"/>
-<part name="C.F1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="0.5A"/>
 <part name="P+4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="C.C6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0603" package3d_urn="urn:adsk.eagle:package:23616/2" value="10nF"/>
+<part name="C.D1" library="hugo" deviceset="SHOTKY_2.8" device=""/>
 </parts>
 <sheets>
 <sheet>
 <plain>
-<text x="43.18" y="220.98" size="1.778" layer="91">Ferite</text>
 </plain>
 <instances>
 <instance part="C.J2" gate="A" x="-7.62" y="86.36" smashed="yes" rot="R180">
@@ -11376,8 +11418,8 @@ Source: &lt;a href="http://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_
 <instance part="GND3" gate="1" x="177.8" y="187.96" smashed="yes">
 <attribute name="VALUE" x="175.26" y="185.42" size="1.778" layer="96"/>
 </instance>
-<instance part="P+3" gate="VCC" x="223.52" y="226.06" smashed="yes">
-<attribute name="VALUE" x="220.98" y="223.52" size="1.778" layer="96" rot="R90"/>
+<instance part="P+3" gate="VCC" x="223.52" y="236.22" smashed="yes">
+<attribute name="VALUE" x="220.98" y="233.68" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="P+1" gate="VCC" x="160.02" y="88.9" smashed="yes">
 <attribute name="VALUE" x="157.48" y="86.36" size="1.778" layer="96" rot="R90"/>
@@ -11403,16 +11445,16 @@ Source: &lt;a href="http://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_
 <attribute name="NAME" x="125.984" y="155.321" size="1.778" layer="95"/>
 <attribute name="VALUE" x="125.984" y="150.241" size="1.778" layer="96"/>
 </instance>
-<instance part="C.F1" gate="G$1" x="45.72" y="215.9" smashed="yes">
-<attribute name="NAME" x="41.91" y="217.297" size="1.778" layer="95"/>
-<attribute name="VALUE" x="41.91" y="212.979" size="1.778" layer="96"/>
-</instance>
 <instance part="P+4" gate="VCC" x="5.08" y="116.84" smashed="yes">
 <attribute name="VALUE" x="2.54" y="114.3" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="C.C6" gate="G$1" x="35.56" y="180.34" smashed="yes" rot="R180">
 <attribute name="NAME" x="34.036" y="179.959" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="34.036" y="185.039" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="C.D1" gate="G$1" x="223.52" y="226.06" smashed="yes" rot="R90">
+<attribute name="NAME" x="220.726" y="224.155" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="220.726" y="226.949" size="1.778" layer="96" rot="R180"/>
 </instance>
 </instances>
 <busses>
@@ -11643,19 +11685,6 @@ Source: &lt;a href="http://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_
 <junction x="5.08" y="106.68"/>
 </segment>
 <segment>
-<pinref part="P+3" gate="VCC" pin="VCC"/>
-<pinref part="C.L1" gate="G$1" pin="2"/>
-<wire x1="220.98" y1="215.9" x2="223.52" y2="215.9" width="0.1524" layer="91"/>
-<junction x="223.52" y="215.9"/>
-<wire x1="223.52" y1="215.9" x2="223.52" y2="223.52" width="0.1524" layer="91"/>
-<wire x1="223.52" y1="205.74" x2="223.52" y2="215.9" width="0.1524" layer="91"/>
-<pinref part="C.C3" gate="G$1" pin="1"/>
-<wire x1="223.52" y1="203.2" x2="223.52" y2="205.74" width="0.1524" layer="91"/>
-<junction x="223.52" y="205.74"/>
-<pinref part="C.U3" gate="G$1" pin="BP"/>
-<wire x1="208.28" y1="205.74" x2="223.52" y2="205.74" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="C.C1" gate="G$1" pin="1"/>
 <pinref part="C.U1" gate="G$1" pin="3V3"/>
 <wire x1="76.2" y1="114.3" x2="55.88" y2="114.3" width="0.1524" layer="91"/>
@@ -11666,6 +11695,11 @@ Source: &lt;a href="http://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_
 <wire x1="55.88" y1="114.3" x2="55.88" y2="121.92" width="0.1524" layer="91"/>
 <wire x1="55.88" y1="101.6" x2="55.88" y2="114.3" width="0.1524" layer="91"/>
 <junction x="55.88" y="114.3"/>
+</segment>
+<segment>
+<pinref part="C.D1" gate="G$1" pin="C"/>
+<pinref part="P+3" gate="VCC" pin="VCC"/>
+<wire x1="223.52" y1="228.6" x2="223.52" y2="233.68" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$3" class="0">
@@ -11712,11 +11746,21 @@ Source: &lt;a href="http://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_
 <junction x="170.18" y="215.9"/>
 <wire x1="124.46" y1="215.9" x2="160.02" y2="215.9" width="0.1524" layer="91"/>
 <wire x1="160.02" y1="215.9" x2="170.18" y2="215.9" width="0.1524" layer="91"/>
-<wire x1="124.46" y1="215.9" x2="50.8" y2="215.9" width="0.1524" layer="91"/>
-<pinref part="C.F1" gate="G$1" pin="2"/>
 <pinref part="C.C5" gate="G$1" pin="2"/>
 <wire x1="160.02" y1="208.28" x2="160.02" y2="215.9" width="0.1524" layer="91"/>
 <junction x="160.02" y="215.9"/>
+<pinref part="U$1" gate="G$1" pin="VBUS2"/>
+<wire x1="22.86" y1="180.34" x2="2.54" y2="180.34" width="0.1524" layer="91"/>
+<pinref part="U$1" gate="G$1" pin="VBUS1"/>
+<wire x1="2.54" y1="203.2" x2="22.86" y2="203.2" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="203.2" x2="22.86" y2="180.34" width="0.1524" layer="91"/>
+<junction x="22.86" y="203.2"/>
+<wire x1="22.86" y1="203.2" x2="22.86" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="215.9" x2="35.56" y2="215.9" width="0.1524" layer="91"/>
+<pinref part="C.C6" gate="G$1" pin="2"/>
+<wire x1="35.56" y1="185.42" x2="35.56" y2="215.9" width="0.1524" layer="91"/>
+<junction x="35.56" y="215.9"/>
+<wire x1="35.56" y1="215.9" x2="124.46" y2="215.9" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="PA3" class="0">
@@ -11797,21 +11841,19 @@ Source: &lt;a href="http://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_
 <label x="60.96" y="88.9" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="N$7" class="0">
+<net name="N$6" class="0">
 <segment>
-<pinref part="U$1" gate="G$1" pin="VBUS2"/>
-<wire x1="22.86" y1="180.34" x2="2.54" y2="180.34" width="0.1524" layer="91"/>
-<pinref part="U$1" gate="G$1" pin="VBUS1"/>
-<wire x1="2.54" y1="203.2" x2="22.86" y2="203.2" width="0.1524" layer="91"/>
-<wire x1="22.86" y1="203.2" x2="22.86" y2="180.34" width="0.1524" layer="91"/>
-<junction x="22.86" y="203.2"/>
-<wire x1="22.86" y1="203.2" x2="22.86" y2="215.9" width="0.1524" layer="91"/>
-<wire x1="22.86" y1="215.9" x2="35.56" y2="215.9" width="0.1524" layer="91"/>
-<wire x1="40.64" y1="215.9" x2="35.56" y2="215.9" width="0.1524" layer="91"/>
-<pinref part="C.F1" gate="G$1" pin="1"/>
-<pinref part="C.C6" gate="G$1" pin="2"/>
-<wire x1="35.56" y1="185.42" x2="35.56" y2="215.9" width="0.1524" layer="91"/>
-<junction x="35.56" y="215.9"/>
+<pinref part="C.L1" gate="G$1" pin="2"/>
+<wire x1="220.98" y1="215.9" x2="223.52" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="223.52" y1="205.74" x2="223.52" y2="215.9" width="0.1524" layer="91"/>
+<pinref part="C.C3" gate="G$1" pin="1"/>
+<wire x1="223.52" y1="203.2" x2="223.52" y2="205.74" width="0.1524" layer="91"/>
+<junction x="223.52" y="205.74"/>
+<pinref part="C.U3" gate="G$1" pin="BP"/>
+<wire x1="208.28" y1="205.74" x2="223.52" y2="205.74" width="0.1524" layer="91"/>
+<pinref part="C.D1" gate="G$1" pin="A"/>
+<wire x1="223.52" y1="223.52" x2="223.52" y2="215.9" width="0.1524" layer="91"/>
+<junction x="223.52" y="215.9"/>
 </segment>
 </net>
 </nets>
