@@ -9,4 +9,5 @@ port=/dev/ttyUSB0
 if [ $# -gt 0 ]; then
   port=$1
 fi
-idf.py -D MICROPY_BOARD=HUGO -B build-HUGO erase_flash flash -p $port
+#idf.py -D MICROPY_BOARD=HUGO -B build-HUGO erase-flash flash -p $port
+idf.py -D MICROPY_BOARD=HUGO -B build-HUGO erase-flash flash monitor -p $port
