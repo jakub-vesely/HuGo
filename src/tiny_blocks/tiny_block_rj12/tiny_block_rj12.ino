@@ -11,6 +11,7 @@ void HugoTinyWireFillModuleVersion();
 
 #include <avr/sleep.h>
 #include <hugo_tiny_wire.h>
+#include <hugo_utils.h>
 #include <util/atomic.h>
 
 #define PCB_VERSION 1
@@ -149,21 +150,6 @@ void HugoTinyWireFillModuleVersion(){
 void HugoTinyWirePowerSave(uint8_t level){
 }
 
-void RTC_init(void)
-{
-  /* Initialize RTC: */
-  while (RTC.STATUS > 0)
-  {
-    ;                                   /* Wait for all register to be synchronized */
-  }
-  RTC.CLKSEL = RTC_CLKSEL_INT32K_gc;    /* 32.768kHz Internal Ultra-Low-Power Oscillator (OSCULP32K) */
-
-  RTC.PITINTCTRL = RTC_PI_bm;           /* PIT Interrupt: enabled */
-
-  RTC.PITCTRLA = RTC_PERIOD_CYC512_gc | /* in 512/32.768kHz = 0.015625 ms */
-  RTC_PITEN_bm;                        /* Enable PIT counter: enabled */
-}
-
 ISR(RTC_PIT_vect)
 {
   RTC.PITINTFLAGS = RTC_PI_bm;          /* Clear interrupt flag by writing '1' (required) */
@@ -177,7 +163,7 @@ ISR(RTC_PIT_vect)
 
 void setup()
 {
-  RTC_init();
+  RTC_init(RTC_PERIOD_CYC512_gc);
 
   pin_counter = 0;
   pinMode(RJ_PIN4, INPUT);

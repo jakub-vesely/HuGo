@@ -15,6 +15,7 @@ Programmer: jtag2updi (megaTinyCore)
 #include <stdint.h>
 #include <Arduino.h>
 #include <hugo_defines.h>
+#include <hugo_utils.h>
 #include <tiny_main_base.h>
 #include <tiny_main_ambient.h>
 #include <tiny_ble_shield.h>
@@ -172,21 +173,6 @@ void publish_value(char const * variable, char const* value, char const* unit, b
   //delay(100);
 }
 
-void RTC_init(void)
-{
-  /* Initialize RTC: */
-  while (RTC.STATUS > 0)
-  {
-    ;                                   /* Wait for all register to be synchronized */
-  }
-  RTC.CLKSEL = RTC_CLKSEL_INT32K_gc;    /* 32.768kHz Internal Ultra-Low-Power Oscillator (OSCULP32K) */
-
-  RTC.PITINTCTRL = RTC_PI_bm;           /* PIT Interrupt: enabled */
-
-  RTC.PITCTRLA = RTC_PERIOD_CYC32768_gc /* RTC Clock Cycles 16384, resulting in 32.768kHz/32768 = 1Hz */
-  | RTC_PITEN_bm;                       /* Enable PIT counter: enabled */
-}
-
 ISR(RTC_PIT_vect)
 {
   RTC.PITINTFLAGS = RTC_PI_bm;          /* Clear interrupt flag by writing '1' (required) */
@@ -194,7 +180,7 @@ ISR(RTC_PIT_vect)
 
 void setup()
 {
-  RTC_init();
+  RTC_init(RTC_PERIOD_CYC32768_gc);
 
   tiny_main_base_init();
   delay(200);//it is necessary to wait a while to all blocks and its extensions are started
