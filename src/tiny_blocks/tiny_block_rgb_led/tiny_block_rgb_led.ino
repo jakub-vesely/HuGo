@@ -40,62 +40,6 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
         rgb[2] = HugoTinyWireRead();
       }
       break;
-/*    case I2C_COMMAND_RGB_SET_ON:
-      memcpy(rgb, white, 3);
-      break;
-    case I2C_COMMAND_RGB_SET_OFF:
-      memcpy(rgb, black, 3);
-    break;
-
-    case I2C_COMMAND_RGB_SET_COLOR:
-      if (payload_size > 0){
-        uint8_t color = HugoTinyWireRead();
-        switch (color){
-          case RGB_LED_CLOLOR_BLACK:
-            memcpy(rgb, black, 3);
-            break;
-          case RGB_LED_CLOLOR_WHITE:
-            memcpy(rgb, white, 3);
-            break;
-          case RGB_LED_CLOLOR_RED:
-            memcpy(rgb, red, 3);
-            break;
-          case RGB_LED_CLOLOR_GREEN:
-            memcpy(rgb, green, 3);
-            break;
-          case RGB_LED_CLOLOR_BLUE:
-            memcpy(rgb, blue, 3);
-            break;
-          case RGB_LED_CLOLOR_YELLOW:
-            memcpy(rgb, yellow, 3);
-            break;
-          case RGB_LED_CLOLOR_PURPLE:
-            memcpy(rgb, purple, 3);
-            break;
-          case RGB_LED_CLOLOR_CYAN:
-            memcpy(rgb, cyan, 3);
-            break;
-          case RGB_LED_CLOLOR_ORANGE:
-            memcpy(rgb, orange, 3);
-            break;
-          case RGB_LED_CLOLOR_GREENYELLOW:
-            memcpy(rgb, greenyellow, 3);
-            break;
-          case RGB_LED_CLOLOR_SKYBLUE:
-            memcpy(rgb, skyblue, 3);
-            break;
-          case RGB_LED_CLOLOR_AQUAMARINE:
-            memcpy(rgb, aquamarine, 3);
-            break;
-          case RGB_LED_CLOLOR_MAGENTA:
-            memcpy(rgb, magenta, 3);
-            break;
-          case RGB_LED_CLOLOR_VIOLET:
-            memcpy(rgb, violet, 3);
-            break;
-        }
-      }
-      break;*/
   }
 }
 
@@ -120,9 +64,7 @@ void setup()
     HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_RGB, NULL);
 }
 
-// the loop function runs over and over again forever
-void loop()
-{
+void loop(){
     //It is not possible to use analog write because pin0 is does not support PWM
     digitalWrite(LED_R, counter < rgb[0] * R_COMP / 100 ? HIGH : LOW);
     digitalWrite(LED_G, counter < rgb[1] * G_COMP / 100 ? HIGH : LOW);
