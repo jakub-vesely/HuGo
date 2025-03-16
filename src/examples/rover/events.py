@@ -58,7 +58,7 @@ class Plan():
     Planner.repeat(0.5, self.print_power_info)
     PowerMgmt.set_plan(PowerPlan.get_max_performance_plan())
 
-    self.current_smoother = SmoothedVariable(3, SmoothingType.average, self.chassis.power.battery_current_mA)
+    self.current_smoother = SmoothedVariable(3, SmoothingType.average, self.chassis.power.battery_current)
     self.current_smoother.more_than(600, self.stop_for_a_while, 1)
     self.heart_beat = False
 
