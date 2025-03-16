@@ -1,11 +1,12 @@
 #  Copyright (c) 2022 Jakub Vesely
 #  This software is published under MIT license. Full text of the license is available at https://opensource.org/licenses/MIT
-
+import sys
 import time
 import hashlib
 import os
 import subprocess
 from hugo_terminal.command_id import CommandId
+from threading import Thread
 
 class Terminal():
   output_dir_prefix = ".build"
@@ -235,13 +236,14 @@ class Terminal():
   def _process_files(self):
     remote_files = self._get_remote_files()
 
-    if os.path.exists("boot.py"):
+    if os.path.exists("./" + self.flashing_folder +"/boot.py"):
       #for devel
+      self.logger.info("boot.py processing")
       original_local_files = self.find_local_files(self.flashing_folder, "boot.py") #for devel
     else:
+      self.logger.info("events.py processing")
       #for examples
       original_local_files = self.find_local_files(self.flashing_folder, "events.py")
-
 
     self.logger.debug("building local files...")
     self._build_local_dir(self.flashing_folder, original_local_files, self.output_dir)
