@@ -1,5 +1,6 @@
 #include "tiny_main_rj12.h"
 #include <hugo_defines.h>
+#include <tiny_main_base.h>
 #include <string.h>
 
 static tiny_common_buffer_t* p_common_buffer = tiny_main_base_get_common_buffer();

@@ -26,13 +26,13 @@ static tiny_common_buffer_t* p_common_buffer = tiny_main_base_get_common_buffer(
 static uint16_t s_exp_resp_timeout_ms = 0;
 static unsigned long s_exp_resp_timeout_start = 0;
 
-void BleShield::init(){
+void BleShield::init(int baudrate){
 #if !defined(__AVR_ATtiny412__)
   pinMode(HUGO_PIN_D2, INPUT); //to be used PB3 and PB2 instead
   pinMode(HUGO_PIN_D1, INPUT);
 #endif
 
-  Serial.begin(115200);
+  Serial.begin(baudrate);
 
   pinMode(WAKEUP_PIN, OUTPUT);
   digitalWrite(WAKEUP_PIN, HIGH); //high is non-active
@@ -63,7 +63,11 @@ void BleShield::_read_jdy(uint16_t timeout){
     }
 
     if (p_common_buffer->size == 0 && byte != '+' && byte != 'O' && byte != 0xf1){
-      continue;; //we are probably lost somewhere in the middle of the message. waiting for the correct start
+      continue; //we are probably lost somewhere in the middle of the message. waiting for the correct start
+    }
+    if (p_common_buffer->size == 1 && p_common_buffer->data[0] == 'O' && byte != 'K'){
+      p_common_buffer->size = 0;
+      continue; //O was not from OK
     }
 
     //mesh message contains length as a last byte of header
