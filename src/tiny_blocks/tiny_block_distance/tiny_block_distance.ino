@@ -51,10 +51,10 @@ void HugoTinyWireChangeExtAddress( uint8_t address){
 }
 
 void setup(){
+  HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_DISTANCE, (uint8_t**)ext_addresses);
+
   pinMode(XSHUT_PIN, OUTPUT);
   digitalWrite(XSHUT_PIN, 1);
-
-  HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_DISTANCE, (uint8_t**)ext_addresses);
 }
 
 void HugoTinyWireFillModuleVersion(){
@@ -74,5 +74,5 @@ void HugoTinyWirePowerSave(uint8_t level){
 }
 
 void loop() {
-  delayMicroseconds(500);
+  delayMicroseconds(10);
 }
