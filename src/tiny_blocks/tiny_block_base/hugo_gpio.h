@@ -4,7 +4,6 @@
 #   error HUGO_PCB_VERSION is not defined
 #else
 #   if HUGO_PCB_VERSION < 7
-#pragma message(HUGO_PCB_VERSION)
 #       define HUGO_PIN_D1 PIN_PA7
 #       define HUGO_PIN_D2 PIN_PA6
 #       define HUGO_PIN_D3 PIN_PA3
@@ -33,7 +32,7 @@
 #           define IS_I2C_ALTERNATIVE false
 #        else
 #           define HUGO_PIN_LED_A PIN_PA4
-//#           define HUGO_PIN_SHIELD_POWER
+#           define HUGO_PIN_SHIELD_POWER PIN_PB1
 
 #            define IS_I2C_ALTERNATIVE true
 #       endif
