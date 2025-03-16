@@ -55,6 +55,8 @@
 #define I2C_BLOCK_TYPE_ID_AMBIENT           0x11
 #define I2C_BLOCK_TYPE_ID_BLE               0x12
 #define I2C_BLOCK_TYPE_ID_RJ12              0x13
+#define I2C_BLOCK_TYPE_ID_SERVO             0x14
+#define I2C_BLOCK_TYPE_ID_STEP_MOTOR        0x15
 
 #define I2C_BLOCK_TYPE_ID_BASE          0xFA //different from CHANGE_I2C_ADDRESS command
 #define I2C_BLOCK_TYPE_ID_NONE          0xFF
@@ -64,7 +66,7 @@
 #define POWER_SAVE_DEEP     2
 
 #include <stdint.h>
-#include <tiny_main_base.h>
+//#include <tiny_main_base.h>
 
 //ble command resp up to 13 (1B size + 12B answer_data)
 //mesh_response up to 15 (1B size) + (2B sender + 12B mesh_data)
