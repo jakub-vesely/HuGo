@@ -9,9 +9,8 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size);
 void HugoTinyWireFillModuleVersion();
 
 #include <hugo_tiny_wire.h>
-
-#define PCB_VERSION 2
-#define ADJUSTMENT_VERSION 0
+#include <hugo_defines.h>
+#include <hugo_gpio.h>
 
 #define BUTTON_PIN HUGO_PIN_D1
 #define I2C_COMMAND_BUTTON_IS_PRESSED 0x01
@@ -30,8 +29,8 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
 
 void HugoTinyWireFillModuleVersion(){
   s_buffer.data[0] = I2C_BLOCK_TYPE_ID_BUTTON;
-  s_buffer.data[1] = PCB_VERSION;
-  s_buffer.data[2] = ADJUSTMENT_VERSION;
+  s_buffer.data[1] = HUGO_PCB_VERSION;
+  s_buffer.data[2] = 0;
   s_buffer.size = 3;
 }
 
