@@ -16,8 +16,7 @@
 
 class Motor {
 private:
-  sensorInterrupt();
-
+  
   volatile uint32_t m_counter; //motor rotation sensor changes
   bool m_clockwise; //rotation direction
   uint8_t m_speed; //expected from 0 to 100
@@ -33,4 +32,8 @@ public:
   void processCommand(uint8_t command, uint8_t payload_size, wire_buffer_t &write_buffer);
   inline void incrementCounter() { m_counter++; }
   void processLoopIteration(uint8_t loopCounter); //loopCounter is expected in range 0-10
+  void AtoB();
+  void BtoA();
+  void ABoff();
+  void initialize();
 };

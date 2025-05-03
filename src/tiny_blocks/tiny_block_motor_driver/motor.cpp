@@ -1,5 +1,5 @@
 #include "motor.h"
-#include <arduino.h>
+#include <Arduino.h>
 
 Motor::Motor(uint8_t pinMA, uint8_t pinMB, uint8_t pinSensor):
   m_counter(0),
@@ -8,14 +8,16 @@ Motor::Motor(uint8_t pinMA, uint8_t pinMB, uint8_t pinSensor):
   m_pinMA(pinMA),
   m_pinMB(pinMB),
   m_pinSensor(pinSensor){
+}
 
-    pinMode(pinMA, OUTPUT);
-    digitalWrite(pinMA, LOW);
+void Motor::initialize(){
+  pinMode(m_pinMA, OUTPUT);
+    digitalWrite(m_pinMA, LOW);
 
-    pinMode(pinMB, OUTPUT);
-    digitalWrite(pinMB, LOW);
+    pinMode(m_pinMB, OUTPUT);
+    digitalWrite(m_pinMB, LOW);
 
-    pinMode(pinSensor, INPUT_PULLUP);
+    pinMode(m_pinSensor, INPUT_PULLUP);
 }
 
 void Motor::processCommand(uint8_t command, uint8_t extra_byte, wire_buffer_t &write_buffer){    
@@ -72,4 +74,19 @@ void Motor::processLoopIteration(uint8_t loopCounter){
     digitalWrite(m_pinMA, LOW);
     digitalWrite(m_pinMB, LOW);
   }
+}
+
+void Motor::AtoB(){
+  digitalWrite(m_pinMA, LOW);
+  digitalWrite(m_pinMB, HIGH);
+}
+
+void Motor::BtoA(){
+  digitalWrite(m_pinMA, HIGH);
+  digitalWrite(m_pinMB, LOW);
+}
+
+void Motor::ABoff(){
+  digitalWrite(m_pinMA, LOW);
+  digitalWrite(m_pinMB, LOW);
 }

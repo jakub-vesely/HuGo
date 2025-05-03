@@ -91,17 +91,31 @@ void setup(){
   pinMode(SENSOR_LED, OUTPUT);
   digitalWrite(SENSOR_LED, LOW);
 
-  HugoTinyWireInitialize(I2C_BLOCK_TYPE_ID_MOTOR_DRIVER, NULL);
+  (I2C_BLOCK_TYPE_ID_MOTOR_DRIVER, NULL);
+  motor1.initialize();
+  motor2.initialize();
 }
 
 void loop(){
-  motor1.processLoopIteration(s_loop_counter);
-  motor2.processLoopIteration(s_loop_counter);
+  // motor1.processLoopIteration(s_loop_counter);
+  // motor2.processLoopIteration(s_loop_counter);
 
-  s_loop_counter++;
-  if (s_loop_counter > 99){
-    s_loop_counter = 0;
-  }
+  // s_loop_counter++;
+  // if (s_loop_counter > 99){
+  //   s_loop_counter = 0;
+  // }
 
-  delayMicroseconds((uint16_t)s_pwm_period * 10); //one pwm_period step is 10 us
+  // delayMicroseconds((uint16_t)s_pwm_period * 10); //one pwm_period step is 10 us
+  motor1.AtoB();
+  motor2.ABoff();
+  delay(2);
+  motor2.BtoA();
+  motor1.ABoff();
+  delay(2);
+  motor1.BtoA();
+  motor2.ABoff();
+  delay(2);
+  motor2.AtoB();
+  motor1.ABoff();
+  delay(2);
 }
