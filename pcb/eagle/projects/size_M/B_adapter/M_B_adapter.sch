@@ -11516,7 +11516,7 @@ Source: www.kingbright.com</description>
 <part name="+3V4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="B.R14" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="2k2"/>
 <part name="B.D12" library="led" deviceset="LED" device="CHIP-LED0603" package3d_urn="urn:adsk.eagle:package:15819/3" value="GREEN"/>
-<part name="D.T1" library="hugo" deviceset="P-MOSFET" device="" value="FDV304"/>
+<part name="B.T1" library="hugo" deviceset="P-MOSFET" device="" value="FDV304"/>
 </parts>
 <sheets>
 <sheet>
@@ -11543,9 +11543,9 @@ is used as I2C master</text>
 <attribute name="NAME" x="143.51" y="81.915" size="1.778" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="143.51" y="71.12" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="B.C11" gate="G$1" x="203.2" y="-5.08" smashed="yes">
-<attribute name="NAME" x="204.724" y="-4.699" size="1.778" layer="95"/>
-<attribute name="VALUE" x="204.724" y="-9.779" size="1.778" layer="96"/>
+<instance part="B.C11" gate="G$1" x="208.28" y="-10.16" smashed="yes" rot="R90">
+<attribute name="NAME" x="207.899" y="-8.636" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="212.979" y="-8.636" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="B.J1" gate="A" x="226.06" y="-7.62" smashed="yes">
 <attribute name="NAME" x="219.71" y="0.635" size="1.778" layer="95"/>
@@ -11615,7 +11615,7 @@ is used as I2C master</text>
 <attribute name="NAME" x="184.912" y="-14.224" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="184.912" y="-12.065" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="D.T1" gate="G$1" x="200.66" y="22.86" smashed="yes">
+<instance part="B.T1" gate="G$1" x="200.66" y="22.86" smashed="yes">
 <attribute name="NAME" x="196.85" y="25.4" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="199.39" y="25.4" size="1.778" layer="96" rot="R90"/>
 </instance>
@@ -11639,7 +11639,7 @@ is used as I2C master</text>
 <segment>
 <pinref part="B.C11" gate="G$1" pin="2"/>
 <pinref part="B.J1" gate="A" pin="4"/>
-<wire x1="203.2" y1="-10.16" x2="215.9" y2="-10.16" width="0.1524" layer="91"/>
+<wire x1="213.36" y1="-10.16" x2="215.9" y2="-10.16" width="0.1524" layer="91"/>
 <wire x1="215.9" y1="-10.16" x2="223.52" y2="-10.16" width="0.1524" layer="91"/>
 <pinref part="GND2" gate="1" pin="GND"/>
 <wire x1="215.9" y1="-15.24" x2="215.9" y2="-10.16" width="0.1524" layer="91"/>
@@ -11761,7 +11761,7 @@ is used as I2C master</text>
 <junction x="203.2" y="30.48"/>
 <pinref part="B.R17" gate="G$1" pin="2"/>
 <wire x1="226.06" y1="26.67" x2="226.06" y2="30.48" width="0.1524" layer="91"/>
-<pinref part="D.T1" gate="G$1" pin="S"/>
+<pinref part="B.T1" gate="G$1" pin="S"/>
 <pinref part="B.R16" gate="G$1" pin="2"/>
 <junction x="203.2" y="38.1"/>
 </segment>
@@ -11786,7 +11786,9 @@ is used as I2C master</text>
 <segment>
 <pinref part="B.C11" gate="G$1" pin="1"/>
 <wire x1="203.2" y1="15.24" x2="203.2" y2="5.08" width="0.1524" layer="91"/>
-<wire x1="203.2" y1="5.08" x2="203.2" y2="-2.54" width="0.1524" layer="91"/>
+<wire x1="203.2" y1="5.08" x2="203.2" y2="-5.08" width="0.1524" layer="91"/>
+<wire x1="203.2" y1="-5.08" x2="203.2" y2="-10.16" width="0.1524" layer="91"/>
+<wire x1="203.2" y1="-10.16" x2="205.74" y2="-10.16" width="0.1524" layer="91"/>
 <wire x1="203.2" y1="5.08" x2="215.9" y2="5.08" width="0.1524" layer="91"/>
 <wire x1="215.9" y1="5.08" x2="215.9" y2="-7.62" width="0.1524" layer="91"/>
 <junction x="203.2" y="5.08"/>
@@ -11796,7 +11798,7 @@ is used as I2C master</text>
 <pinref part="B.R17" gate="G$1" pin="1"/>
 <wire x1="215.9" y1="5.08" x2="226.06" y2="5.08" width="0.1524" layer="91"/>
 <wire x1="226.06" y1="5.08" x2="226.06" y2="19.05" width="0.1524" layer="91"/>
-<pinref part="D.T1" gate="G$1" pin="D"/>
+<pinref part="B.T1" gate="G$1" pin="D"/>
 </segment>
 </net>
 <net name="VBAT" class="0">
@@ -11812,19 +11814,19 @@ is used as I2C master</text>
 <pinref part="B.D11" gate="G$1" pin="A"/>
 </segment>
 </net>
-<net name="PB2" class="0">
+<net name="PB3" class="0">
 <segment>
 <wire x1="195.58" y1="22.86" x2="190.5" y2="22.86" width="0.1524" layer="91"/>
 <wire x1="190.5" y1="22.86" x2="190.5" y2="38.1" width="0.1524" layer="91"/>
 <wire x1="190.5" y1="38.1" x2="190.5" y2="53.34" width="0.1524" layer="91"/>
 <wire x1="190.5" y1="53.34" x2="60.96" y2="53.34" width="0.1524" layer="91"/>
-<wire x1="60.96" y1="53.34" x2="60.96" y2="27.94" width="0.1524" layer="91"/>
-<pinref part="B.U11" gate="G$1" pin="PB2(TOSC2/EVOUT1/TXD/TCA0WO2)"/>
-<wire x1="60.96" y1="27.94" x2="66.04" y2="27.94" width="0.1524" layer="91"/>
-<pinref part="D.T1" gate="G$1" pin="G"/>
+<wire x1="60.96" y1="53.34" x2="60.96" y2="35.56" width="0.1524" layer="91"/>
+<pinref part="B.T1" gate="G$1" pin="G"/>
 <pinref part="B.R16" gate="G$1" pin="1"/>
 <wire x1="193.04" y1="38.1" x2="190.5" y2="38.1" width="0.1524" layer="91"/>
 <junction x="190.5" y="38.1"/>
+<pinref part="B.U11" gate="G$1" pin="PB3(TOSC1/RXD)"/>
+<wire x1="66.04" y1="35.56" x2="60.96" y2="35.56" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="PA4" class="0">
@@ -11854,13 +11856,15 @@ is used as I2C master</text>
 <wire x1="175.26" y1="-17.78" x2="177.8" y2="-17.78" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="PA5" class="0">
+<net name="PB2" class="0">
 <segment>
 <pinref part="B.J1" gate="A" pin="1"/>
-<wire x1="185.42" y1="35.56" x2="185.42" y2="-2.54" width="0.1524" layer="91"/>
+<wire x1="185.42" y1="50.8" x2="185.42" y2="-2.54" width="0.1524" layer="91"/>
 <wire x1="185.42" y1="-2.54" x2="223.52" y2="-2.54" width="0.1524" layer="91"/>
-<pinref part="B.U11" gate="G$1" pin="(TCD0WOB/TCB0WO/TCA0WO5/AC0OUT/AIN5)PA5"/>
-<wire x1="157.48" y1="35.56" x2="185.42" y2="35.56" width="0.1524" layer="91"/>
+<pinref part="B.U11" gate="G$1" pin="PB2(TOSC2/EVOUT1/TXD/TCA0WO2)"/>
+<wire x1="63.5" y1="27.94" x2="66.04" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="185.42" y1="50.8" x2="63.5" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="50.8" x2="63.5" y2="27.94" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="PA7" class="0">
