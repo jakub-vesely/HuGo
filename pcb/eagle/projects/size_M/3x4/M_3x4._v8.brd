@@ -2982,14 +2982,6 @@ TSSOP M8</text>
 <wire x1="25.5" y1="70.5" x2="46.5" y2="70.5" width="0.2" layer="48"/>
 <wire x1="46.5" y1="70.5" x2="46.5" y2="49.5" width="0.2" layer="48"/>
 <wire x1="46.5" y1="49.5" x2="25.5" y2="49.5" width="0.2" layer="48"/>
-<wire x1="1.5" y1="49.5" x2="1.5" y2="70.5" width="0.2" layer="48"/>
-<wire x1="1.5" y1="70.5" x2="22.5" y2="70.5" width="0.2" layer="48"/>
-<wire x1="22.5" y1="70.5" x2="22.5" y2="49.5" width="0.2" layer="48"/>
-<wire x1="22.5" y1="49.5" x2="1.5" y2="49.5" width="0.2" layer="48"/>
-<wire x1="25.5" y1="49.5" x2="25.5" y2="70.5" width="0.2" layer="48"/>
-<wire x1="25.5" y1="70.5" x2="46.5" y2="70.5" width="0.2" layer="48"/>
-<wire x1="46.5" y1="70.5" x2="46.5" y2="49.5" width="0.2" layer="48"/>
-<wire x1="46.5" y1="49.5" x2="25.5" y2="49.5" width="0.2" layer="48"/>
 <hole x="27.5" y="51.5" drill="1.6"/>
 <circle x="27.4828" y="51.505" radius="1.9" width="0.1" layer="52"/>
 <hole x="44.5" y="68.5" drill="1.6"/>
@@ -3518,6 +3510,10 @@ TSSOP M8</text>
 <circle x="20.5" y="68.5" radius="1" width="0.254" layer="41"/>
 <circle x="3.5" y="51.5" radius="1" width="0.254" layer="41"/>
 <circle x="20.5" y="68.5" radius="1" width="0.254" layer="42"/>
+<wire x1="-2" y1="-2" x2="98" y2="-2" width="0.254" layer="20"/>
+<wire x1="98" y1="-2" x2="98" y2="74" width="0.254" layer="20"/>
+<wire x1="98" y1="74" x2="-2" y2="74" width="0.254" layer="20"/>
+<wire x1="-2" y1="74" x2="-2" y2="-2" width="0.254" layer="20"/>
 </plain>
 <libraries>
 <library name="rcl" urn="urn:adsk.eagle:library:334">
