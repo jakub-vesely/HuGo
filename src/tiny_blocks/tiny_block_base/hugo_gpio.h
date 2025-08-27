@@ -42,8 +42,11 @@
 #       define HUGO_PIN_D2 PIN_PA2
 #       define HUGO_PIN_D3 PIN_PA3
 #       define HUGO_PIN_D4 PIN_PA4
-#       define HUGO_PIN_D5 PIN_PA5
-
+#       if HUGO_PCB_VERSION == 7
+#           define HUGO_PIN_D5 PIN_PA5
+#       else
+#            define HUGO_PIN_D5 PIN_PB2
+#       endif
 #       define HUGO_PIN_RXD PIN_PA2 //alternative RXD
 #       define HUGO_PIN_TXD PIN_PA1 //alternative TXD
 
@@ -54,16 +57,16 @@
 #       define HUGO_PIN_MISO PIN_PA12
 #       define HUGO_PIN_SCK PIN_PA3
 #       define HUGO_PIN_SS PIN_PA4
-#       define HUGO_PIN_VREF PIN_PA5
-
 #       define HUGO_PIN_LED_A PIN_PA6
 #       if HUGO_PCB_VERSION == 7
+#           define HUGO_PIN_VREF PIN_PA5
 #           define HUGO_PIN_LED_B PIN_PB3
+#           define HUGO_PIN_SHIELD_POWER PIN_PB2
 #       else
-#           define HUGO_PIN_LED_B PA7
+#           define HUGO_PIN_LED_B PIN_PA7
+#           define HUGO_PIN_SHIELD_POWER PIN_PB3
 #       endif
-#       define HUGO_PIN_SHIELD_POWER PIN_PB2
-
+#
 #       define IS_I2C_ALTERNATIVE false
 #       define IS_UART_ALTERNATIVE true
 #   endif
