@@ -10655,19 +10655,10 @@ with versions &lt; 7</text>
 <net name="RX" class="0">
 <segment>
 <pinref part="O.R6" gate="G$1" pin="2"/>
-<label x="-63.5" y="68.58" size="1.778" layer="95"/>
-<pinref part="G.J1" gate="A" pin="3"/>
-<wire x1="-76.2" y1="68.58" x2="-60.96" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="-60.96" y1="68.58" x2="-60.96" y2="66.04" width="0.1524" layer="91"/>
 <wire x1="-60.96" y1="66.04" x2="-58.42" y2="66.04" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="TX" class="0">
-<segment>
-<wire x1="-76.2" y1="71.12" x2="-50.8" y2="71.12" width="0.1524" layer="91"/>
-<pinref part="O.R1" gate="G$1" pin="2"/>
-<label x="-63.5" y="71.12" size="1.778" layer="95"/>
 <pinref part="G.J1" gate="A" pin="4"/>
+<wire x1="-76.2" y1="71.12" x2="-60.96" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="-60.96" y1="71.12" x2="-60.96" y2="66.04" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$5" class="0">
@@ -10762,6 +10753,15 @@ with versions &lt; 7</text>
 <pinref part="U$1" gate="G$1" pin="OUT1"/>
 <wire x1="7.62" y1="86.36" x2="10.16" y2="86.36" width="0.1524" layer="91"/>
 <pinref part="O.R3" gate="G$1" pin="1"/>
+</segment>
+</net>
+<net name="TX" class="0">
+<segment>
+<pinref part="G.J1" gate="A" pin="3"/>
+<wire x1="-76.2" y1="68.58" x2="-58.42" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="-58.42" y1="68.58" x2="-58.42" y2="71.12" width="0.1524" layer="91"/>
+<pinref part="O.R1" gate="G$1" pin="2"/>
+<wire x1="-58.42" y1="71.12" x2="-50.8" y2="71.12" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
