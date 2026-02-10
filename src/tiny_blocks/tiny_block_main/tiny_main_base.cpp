@@ -100,7 +100,7 @@ void tiny_main_base_set_power_save(uint8_t address, uint8_t mode){
 }
 
 void tiny_main_string_to_buffer(char const *str){
-  s_common_buffer.size = min(strlen(str), COMMON_BUFFER_SIZE);
+  s_common_buffer.size = min(strlen(str), (unsigned)COMMON_BUFFER_SIZE);
   memcpy(s_common_buffer.data, str, s_common_buffer.size);
 }
 
