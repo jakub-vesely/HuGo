@@ -72,6 +72,26 @@
 #   endif
 #endif
 
+inline void hugo_gpio_init_serial(){
+#if !defined(__AVR_ATtiny412__) && HUGO_PCB_VERSION < 7
+  pinMode(HUGO_PIN_D2, INPUT); //to be used PB3 and PB2 instead
+  pinMode(HUGO_PIN_D1, INPUT);
+#else
+  pinMode(HUGO_PIN_D2, INPUT_PULLUP);
+  pinMode(HUGO_PIN_D1, OUTPUT);
+#endif
+
+    if (IS_UART_ALTERNATIVE){
+#if !defined(__AVR_ATtiny824__) && !defined(__AVR_ATtiny1624__) && !defined(__AVR_ATtiny3224__)
+        PORTMUX.CTRLB |= PORTMUX_USART0_ALTERNATE_gc; //_ATtiny414 uses alternative ports for i2c because of conflict with the POWER_SAVE_PIN
+#else
+        //NOTE: ports swapped in BleShield::init
+        //PORTMUX.USARTROUTEA |= PORTMUX_USART1_NONE_gc;
+        //PORTMUX.USARTROUTEA |= PORTMUX_USART0_ALT1_gc; //all 24s use alternative UART as sane as 14s. 24s use different name for the same value as 14s
+#endif
+    }
+}
+
 inline void hugo_gpio_initialize(){
     //set all pins as pulled-up inputs to reduce power consumption
     pinMode(PIN_PA1, INPUT_PULLUP);
@@ -96,11 +116,11 @@ inline void hugo_gpio_initialize(){
 #   endif
 
     if (IS_I2C_ALTERNATIVE){
+#   if !defined(__AVR_ATtiny824__) && !defined(__AVR_ATtiny1624__) && !defined(__AVR_ATtiny3224__)
         PORTMUX.CTRLB |= PORTMUX_TWI0_ALTERNATE_gc; //_ATtiny414 uses alternative ports for i2c because of conflict with the POWER_SAVE_PIN
+#   endif
     }
 
-     if (IS_UART_ALTERNATIVE){
-        PORTMUX.CTRLB |= PORTMUX_USART0_ALTERNATE_gc; //_ATtiny414 uses alternative ports for i2c because of conflict with the POWER_SAVE_PIN
-    }
+    hugo_gpio_init_serial(); //just for sure. it was here for previous versions <7
 #endif
 }
