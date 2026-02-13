@@ -72,7 +72,8 @@ void loop() {
   strncpy((char*)(p_common_buffer->data), "XYZ", 4);
   p_common_buffer->size = 4;
   bool ret_val = ble_shield.send_mesh_data(0x09, true);
-  //ble_shield.power_save(true);
+
+  ble_shield.power_save(true);
   if (!ret_val) {
     tiny_main_base_shine_red(true);
     delay(20);
@@ -91,8 +92,6 @@ void loop() {
 #ifdef MESH_TARGET
   //delay(10);
 #else
-  //sleep_for_125ms();
-  //delay(2000);
-  sleep_for_s(1);
+  sleep_for_s(5);
 #endif
 }

@@ -14,6 +14,9 @@ class BleShield{
 public:
     void init(int32_t baudrate=115200); //factory default is 9600 but used one in 115200
     void command_send_and_receive(uint8_t *data, uint8_t size, uint16_t timeout=COMMON_BLE_TIMEOUT_MS);
+    inline void command_send_and_receive(char const *data, uint8_t size, uint16_t timeout){
+        command_send_and_receive((uint8_t*)data, size, timeout);
+    }
     void command_send_and_receive(uint16_t timeout=COMMON_BLE_TIMEOUT_MS);
 
     void power_save(bool save);
@@ -22,6 +25,7 @@ public:
     uint16_t get_mesh_message(uint8_t timeout=COMMON_BLE_TIMEOUT_MS);
     bool is_sleeping(){ return _sleeping;}
     void send_response_flag(uint8_t sender_low);
+    bool set_response_pin(bool state);
 
     bool has_message_flag_byte();
     bool is_acq_expected();

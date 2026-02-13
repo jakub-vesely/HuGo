@@ -171,6 +171,7 @@ uint16_t BleShield::get_mesh_message(uint8_t timeout){
 
 void BleShield::power_save(bool save){
   if (save){
+    this->set_response_pin(true); //on attiny side is used internal pull-up
     tiny_main_string_to_buffer("AT+SLEEP2");
     this->command_send_and_receive(); //resp: OK
     this->_read_jdy(300); //resp: +SLEEP
@@ -211,6 +212,13 @@ bool BleShield::send_mesh_message(uint8_t target_id, uint8_t type_id){
   return true;
 }
 
+bool BleShield::set_response_pin(bool state){
+  memcpy(p_common_buffer->data, "AT+CUIO1,", 9);
+  p_common_buffer->data[9] = state ? '1' : '0';
+  p_common_buffer->size = 10;
+  this->command_send_and_receive(); //reset response pin
+}
+
 bool BleShield::send_mesh_data(uint8_t target_id, bool acq_expected){
 #if HUGO_PCB_VERSION < 8 //BLE pcb must be in version > 7, adapter version > 6
   acq_expected = false;
@@ -221,7 +229,7 @@ bool BleShield::send_mesh_data(uint8_t target_id, bool acq_expected){
     stored_buffer_size = p_common_buffer->size;
     // when message is send, OK is returned by jdy to the common_buffer but another message can be delivered as well
     // the original message has to be preserved and then restored
-    this->command_send_and_receive((uint8_t*)"AT+CUIO1,0", 10); //reset response pin
+    this->set_response_pin(false);
     memcpy(p_common_buffer->data, temp_buffer, MESH_DATA_SIZE);
     p_common_buffer->size = stored_buffer_size;
   }
