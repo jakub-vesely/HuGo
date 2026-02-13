@@ -54,8 +54,6 @@ void HugoTinyWireProcessCommand(uint8_t command, uint8_t payload_size) {
       bool is_usb = charging_pin_value > USB_TRESHOLD || is_charging; //USB is prerequisite for charging
       s_buffer.data[0] = (is_usb ? 2 : 0) | (is_charging ? 1 : 0);
       s_buffer.size = 1;
-      tiny_main_base_set_build_in_led_a(is_charging);
-      tiny_main_base_set_build_in_led_b(is_usb);
       break;
     case I2C_COMMAND_POWER_POWER_OFF:
 #if !defined(__AVR_ATtiny412__) && HUGO_PCB_VERSION >= 7
