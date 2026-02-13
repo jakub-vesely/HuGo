@@ -12,16 +12,19 @@ tiny_common_buffer_t* tiny_main_base_get_common_buffer(){
 void tiny_main_base_init(){
   hugo_gpio_initialize();
 
+  // Disable ADC - it increase power consumtion mainly in deep sleep (150uA)
+  ADC0.CTRLA &= ~ADC_ENABLE_bm;
+
   Wire.begin();
   delay(100);
 }
 
 #if !defined(__AVR_ATtiny412__)
-void tiny_main_base_set_build_in_led_a(bool state){
+void tiny_main_base_shine_red(bool state){
   digitalWrite(HUGO_PIN_LED_A, state ? HIGH: LOW);
 }
 # if HUGO_PCB_VERSION > 6
-  void tiny_main_base_set_build_in_led_b(bool state){
+  void tiny_main_base_shine_green(bool state){
     digitalWrite(HUGO_PIN_LED_B, state ? HIGH: LOW);
   }
 # endif

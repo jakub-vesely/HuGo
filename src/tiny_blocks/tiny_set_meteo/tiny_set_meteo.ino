@@ -173,15 +173,8 @@ void publish_value(char const * variable, char const* value, char const* unit, b
   //delay(100);
 }
 
-ISR(RTC_PIT_vect)
-{
-  RTC.PITINTFLAGS = RTC_PI_bm;          /* Clear interrupt flag by writing '1' (required) */
-}
-
 void setup()
 {
-  RTC_init(RTC_PERIOD_CYC32768_gc);
-
   tiny_main_base_init();
   delay(200);//it is necessary to wait a while to all blocks and its extensions are started
   tiny_main_power_init(false);
@@ -200,8 +193,6 @@ void setup()
 #endif
 
   ble_shield.init();
-  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-  sleep_enable();
 
 #ifdef WIND_AND_RAIN
   tiny_main_rj12_set_pin_mode(RJ12_WIND_BLOCK_ID, Rj12PinId::pin5, Rj12PinMode::input);
@@ -267,9 +258,9 @@ void process_power(){
 void warn(uint8_t count){
   delay(100); //to separate from another warning
   for(uint8_t index=0; index<count; index++){
-    tiny_main_base_set_build_in_led_a(true);
+    tiny_main_base_shine_red(true);
     delay(100);
-    tiny_main_base_set_build_in_led_a(false);
+    tiny_main_base_shine_red(false);
     delay(20);
   }
 }
@@ -389,9 +380,9 @@ void publish_rain(){
 
 void loop()
 {
-  tiny_main_base_set_build_in_led_a(true);
+  tiny_main_base_shine_red(true);
   delay(5);
-  tiny_main_base_set_build_in_led_a(false);
+  tiny_main_base_shine_red(false);
 
 #ifdef USE_DISPLAY
   display.clearDisplay();
@@ -428,9 +419,9 @@ void loop()
 
   ble_shield.power_save(true);
 
-  tiny_main_base_set_build_in_led_a(true);
+  tiny_main_base_shine_red(true);
   delay(5);
-  tiny_main_base_set_build_in_led_a(false);
+  tiny_main_base_shine_red(false);
 
 
 #ifdef USE_DISPLAY
@@ -438,9 +429,5 @@ void loop()
 #else
   unsigned sec = 60;
 #endif
-  for (uint8_t count1 = 0; count1 < multiplier; count1++){
-    for (uint8_t count2 = 0; count2 < sec; count2++){
-      sleep_cpu();
-    }
-  }
+  sleep_for_s(multiplier * sec);
 }
