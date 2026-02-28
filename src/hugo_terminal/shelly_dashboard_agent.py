@@ -34,21 +34,23 @@ class ShellyDashboardAgent:
 
     def run(self):
         while True:
+            a_act_powers = []
+            b_act_powers = []
+            c_act_powers = []
+            total_act_powers = []
+            count = 30
+            for index in range(count):
 
-            em_data = self.get_shelly_power()
-            #self.add_log("phase A", "voltage", em_data["a_voltage"], "V")
-            #self.add_log("phase A", "current", em_data["a_current"], "mA")
-            self.add_log("phase A", "act_power", em_data["a_act_power"], "W")
-
-            #self.add_log("phase B", "voltage", em_data["b_voltage"], "V")
-            #self.add_log("phase B", "current", em_data["b_current"], "mA")
-            self.add_log("phase B", "act_power", em_data["b_act_power"], "W")
-
-            #self.add_log("phase C", "voltage", em_data["b_voltage"], "V")
-            #self.add_log("phase C", "current", em_data["b_current"], "mA")
-            self.add_log("phase C", "act_power", em_data["c_act_power"], "W")
-
-            self.add_log("total", "total_act_power", em_data["total_act_power"], "W")
-            time.sleep(3 * 60)
+                em_data = self.get_shelly_power()
+                a_act_powers.append(em_data["a_act_power"])
+                b_act_powers.append(em_data["b_act_power"])
+                c_act_powers.append(em_data["c_act_power"])
+                total_act_powers.append(em_data["total_act_power"])
+                if (index == count - 1):
+                    self.add_log("phase A", "act_power", f"{sum(a_act_powers)/count:.4g}", "W")
+                    self.add_log("phase B", "act_power", f"{sum(b_act_powers)/count:.4g}", "W")
+                    self.add_log("phase C", "act_power", f"{sum(c_act_powers)/count:.4g}", "W")
+                    self.add_log("total", "total_act_power", f"{sum(total_act_powers)/count:.4g}", "W")
+                time.sleep(10)
 
 ShellyDashboardAgent().run()
