@@ -45,8 +45,8 @@ class HugoDashBoard:
             "value": value,
             "unit": unit,
             "measured": date_time
-        };
-        response = requests.post(self.url, data = data);
+        }
+        response = requests.post(self.url, data = data)
         if response.status_code != 200:
             self.logger.info("dashboard request not delivered")
 
