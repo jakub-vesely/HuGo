@@ -6,7 +6,13 @@
 static pocketBME280 s_bme;
 static bool s_available = false;
 
-void tiny_main_ambient_init(){
+void tiny_main_ambient_init_shield(uint8_t bme280_address){
+    s_available = true;
+    s_bme.setAddress(bme280_address);
+    s_bme.begin();
+}
+
+void tiny_main_ambient_init_block(){
     uint8_t bme280_address = tiny_main_base_get_ext_module_address(I2C_BLOCK_TYPE_ID_AMBIENT);
     s_available = bme280_address != 0;
     if (s_available){

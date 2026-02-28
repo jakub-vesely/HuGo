@@ -2,6 +2,7 @@
 
 #include <pocketBME280.h>
 
-void tiny_main_ambient_init();
+void tiny_main_ambient_init_block();
+void tiny_main_ambient_init_shield();
 pocketBME280&  tiny_main_ambient_bme();
 bool tiny_main_ambient_is_available();

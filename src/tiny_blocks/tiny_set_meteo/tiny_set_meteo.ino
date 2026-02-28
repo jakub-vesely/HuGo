@@ -178,7 +178,7 @@ void setup()
   tiny_main_base_init();
   delay(200);//it is necessary to wait a while to all blocks and its extensions are started
   tiny_main_power_init(false);
-  tiny_main_ambient_init();
+  tiny_main_ambient_init_block();
 
 #ifdef WIND_AND_RAIN
   s_rain_block_available = tiny_main_base_is_available(RJ12_RAIN_GAUGE_ID);

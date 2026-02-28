@@ -256,7 +256,7 @@ bool BleShield::send_mesh_data(uint8_t target_id, bool acq_expected){
 
   if (acq_expected){ //acq expected will not be valid vor version < 8
 #if HUGO_PCB_VERSION > 7 //BLE pcb must be in version > 7, adapter version > 6
-    uint8_t countdown = 5; //message doesn't have to be delivered or answer doesnt has be delivered 3 could be enough 5 is for sure
+    uint8_t countdown = 5; //message doesn't have to be delivered or answer doesn't have to be delivered 3 could be enough 5 is for sure
     memcpy(temp_buffer, p_common_buffer->data, MESH_DATA_SIZE);
     stored_buffer_size = p_common_buffer->size;
     while (countdown-- > 0){
@@ -294,4 +294,3 @@ bool BleShield::is_message_in_plain_text(){
 uint8_t BleShield::get_message_id(){
     return p_common_buffer->data[0] & 0b00001111;
 }
-
