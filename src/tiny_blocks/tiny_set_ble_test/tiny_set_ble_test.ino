@@ -54,9 +54,9 @@ void loop() {
     if (ble_shield.has_message_flag_byte()) {
       tiny_main_base_shine_red(true);
     }
-    if (ble_shield.is_acq_expected()){
-      ble_shield.send_response_flag((uint8_t)sender);
-    }
+    // if (ble_shield.is_acq_expected()){
+    //   ble_shield.send_response_flag((uint8_t)sender);
+    // }
     tiny_main_base_shine_red(false);
 
     display.clearDisplay();
@@ -68,18 +68,19 @@ void loop() {
 
 #else
   ble_shield.power_save(false);
-  //tiny_main_base_shine_green(true);
-  strncpy((char*)(p_common_buffer->data), "XYZ", 4);
-  p_common_buffer->size = 4;
+  tiny_main_base_shine_green(true);
+  uint8_t data[] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a };
+  memcpy(p_common_buffer->data, data, sizeof(data));
+  p_common_buffer->size = sizeof(data);
   bool ret_val = ble_shield.send_mesh_data(0x09, true);
-
-  ble_shield.power_save(true);
   if (!ret_val) {
     tiny_main_base_shine_red(true);
     delay(20);
     tiny_main_base_shine_red(false);
   }
-  //tiny_main_base_shine_green(false);
+  sleep_for_500ms();  
+  ble_shield.power_save(true);
+  tiny_main_base_shine_green(false);
 #endif
 
   //send_at_command("AT");
@@ -92,6 +93,6 @@ void loop() {
 #ifdef MESH_TARGET
   //delay(10);
 #else
-  sleep_for_s(5);
+  sleep_for_s(10);
 #endif
 }
