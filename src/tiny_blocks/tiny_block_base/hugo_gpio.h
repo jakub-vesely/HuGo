@@ -32,6 +32,7 @@
 #           define IS_I2C_ALTERNATIVE false
 #        else
 #           define HUGO_PIN_LED_A PIN_PA4
+#           define HUGO_PIN_LED_RED HUGO_PIN_LED_A
 #           define HUGO_PIN_SHIELD_POWER PIN_PB1
 
 #            define IS_I2C_ALTERNATIVE true
@@ -58,12 +59,15 @@
 #       define HUGO_PIN_SCK PIN_PA3
 #       define HUGO_PIN_SS PIN_PA4
 #       define HUGO_PIN_LED_A PIN_PA6
+#       define HUGO_PIN_LED_RED HUGO_PIN_LED_A
 #       if HUGO_PCB_VERSION == 7
 #           define HUGO_PIN_VREF PIN_PA5
 #           define HUGO_PIN_LED_B PIN_PB3
+#           define HUGO_PIN_LED_GREEN HUGO_PIN_LED_B
 #           define HUGO_PIN_SHIELD_POWER PIN_PB2
 #       else
 #           define HUGO_PIN_LED_B PIN_PA7
+#           define HUGO_PIN_LED_GREEN HUGO_PIN_LED_B
 #           define HUGO_PIN_SHIELD_POWER PIN_PB3
 #       endif
 #
@@ -97,9 +101,6 @@ inline void hugo_gpio_initialize(){
     pinMode(PIN_PA1, INPUT_PULLUP);
     pinMode(PIN_PA2, INPUT_PULLUP);
     //pinMode(PIN_PA3, INPUT_PULLUP);
-    pinMode(PIN_PA6, INPUT_PULLUP);
-    pinMode(PIN_PA7, INPUT_PULLUP);
-
 #if !defined(__AVR_ATtiny412__)
     pinMode(PIN_PA4, INPUT_PULLUP);
     pinMode(PIN_PA5, INPUT_PULLUP);
@@ -109,10 +110,14 @@ inline void hugo_gpio_initialize(){
     pinMode(PIN_PB3, INPUT_PULLUP);
 
     pinMode(HUGO_PIN_LED_A, OUTPUT);
+    digitalWrite(HUGO_PIN_LED_A, false);
 #   if HUGO_PCB_VERSION >= 7
         pinMode(HUGO_PIN_SHIELD_POWER, OUTPUT);
         digitalWrite(HUGO_PIN_SHIELD_POWER, 1);
         pinMode(HUGO_PIN_LED_B, OUTPUT);
+        digitalWrite(HUGO_PIN_LED_B, false);
+#else
+    pinMode(PIN_PA7, INPUT_PULLUP);
 #   endif
 
     if (IS_I2C_ALTERNATIVE){
@@ -122,5 +127,8 @@ inline void hugo_gpio_initialize(){
     }
 
     hugo_gpio_init_serial(); //just for sure. it was here for previous versions <7
+#else
+    pinMode(PIN_PA6, INPUT_PULLUP);
+    pinMode(PIN_PA7, INPUT_PULLUP);
 #endif
 }
