@@ -112,6 +112,7 @@ void BleShield::command_send_and_receive(uint8_t *data, uint8_t size, uint16_t t
   }
   Serial.write('\r');
   Serial.write('\n');
+  Serial.flush(); //data must be flushed before going to sleep
 
   this->_read_jdy(timeout);
 }
@@ -263,6 +264,7 @@ bool BleShield::send_mesh_data(uint8_t target_id, bool acq_expected){
       if (!this->send_mesh_message(target_id, 0x00)){ //command - 0 message without ack; 1 with ack
         return false; //message is too long to be send
       }
+
       sleep_for_250ms();
       if (digitalRead(HUGO_PIN_D5)){
         return true; //message receive confirmed
