@@ -13436,6 +13436,7 @@ Source: www.kingbright.com</description>
 <part name="D.D2" library="hugo" deviceset="DIODE" device=""/>
 <part name="LED1" library="led" deviceset="LED" device="CHIP-LED0603" package3d_urn="urn:adsk.eagle:package:15819/3"/>
 <part name="LED2" library="led" deviceset="LED" device="CHIP-LED0603" package3d_urn="urn:adsk.eagle:package:15819/3"/>
+<part name="D.R15" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="0R"/>
 </parts>
 <sheets>
 <sheet>
@@ -13461,6 +13462,8 @@ SC189 - up to 1.5A (C3=10u)
 TPS7A0233 -up tp 200mA -IQ 25nA (L1=0R) </text>
 <text x="139.7" y="170.18" size="1.778" layer="97" align="center">Probably 
 not necessary</text>
+<text x="104.14" y="226.06" size="1.778" layer="97" align="center">Alternative - LM-66100 is not necesary 
+when a single power source is used</text>
 </plain>
 <instances>
 <instance part="D.J2" gate="A" x="-106.68" y="144.78" smashed="yes" rot="R180">
@@ -13608,6 +13611,10 @@ not necessary</text>
 <instance part="LED2" gate="G$1" x="-91.44" y="190.5" smashed="yes" rot="R90">
 <attribute name="NAME" x="-86.868" y="194.056" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="-86.868" y="196.215" size="1.778" layer="96" rot="R180"/>
+</instance>
+<instance part="D.R15" gate="G$1" x="104.14" y="218.44" smashed="yes" rot="R180">
+<attribute name="NAME" x="107.95" y="216.9414" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="107.95" y="221.742" size="1.778" layer="96" rot="R180"/>
 </instance>
 </instances>
 <busses>
@@ -13886,8 +13893,13 @@ not necessary</text>
 <pinref part="D.U2" gate="G$1" pin="BP"/>
 <wire x1="71.12" y1="193.04" x2="78.74" y2="193.04" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="VIN"/>
-<wire x1="88.9" y1="193.04" x2="78.74" y2="193.04" width="0.1524" layer="91"/>
+<wire x1="88.9" y1="193.04" x2="83.82" y2="193.04" width="0.1524" layer="91"/>
 <junction x="78.74" y="193.04"/>
+<pinref part="D.R15" gate="G$1" pin="2"/>
+<wire x1="83.82" y1="193.04" x2="78.74" y2="193.04" width="0.1524" layer="91"/>
+<wire x1="83.82" y1="193.04" x2="83.82" y2="218.44" width="0.1524" layer="91"/>
+<wire x1="83.82" y1="218.44" x2="99.06" y2="218.44" width="0.1524" layer="91"/>
+<junction x="83.82" y="193.04"/>
 </segment>
 </net>
 <net name="CHRG" class="0">
@@ -13988,6 +14000,9 @@ not necessary</text>
 <pinref part="D.C6" gate="G$1" pin="2"/>
 <wire x1="129.54" y1="200.66" x2="129.54" y2="205.74" width="0.1524" layer="91"/>
 <junction x="129.54" y="200.66"/>
+<pinref part="D.R15" gate="G$1" pin="1"/>
+<wire x1="109.22" y1="218.44" x2="119.38" y2="218.44" width="0.1524" layer="91"/>
+<wire x1="119.38" y1="218.44" x2="119.38" y2="200.66" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="P+3" gate="VCC" pin="VCC"/>
