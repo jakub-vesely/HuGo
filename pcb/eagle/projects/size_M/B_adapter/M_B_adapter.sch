@@ -11130,8 +11130,8 @@ Source: www.kingbright.com</description>
 <part name="B.R16" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="100k"/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="+3V1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
-<part name="B.R17" library="hugo" deviceset="FUSE" device="" value="alt fuse or 0R"/>
-<part name="B.R13" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="330"/>
+<part name="B.R15" library="hugo" deviceset="FUSE" device="" value="alt fuse or 0R"/>
+<part name="B.R13" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="390"/>
 <part name="B.D11" library="led" deviceset="LED" device="CHIP-LED0603" package3d_urn="urn:adsk.eagle:package:15819/3" value="RED"/>
 <part name="B.R11" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="2k2"/>
 <part name="B.R12" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="2k2"/>
@@ -11147,12 +11147,9 @@ Source: www.kingbright.com</description>
 <sheets>
 <sheet>
 <plain>
-<text x="195.58" y="58.42" size="1.778" layer="97">* br17 is used if the transistor is not. 
+<text x="195.58" y="58.42" size="1.778" layer="97">* br15 is used if the transistor is not. 
 * it can be replaced by a fuse as well
-* br16 it is not used when the trasistor is not</text>
-<text x="76.2" y="53.34" size="1.778" layer="97" rot="R180">* R3(R3) are used when TX(RX) is used. 
-* PA6 and PA7 are in the high 
-  impedance state in this case. </text>
+* br16 it is not used when the trasistor is not populated</text>
 <text x="33.02" y="27.94" size="1.778" layer="97" rot="R180">R1, R2 when adapeter 
 is used as I2C master</text>
 </plain>
@@ -11196,7 +11193,7 @@ is used as I2C master</text>
 <instance part="+3V1" gate="G$1" x="203.2" y="53.34" smashed="yes">
 <attribute name="VALUE" x="205.74" y="53.34" size="1.778" layer="96"/>
 </instance>
-<instance part="B.R17" gate="G$1" x="226.06" y="22.86" smashed="yes" rot="R90">
+<instance part="B.R15" gate="G$1" x="226.06" y="22.86" smashed="yes" rot="R90">
 <attribute name="NAME" x="224.5614" y="19.05" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="229.362" y="19.05" size="1.778" layer="96" rot="R90"/>
 </instance>
@@ -11385,7 +11382,7 @@ is used as I2C master</text>
 <wire x1="203.2" y1="30.48" x2="203.2" y2="27.94" width="0.1524" layer="91"/>
 <wire x1="226.06" y1="30.48" x2="203.2" y2="30.48" width="0.1524" layer="91"/>
 <junction x="203.2" y="30.48"/>
-<pinref part="B.R17" gate="G$1" pin="2"/>
+<pinref part="B.R15" gate="G$1" pin="2"/>
 <wire x1="226.06" y1="26.67" x2="226.06" y2="30.48" width="0.1524" layer="91"/>
 <pinref part="B.T1" gate="G$1" pin="S"/>
 <pinref part="B.R16" gate="G$1" pin="2"/>
@@ -11419,7 +11416,7 @@ is used as I2C master</text>
 <junction x="203.2" y="5.08"/>
 <wire x1="215.9" y1="-7.62" x2="223.52" y2="-7.62" width="0.1524" layer="91"/>
 <junction x="215.9" y="5.08"/>
-<pinref part="B.R17" gate="G$1" pin="1"/>
+<pinref part="B.R15" gate="G$1" pin="1"/>
 <wire x1="215.9" y1="5.08" x2="226.06" y2="5.08" width="0.1524" layer="91"/>
 <wire x1="226.06" y1="5.08" x2="226.06" y2="19.05" width="0.1524" layer="91"/>
 <pinref part="B.T1" gate="G$1" pin="D"/>
