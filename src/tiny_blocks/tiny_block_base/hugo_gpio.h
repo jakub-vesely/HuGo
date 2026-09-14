@@ -45,8 +45,11 @@
 #       define HUGO_PIN_D4 PIN_PA4
 #       if HUGO_PCB_VERSION == 7
 #           define HUGO_PIN_D5 PIN_PA5
+#       elif HUGO_PCB_VERSION == 8
+#           define HUGO_PIN_D5 PIN_PB2
 #       else
-#            define HUGO_PIN_D5 PIN_PB2
+#           define HUGO_PIN_D5 PIN_PA6
+#           define HUGO_PIN_D6 PIN_PB2
 #       endif
 #       define HUGO_PIN_RXD PIN_PA2 //alternative RXD
 #       define HUGO_PIN_TXD PIN_PA1 //alternative TXD
@@ -58,18 +61,22 @@
 #       define HUGO_PIN_MISO PIN_PA12
 #       define HUGO_PIN_SCK PIN_PA3
 #       define HUGO_PIN_SS PIN_PA4
-#       define HUGO_PIN_LED_A PIN_PA6
-#       define HUGO_PIN_LED_RED HUGO_PIN_LED_A
 #       if HUGO_PCB_VERSION == 7
+#           define HUGO_PIN_LED_A PIN_PA6
 #           define HUGO_PIN_VREF PIN_PA5
 #           define HUGO_PIN_LED_B PIN_PB3
-#           define HUGO_PIN_LED_GREEN HUGO_PIN_LED_B
 #           define HUGO_PIN_SHIELD_POWER PIN_PB2
-#       else
+#       elif HUGO_PCB_VERSION == 8
+#           define HUGO_PIN_LED_A PIN_PA6
 #           define HUGO_PIN_LED_B PIN_PA7
-#           define HUGO_PIN_LED_GREEN HUGO_PIN_LED_B
+#           define HUGO_PIN_SHIELD_POWER PIN_PB3
+#       else
+#           define HUGO_PIN_LED_A PIN_PA5
+#           define HUGO_PIN_LED_B PIN_PA7
 #           define HUGO_PIN_SHIELD_POWER PIN_PB3
 #       endif
+#       define HUGO_PIN_LED_RED HUGO_PIN_LED_A
+#       define HUGO_PIN_LED_GREEN HUGO_PIN_LED_B
 #
 #       define IS_I2C_ALTERNATIVE false
 #       define IS_UART_ALTERNATIVE true
@@ -86,7 +93,7 @@ inline void hugo_gpio_init_serial(){
 #endif
 
     if (IS_UART_ALTERNATIVE){
-#if !defined(__AVR_ATtiny824__) && !defined(__AVR_ATtiny1624__) && !defined(__AVR_ATtiny3224__)
+#if !defined(__AVR_ATtiny424__) && !defined(__AVR_ATtiny824__) && !defined(__AVR_ATtiny1624__) && !defined(__AVR_ATtiny3224__)
         PORTMUX.CTRLB |= PORTMUX_USART0_ALTERNATE_gc; //_ATtiny414 uses alternative ports for i2c because of conflict with the POWER_SAVE_PIN
 #else
         //NOTE: ports swapped in BleShield::init
@@ -121,7 +128,7 @@ inline void hugo_gpio_initialize(){
 #   endif
 
     if (IS_I2C_ALTERNATIVE){
-#   if !defined(__AVR_ATtiny824__) && !defined(__AVR_ATtiny1624__) && !defined(__AVR_ATtiny3224__)
+#   if !defined(__AVR_ATtiny424__) && !defined(__AVR_ATtiny824__) && !defined(__AVR_ATtiny1624__) && !defined(__AVR_ATtiny3224__)
         PORTMUX.CTRLB |= PORTMUX_TWI0_ALTERNATE_gc; //_ATtiny414 uses alternative ports for i2c because of conflict with the POWER_SAVE_PIN
 #   endif
     }
