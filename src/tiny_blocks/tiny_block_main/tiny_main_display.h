@@ -10,7 +10,12 @@ Adafruit_SSD1306 display(OLED_RESET);
 #   error("Height incorrect, please fix Adafruit_SSD1306.h!");
 #endif
 
-void tiny_main_display_init(){
+void tiny_main_display_init_shield(){
+    display.begin(SSD1306_SWITCHCAPVCC, 0x3d, false);
+    display.clearDisplay();
+}
+
+void tiny_main_display_init_block(){
     uint8_t ssd_address = tiny_main_base_get_ext_module_address(I2C_BLOCK_TYPE_ID_DISPLAY);
     display.begin(SSD1306_SWITCHCAPVCC, ssd_address, false);
     display.clearDisplay();

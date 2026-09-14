@@ -3,12 +3,18 @@
 #include "tiny_main_base.h"
 #include "hugo_defines.h"
 
+#define EXT_ADDRESS_DEFAULT 0x76
+#define EXT_ADDRESS_SDO_HI  0x77
+
 static pocketBME280 s_bme;
 static bool s_available = false;
 
-void tiny_main_ambient_init_shield(uint8_t bme280_address){
+void tiny_main_ambient_init_shield(uint8_t address){
+    if (address == 0){
+        address = EXT_ADDRESS_DEFAULT;
+    }
     s_available = true;
-    s_bme.setAddress(bme280_address);
+    s_bme.setAddress(address);
     s_bme.begin();
 }
 

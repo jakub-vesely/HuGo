@@ -3,6 +3,6 @@
 #include <pocketBME280.h>
 
 void tiny_main_ambient_init_block();
-void tiny_main_ambient_init_shield();
+void tiny_main_ambient_init_shield(uint8_t address=0);
 pocketBME280&  tiny_main_ambient_bme();
 bool tiny_main_ambient_is_available();
