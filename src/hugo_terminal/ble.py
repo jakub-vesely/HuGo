@@ -136,19 +136,18 @@ class Ble():
     for _i in range(9): # ~90 sec
       self.logger.debug("connection try nr:%i" % _i)
       try:
-        self.client = BleakClient(self.server, loop=self.loop) #it is better to create client again when the connection fails. in some cases the connections is created partially and is not possible to establish the new one
+        self.client = BleakClient(self.server, loop=self.loop, disconnected_callback=self._disconnected_callback) #it is better to create client again when the connection fails. in some cases the connections is created partially and is not possible to establish the new one
         self.connected = await self.client.connect()
         self.logger.debug("device was connected with status: %s", self.connected)
-        if not self.connected:
+        if not self.client.is_connected:
           self.logger.debug("Connection not established")
           return False
         else:
           self.logger.debug("Connection in progress")
-
-        self.client.set_disconnected_callback(self._disconnected_callback)
         await self.client.start_notify(self.command_uuid, self._command_notyfy_callback)
         #FIXME: should be removed when logging is finished
         try:
+
           await self.client.start_notify(self.log_uuid, self._log_callback)
         except Exception as error:
           self.logger.warning("logging start_notify failed %s", error)
