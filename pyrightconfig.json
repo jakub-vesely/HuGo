@@ -1,7 +1,18 @@
 {
-    "include": ["src"],
-    "stubPath": "typings",
-    "extraPaths": ["src"],
+    "include": [
+        "src"
+    ],
+    "stubPath": "src/typings",
+    "extraPaths": [
+        "src/../micropython-stubs/stubs/micropython-v1_29_0-esp32-ESP32_GENERIC_H2-merged",
+        "src/devel",
+        "src/../micropython/ports/esp32/modules",
+        "src/../micropython/lib/micropython-lib/micropython/drivers/led/neopixel",
+        "src/../micropython/ports/esp32/boards/HUGO/modules",
+        "src/../micropython/ports/esp32/boards/HUGO/externals",
+        "src/../micropython/ports/esp32/boards/HUGO/externals/mpu9250",
+        "src"
+    ],
     "typeCheckingMode": "basic",
     "reportMissingModuleSource": "none"
 }

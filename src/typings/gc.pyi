@@ -1,0 +1,1 @@
+../../micropython-stubs/stubs/micropython-v1_29_0-esp32-ESP32_GENERIC_H2-merged/gc.pyi

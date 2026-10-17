@@ -14,3 +14,6 @@
     path = micropython
 	url = git@github.com:jakub-vesely/micropython.git
 
+[submodule "micropython-stubs"]
+	path = micropython-stubs
+	url = https://github.com/Josverl/micropython-stubs.git
