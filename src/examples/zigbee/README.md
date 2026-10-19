@@ -1,5 +1,9 @@
 # Zigbee button and LED example
 
+By default, `ENABLE_BUTTONS = False`: only the internal temperature is reported
+every 180 seconds, with the onboard status LED enabled. The I/O behaviour below
+applies when `ENABLE_BUTTONS` is set to `True`.
+
 The example uses a HuGo `ButtonBlock` and `RgbLedBlock` on I2C. The onboard
 WS2812 remains a separate status indicator.
 
@@ -37,3 +41,26 @@ states, not a history of button presses.
 
 Host tests cover application logic with mocked hardware. They do not validate
 I2C wiring, radio delivery, or Home Assistant entity discovery.
+
+## Power saving with Zigbee
+
+Starting either Zigbee role through `basal.zigbee` installs a radio-aware idle
+handler in `PowerMgmt`. Planner's idle interval blocks only the Python task;
+it no longer forces `machine.lightsleep()` while the Zigbee stack is running.
+For a joined end device, ESP-IDF automatic light sleep respects native tasks,
+timers and radio power-management locks. Routers and devices still joining only
+yield the CPU, without enabling automatic sleep. End devices use RX off when
+idle; routers keep their receiver on.
+
+The HUGO_H2 build enables `CONFIG_PM_ENABLE`,
+`CONFIG_FREERTOS_USE_TICKLESS_IDLE` and `CONFIG_IEEE802154_SLEEP_ENABLE`.
+Existing build directories need these options enabled in their `sdkconfig` as
+well; changed defaults do not override saved options. The native idle handler
+reports PM configuration/restore errors, but returning from it does not prove
+that hardware actually slept: active tasks or PM locks may prevent sleep.
+
+The temperature interval remains 180 seconds. The existing Zigbee keep-alive
+interval is 4000 ms, so the radio can wake between temperature reports. BLE
+advertising windows also remain scheduled independently. Verify reporting,
+rejoining after coordinator loss, BLE reconnection and the current waveform on
+hardware after flashing. Without Zigbee, HuGo retains manual light sleep.

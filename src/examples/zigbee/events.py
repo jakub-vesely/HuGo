@@ -1,5 +1,3 @@
-import time
-import gc
 from basal import zigbee
 import esp32
 from machine import Pin
@@ -7,8 +5,14 @@ from neopixel import NeoPixel
 from basal.planner import Planner
 from basal.active_variable import ActiveVariable
 from basal.logging import Logging
-from blocks.button_block import ButtonBlock
-from blocks.rgb_led_block import RgbLedBlock
+from basal.power_mgmt import PowerMgmt, PowerPlan, BlePowerPlan
+
+ENABLE_BUTTONS = False
+TEMPERATURE_INTERVAL = 30
+
+if ENABLE_BUTTONS:
+    from blocks.button_block import ButtonBlock
+    from blocks.rgb_led_block import RgbLedBlock
 
 class Plan():
     def __init__(self):
@@ -20,29 +24,34 @@ class Plan():
         self.led.ORDER = (0, 1, 2, 3)
         self.blink_led((0, 32, 0))
 
-        self.button = ButtonBlock(measurement_period=0.1)
-        self.button_led = RgbLedBlock()
-        self.button_led.set_off()
-        self.zigbee_button = zigbee.add_button()
-        self.zigbee_led = zigbee.add_led()
-        self._pending_button = False
-        self._pending_led = False
-        self._report_button = True
-        self._report_led = True
-        self.button.value.changed(self._button_state_changed)
+        if ENABLE_BUTTONS:
+            self.button = ButtonBlock(measurement_period=0.1)
+            self.button_led = RgbLedBlock()
+            self.button_led.set_off()
+            self.zigbee_button = zigbee.add_button()
+            self.zigbee_led = zigbee.add_led()
+            self._pending_button = False
+            self._pending_led = False
+            self._report_button = True
+            self._report_led = True
+            self.button.value.changed(self._button_state_changed)
 
         self.temperature = zigbee.add_sensor(zigbee.TEMPERATURE_MEASUREMENT)
 
         self.joined = ActiveVariable(False)
         self.joined.equal_to(True, self.blink_led, (32, 0, 0))
         self.joined.equal_to(True, self.send_temperature)
-        self.joined.equal_to(True, self._report_io_states)
+        if ENABLE_BUTTONS:
+            self.joined.equal_to(True, self._report_io_states)
         self.joined.equal_to(False, self.join_zigbee)
 
         zigbee.start_end_device()
         Planner.postpone(1, self.join_zigbee)
-        Planner.repeat(0.1, self._sync_zigbee_io)
-        Planner.repeat(5, self._send_io_reports)
+        if ENABLE_BUTTONS:
+            Planner.repeat(0.1, self._sync_zigbee_io)
+            Planner.repeat(5, self._send_io_reports)
+
+        PowerMgmt.set_plan(PowerPlan(True, PowerPlan.freq_min, BlePowerPlan(20, 1, 60)))
 
     def _button_state_changed(self):
         pressed = bool(self.button.value.get())
@@ -106,42 +115,20 @@ class Plan():
         self.led[0] = (0, 0, 0)
         self.led.write()
 
-    def log_memory(self):
-        idf_heaps = esp32.idf_heap_info(esp32.HEAP_DATA)
-        python_free = gc.mem_free()
-        python_allocated = gc.mem_alloc()
-        idf_free = 0
-        idf_largest_block = 0
-        idf_minimum_free = 0
-        for heap in idf_heaps:
-            idf_free += heap[1]
-            idf_largest_block = max(idf_largest_block, heap[2])
-            idf_minimum_free += heap[3]
-        self.logging.info(
-            "RAM: Python free={} B, allocated={} B; "
-            "IDF free={} B, largest block={} B, minimum free={} B".format(
-                python_free,
-                python_allocated,
-                idf_free,
-                idf_largest_block,
-                idf_minimum_free,
-            )
-        )
-
     def send_temperature(self):
-        self.logging.info(f"temperature: {esp32.mcu_temperature()} °C")
         if not zigbee.joined():
             self.joined.set(False)
+            return
 
         try:
+            # The current native API still waits internally for confirmation.
             delivered = self.temperature.send(esp32.mcu_temperature())
-            self.logging.info(f"temperature delivery confirmed: {delivered}")
             self.blink_led((0, 32, 0) if delivered else (0, 0, 32))
         except Exception as error:
             self.logging.error(f"try to send value via zigbee failed with an error: {error}")
             self.blink_led((0, 0, 32))
-        self.log_memory()
-        Planner.postpone(30, self.send_temperature)
+        # Planner uses PowerMgmt to sleep between scheduled tasks, including BLE.
+        Planner.postpone(TEMPERATURE_INTERVAL, self.send_temperature)
 
     def join_zigbee(self):
         status = zigbee.status()
